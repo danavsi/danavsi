@@ -1,0 +1,74 @@
+/*
+  navigation.css
+  Sticky site bar and the wordmark.
+*/
+
+.site-nav {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 20;
+  background: var(--color-bg);
+  border-bottom: var(--border-width) solid var(--color-line);
+}
+
+.site-nav__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-5);
+  min-height: var(--nav-height);
+  padding-block: var(--space-2);
+}
+
+.site-nav__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin-inline-start: auto;
+  font-size: var(--text-sm);
+}
+
+.site-nav__links a {
+  padding-block: var(--space-2);
+  border-bottom: var(--border-width) solid transparent;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.site-nav__links a:hover {
+  color: var(--color-text);
+  border-bottom-color: var(--color-line-strong);
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-stretch: var(--display-stretch-wide);
+  font-weight: var(--weight-display-heavy);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
+
+.wordmark__mark {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.wordmark__bar--1 {
+  fill: var(--color-tier-1);
+}
+
+.wordmark__bar--2 {
+  fill: var(--color-tier-2);
+}
+
+.wordmark__bar--3 {
+  fill: var(--color-tier-3);
+}

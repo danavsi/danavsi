@@ -1,0 +1,74 @@
+/*
+  theme.css
+  Every color token. The page is dark-first: neutral black shades with no hue
+  in the greys, and one cobalt accent. Dark values live on bare :root so the
+  page is black for every viewer. A neutral light theme is available through
+  data-theme="light" (the theme toggle and the host's explicit light setting).
+
+  Level colors (--color-tier-*) form one sequential ramp: the more compute a
+  level uses, the brighter the color.
+*/
+
+:root {
+  --color-bg: #0a0a0b;
+  --color-surface: #18181a;
+  --color-surface-sunken: #111112;
+  --color-text: #ededed;
+  --color-text-muted: #a0a0a4;
+  --color-line: #28282b;
+  --color-line-strong: #66666b;
+
+  --color-accent: #8fa4ff;
+  --color-accent-strong: #b2c0ff;
+  --color-accent-tint: #1f2644;
+  --color-on-accent: #0b1530;
+  --color-focus: #ededed;
+
+  --color-success: #5cc28d;
+  --color-danger: #ff8a70;
+
+  --color-tier-0: #66666b;
+  --color-tier-1: #5c72d0;
+  --color-tier-2: #6f86f0;
+  --color-tier-3: #a7b7ff;
+
+  --color-band-bg: #1e1e21;
+  --color-band-text: #ededed;
+  --color-band-muted: #a0a0a4;
+  --color-band-accent: #8fa4ff;
+
+  --elevation-raised: 0 1px 2px rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --color-bg: #ebebec;
+  --color-surface: #f7f7f7;
+  --color-surface-sunken: #e0e0e1;
+  --color-text: #111112;
+  --color-text-muted: #4a4a4e;
+  --color-line: #c6c6c8;
+  --color-line-strong: #727277;
+
+  --color-accent: #2742d6;
+  --color-accent-strong: #1b31a8;
+  --color-accent-tint: #d6dcf5;
+  --color-on-accent: #ffffff;
+  --color-focus: #111112;
+
+  --color-success: #1f7a4d;
+  --color-danger: #b3361f;
+
+  --color-tier-0: #727277;
+  --color-tier-1: #93a5ee;
+  --color-tier-2: #5f79e6;
+  --color-tier-3: #2742d6;
+
+  --color-band-bg: #111112;
+  --color-band-text: #ebebec;
+  --color-band-muted: #a0a0a4;
+  --color-band-accent: #9db0ff;
+
+  --elevation-raised: 0 1px 2px rgba(17, 17, 18, 0.28);
+  color-scheme: light;
+}

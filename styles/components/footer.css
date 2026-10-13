@@ -1,0 +1,21 @@
+/*
+  footer.css
+*/
+
+.site-footer {
+  padding-block: var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-6);
+}
+
+.site-footer__note {
+  max-width: var(--measure);
+}

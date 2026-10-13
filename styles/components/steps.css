@@ -1,0 +1,95 @@
+/*
+  steps.css
+  The router's six decisions. The rail fills as each step scrolls past the
+  reading line (script toggles .is-passed). Text is always visible.
+*/
+
+.steps {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  column-gap: var(--space-4);
+  padding-bottom: var(--space-6);
+}
+
+.step:last-child {
+  padding-bottom: 0;
+}
+
+.step__marker {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: var(--border-width) solid var(--color-line-strong);
+  background: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  transition:
+    background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard);
+}
+
+/* Connector from this marker down to the next one */
+.step:not(:last-child)::before,
+.step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 1.25rem;
+  bottom: -1.25rem;
+  left: calc(1.25rem - 1px);
+  width: 2px;
+}
+
+.step:not(:last-child)::before {
+  background: var(--color-line);
+}
+
+.step:not(:last-child)::after {
+  background: var(--color-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--duration-slow) var(--ease-standard);
+}
+
+.step.is-passed .step__marker {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.step.is-passed:not(:last-child)::after {
+  transform: scaleY(1);
+}
+
+.step__body {
+  display: grid;
+  gap: var(--space-2);
+  padding-top: var(--space-1);
+  min-width: 0;
+}
+
+.step__tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.step__text {
+  max-width: var(--measure);
+  color: var(--color-text-muted);
+}

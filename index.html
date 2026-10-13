@@ -1,0 +1,354 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Danav</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/theme.css">
+<link rel="stylesheet" href="styles/typography.css">
+<link rel="stylesheet" href="styles/global.css">
+<link rel="stylesheet" href="styles/utilities.css">
+<link rel="stylesheet" href="styles/components/buttons.css">
+<link rel="stylesheet" href="styles/components/navigation.css">
+<link rel="stylesheet" href="styles/components/tabs.css">
+<link rel="stylesheet" href="styles/components/hero.css">
+<link rel="stylesheet" href="styles/components/scale-frame.css">
+<link rel="stylesheet" href="styles/components/stage.css">
+<link rel="stylesheet" href="styles/components/steps.css">
+<link rel="stylesheet" href="styles/components/topology.css">
+<link rel="stylesheet" href="styles/components/lists.css">
+<link rel="stylesheet" href="styles/components/band.css">
+<link rel="stylesheet" href="styles/components/footer.css">
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-nav">
+  <div class="container site-nav__inner">
+    <a class="wordmark" href="#top" aria-label="Danav, back to top">
+      <svg class="wordmark__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect class="wordmark__bar--1" x="2" y="4" width="8" height="4" fill="currentColor"/>
+        <rect class="wordmark__bar--2" x="2" y="10" width="14" height="4" fill="currentColor"/>
+        <rect class="wordmark__bar--3" x="2" y="16" width="20" height="4" fill="currentColor"/>
+      </svg>
+      <span>Danav</span>
+    </a>
+    <nav class="site-nav__links" aria-label="Primary">
+      <a href="#ownership">Ownership</a>
+      <a href="#products">Products</a>
+      <a href="#router">Router</a>
+      <a href="#principles">Principles</a>
+    </nav>
+    <button class="button button--secondary button--icon" id="theme-toggle" type="button" aria-label="Switch to dark theme">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.75"/>
+        <path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="container hero__inner">
+      <p class="eyebrow">Super intelligence (SI) runtime and agent platform</p>
+      <h1 class="hero__title" id="hero-title">SI you own, on hardware you own.</h1>
+      <div class="hero__intro">
+        <p class="lede">Danav is super intelligence you host yourself. Danav Server installs any open-source model and tunes how it runs for the work at hand. Danav, the lightweight client, runs your agents through that server. You pay for the systems you buy and nothing more: no monthly subscription and no payments to AI companies.</p>
+        <div class="hero__actions">
+          <a class="button button--primary" href="#ownership">See what you own</a>
+          <a class="button button--secondary" href="#products">Meet the two products</a>
+        </div>
+      </div>
+
+      <div class="scale-frame" data-scale-frame>
+      <div class="stage scale-canvas" id="router-stage" role="group" aria-labelledby="stage-title">
+        <div class="stage__head">
+          <p class="eyebrow" id="stage-title">Illustrative routing with example requests</p>
+          <button class="button button--secondary button--compact" id="stage-toggle" type="button">Pause demo</button>
+        </div>
+        <div class="stage__body" id="stage-body">
+          <svg class="stage__wires" id="stage-wires" aria-hidden="true" focusable="false"></svg>
+
+          <div class="stage__col">
+            <p class="stage__col-title">Example requests</p>
+            <ul class="stage__requests">
+              <li><button class="request" type="button" data-scenario="0"><span class="request__text">Rename userId across the project</span><span class="request__kind">Edit</span></button></li>
+              <li><button class="request" type="button" data-scenario="1"><span class="request__text">Write a unit test for parseInvoice</span><span class="request__kind">Test</span></button></li>
+              <li><button class="request" type="button" data-scenario="2"><span class="request__text">Find out why the build fails</span><span class="request__kind">Debug</span></button></li>
+              <li><button class="request" type="button" data-scenario="3"><span class="request__text">Migrate the API to v2</span><span class="request__kind">Migration</span></button></li>
+            </ul>
+          </div>
+
+          <div class="stage__col">
+            <p class="stage__col-title">Router</p>
+            <div class="router" id="router-node" data-state="idle">
+              <span class="router__bar" aria-hidden="true"></span>
+              <dl class="router__readout">
+                <div class="router__row"><dt>Needs</dt><dd id="ro-needs">Waiting for a request</dd></div>
+                <div class="router__row"><dt>Path</dt><dd id="ro-path">Not decided</dd></div>
+                <div class="router__row"><dt>Budget</dt><dd id="ro-budget">Not decided</dd></div>
+                <div class="router__row"><dt>Now</dt><dd id="ro-now">Idle</dd></div>
+              </dl>
+            </div>
+          </div>
+
+          <div class="stage__col">
+            <p class="stage__col-title">Levels, smallest first</p>
+            <ol class="stage__levels" aria-label="Levels">
+              <li class="level" data-level="0" data-state="idle">
+                <div class="level__head"><span class="level__swatch" aria-hidden="true"></span><span class="level__id">L0</span><span class="level__name">Tool or operation</span><span class="level__status">Idle</span></div>
+                <p class="level__note">No model call</p>
+                <div class="level__budget" aria-hidden="true"><span class="level__fill"></span></div>
+              </li>
+              <li class="level" data-level="1" data-state="idle">
+                <div class="level__head"><span class="level__swatch" aria-hidden="true"></span><span class="level__id">L1</span><span class="level__name">Small model</span><span class="level__status">Idle</span></div>
+                <p class="level__note">Fast, low compute</p>
+                <div class="level__budget" aria-hidden="true"><span class="level__fill"></span></div>
+              </li>
+              <li class="level" data-level="2" data-state="idle">
+                <div class="level__head"><span class="level__swatch" aria-hidden="true"></span><span class="level__id">L2</span><span class="level__name">Medium model</span><span class="level__status">Idle</span></div>
+                <p class="level__note">More reasoning, more compute</p>
+                <div class="level__budget" aria-hidden="true"><span class="level__fill"></span></div>
+              </li>
+              <li class="level" data-level="3" data-state="idle">
+                <div class="level__head"><span class="level__swatch" aria-hidden="true"></span><span class="level__id">L3</span><span class="level__name">Large model</span><span class="level__status">Idle</span></div>
+                <p class="level__note">Planning and hard problems</p>
+                <div class="level__budget" aria-hidden="true"><span class="level__fill"></span></div>
+              </li>
+            </ol>
+          </div>
+
+          <span class="stage__token" id="stage-token" aria-hidden="true"></span>
+        </div>
+        <div class="stage__result" id="stage-result" data-state="idle">
+          <span class="stage__result-label">Result</span>
+          <span class="stage__result-text" id="result-text">Select a request to see where it runs.</span>
+          <span class="stage__result-chip" id="result-chip">Waiting</span>
+        </div>
+        <p class="sr-only" id="stage-live" aria-live="polite"></p>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sunken" id="ownership" aria-labelledby="ownership-title">
+    <div class="container split">
+      <div class="split__lead">
+        <p class="eyebrow">Ownership</p>
+        <h2 id="ownership-title">Buy the machines once. Run SI without a bill.</h2>
+        <p class="lede">Both Danav Server and Danav are self-hostable. The models run on your own server, so intelligence does not depend on a subscription or on an AI company's API.</p>
+      </div>
+      <dl class="definition-list">
+        <div class="definition-list__row"><dt class="definition-list__term">Hardware</dt><dd class="definition-list__desc">You buy the systems. Danav Server uses their RAM and compute, so a stronger machine can run larger models.</dd></div>
+        <div class="definition-list__row"><dt class="definition-list__term">Subscriptions</dt><dd class="definition-list__desc">None. Nothing renews every month.</dd></div>
+        <div class="definition-list__row"><dt class="definition-list__term">AI companies</dt><dd class="definition-list__desc">No payments to them and no paid AI API in the path. Your server runs the models.</dd></div>
+        <div class="definition-list__row"><dt class="definition-list__term">Models</dt><dd class="definition-list__desc">Any open-source model you choose to install, tuned by the server for the work it will do.</dd></div>
+        <div class="definition-list__row"><dt class="definition-list__term">Access</dt><dd class="definition-list__desc">Every client and agent connects with an API key generated by your own Danav Server.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" id="products" aria-labelledby="products-title">
+    <div class="container stack">
+      <header class="section__header">
+        <p class="eyebrow">Two products</p>
+        <h2 id="products-title">A server that carries the load and a client that does the work</h2>
+        <p class="lede">Danav Server takes the RAM and all the resources of its machine to run models. Danav stays light, and works through the server using its API keys.</p>
+      </header>
+
+      <div class="scale-frame" data-scale-frame>
+      <div class="scale-canvas topology-canvas">
+      <div class="segmented" role="tablist" aria-label="Where the server runs">
+        <button class="segmented__tab" role="tab" type="button" id="tab-same" data-mode="same" aria-selected="true" aria-controls="topology">Same machine</button>
+        <button class="segmented__tab" role="tab" type="button" id="tab-lan" data-mode="lan" aria-selected="false" aria-controls="topology" tabindex="-1">Local network</button>
+        <button class="segmented__tab" role="tab" type="button" id="tab-remote" data-mode="remote" aria-selected="false" aria-controls="topology" tabindex="-1">Remote server</button>
+      </div>
+
+      <div class="topology" id="topology" role="tabpanel" aria-labelledby="tab-same" data-mode="same">
+        <div class="topology__site">
+          <p class="topology__site-label" id="site-a">On this machine</p>
+          <div class="node">
+            <h3>Danav</h3>
+            <p class="node__role">Client</p>
+            <p class="node__detail">Light enough for any machine. Runs your SI harness and agents, and does the work through the server.</p>
+            <div class="node__meter" data-load="low">
+              <p class="node__meter-label">Machine resources used: low</p>
+              <div class="node__meter-track" aria-hidden="true"><span class="node__meter-fill"></span></div>
+            </div>
+            <div class="node__group">
+              <p class="node__list-label">SI harness with example agents</p>
+              <ul class="node__list">
+                <li>Coding agent</li>
+                <li>Automation agent</li>
+                <li>Research agent</li>
+                <li>Everyday assistant</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="topology__link">
+          <span class="topology__link-label" id="link-label">Localhost</span>
+          <span class="topology__line" aria-hidden="true"></span>
+        </div>
+        <div class="topology__site">
+          <p class="topology__site-label" id="site-b">On this machine</p>
+          <div class="node">
+            <h3>Danav Server</h3>
+            <p class="node__role">Runtime</p>
+            <p class="node__detail">Installs any open-source model and uses the RAM and all the resources of its machine.</p>
+            <div class="node__meter" data-load="high">
+              <p class="node__meter-label">Machine resources used: high</p>
+              <div class="node__meter-track" aria-hidden="true"><span class="node__meter-fill"></span></div>
+            </div>
+            <div class="node__group">
+              <p class="node__list-label">Installed and managed here</p>
+              <ul class="node__list node__list--tiers">
+                <li>Tools and operations</li>
+                <li>Small models</li>
+                <li>Medium models</li>
+                <li>Large models</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p class="topology__caption" id="topology-caption">Client and server run side by side. Models run on hardware you control.</p>
+      </div>
+      </div>
+      </div>
+
+      <div class="columns-2">
+        <div class="product">
+          <h3>Danav Server</h3>
+          <p class="text-muted">The SI runtime and management platform. It needs the RAM and resources of its machine, so give it the strongest system you have.</p>
+          <ul class="marker-list">
+            <li>Install any open-source model and tune how it runs for the intended work, for faster results.</li>
+            <li>Route each request by intent, complexity, capabilities, latency and available resources.</li>
+            <li>Issue individually generated API keys with scoped permissions.</li>
+            <li>Support multiple users, clients, endpoints and access permissions.</li>
+            <li>Run on the same machine as Danav, or on a separate local or remote server.</li>
+            <li>Manage model availability, resource allocation, task execution, logs and usage.</li>
+          </ul>
+        </div>
+        <div class="product">
+          <h3>Danav</h3>
+          <p class="text-muted">The lightweight client. It connects to a Danav Server with an API key and does the work you ask for.</p>
+          <ul class="marker-list">
+            <li>Add an SI harness and create multiple agents for your different kinds of work.</li>
+            <li>Handle conversation, coding projects, command-line operations and autonomous task workflows.</li>
+            <li>Turn requests into structured tasks and make type-safe tool calls with validated inputs and outputs.</li>
+            <li>Execute tasks, inspect results, run tests and recover from failures.</li>
+            <li>Connect to any Danav Server with its endpoint and an API key from that server.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sunken" id="router" aria-labelledby="router-title">
+    <div class="container split">
+      <div class="split__lead">
+        <p class="eyebrow">Danav Router</p>
+        <h2 id="router-title">Six decisions before any text is generated</h2>
+        <p class="lede">Danav carries its own lightweight intent model. It uses the smallest model that can do the job, favors the fastest suitable path, avoids unnecessary reasoning and repeated text, and escalates to a more capable model only when the work requires it. Which levels exist depends on the models installed on your server.</p>
+      </div>
+      <ol class="steps" id="steps">
+        <li class="step">
+          <span class="step__marker" aria-hidden="true">1</span>
+          <div class="step__body">
+            <p class="step__tag">Intent</p>
+            <h3>What does the person want?</h3>
+            <p class="step__text">Reads the request and works out which capabilities it needs.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step__marker" aria-hidden="true">2</span>
+          <div class="step__body">
+            <p class="step__tag">Route type</p>
+            <h3>Model, tool, operation or a mix?</h3>
+            <p class="step__text">Some work needs no model at all. A deterministic operation is faster and always gives the same answer.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step__marker" aria-hidden="true">3</span>
+          <div class="step__body">
+            <p class="step__tag">Model</p>
+            <h3>Which installed model fits?</h3>
+            <p class="step__text">Chooses among the models on the server by capability, latency and available resources.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step__marker" aria-hidden="true">4</span>
+          <div class="step__body">
+            <p class="step__tag">Budget</p>
+            <h3>How small can the model be?</h3>
+            <p class="step__text">Picks the smallest suitable model and an appropriate compute budget for the task.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step__marker" aria-hidden="true">5</span>
+          <div class="step__body">
+            <p class="step__tag">Action</p>
+            <h3>Execute, plan, delegate or ask?</h3>
+            <p class="step__text">Runs the task directly, writes a plan, hands subtasks to other models, or asks the person for clarification.</p>
+          </div>
+        </li>
+        <li class="step">
+          <span class="step__marker" aria-hidden="true">6</span>
+          <div class="step__body">
+            <p class="step__tag">Verdict</p>
+            <h3>Is the result right?</h3>
+            <p class="step__text">Checks the output and decides whether more work is needed. If it is, the task moves up to a more capable model.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="principles" aria-labelledby="principles-title">
+    <div class="container stack">
+      <header class="section__header">
+        <p class="eyebrow">Principles</p>
+        <h2 id="principles-title">Seven principles behind every design choice</h2>
+      </header>
+      <dl class="definition-list">
+        <div class="definition-list__row"><dt class="definition-list__term">Local-first</dt><dd class="definition-list__desc">Run models on hardware you control, with no mandatory paid AI APIs.</dd></div>
+        <div class="definition-list__row"><dt class="definition-list__term">Model-agnostic</dt><dd class="definition-list__desc">Install any open-source model, across different model families and inference runtimes.</dd></div>
+        <div class="definition-list__row"><dt class="definition-list__term">Efficiency-first</dt><dd class="definition-list__desc">Optimize response time, memory use and compute cost.</dd></div>
+        <div class="definition-list__row"><dt class="definition-list__term">Type-safe execution</dt><dd class="definition-list__desc">Use structured schemas, validated tool calls, explicit error handling and predictable interfaces.</dd></div>
+        <div class="definition-list__row"><dt class="definition-list__term">Task-oriented</dt><dd class="definition-list__desc">Finish and verify the work instead of only generating text.</dd></div>
+        <div class="definition-list__row"><dt class="definition-list__term">Extensible</dt><dd class="definition-list__desc">Add new models, tools, runtimes and capabilities independently of each other.</dd></div>
+        <div class="definition-list__row"><dt class="definition-list__term">Secure by design</dt><dd class="definition-list__desc">Authenticate clients, scope API keys, enforce permissions and isolate potentially dangerous operations.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="idea-title">
+    <div class="container band__inner">
+      <p class="eyebrow band__eyebrow">The idea</p>
+      <h2 class="band__statement" id="idea-title">Danav decides how much intelligence a task needs, then uses the right model at the right time.</h2>
+      <p class="band__text">The server carries the models and the compute. The client stays light and does the work. You own both systems, with no subscription and no AI company in the loop.</p>
+      <a class="button button--inverse" href="#top">Back to the routing demo</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <a class="wordmark" href="#top" aria-label="Danav, back to top">
+      <svg class="wordmark__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect class="wordmark__bar--1" x="2" y="4" width="8" height="4" fill="currentColor"/>
+        <rect class="wordmark__bar--2" x="2" y="10" width="14" height="4" fill="currentColor"/>
+        <rect class="wordmark__bar--3" x="2" y="16" width="20" height="4" fill="currentColor"/>
+      </svg>
+      <span>Danav</span>
+    </a>
+    <p class="site-footer__note">Danav is an idea in design. This page describes the planned platform, shows illustrative examples only, and collects no data.</p>
+  </div>
+</footer>
+
+<script src="js/scale-frame.js" defer></script>
+<script src="js/theme.js" defer></script>
+<script src="js/router-stage.js" defer></script>
+<script src="js/page.js" defer></script>
+
+</body></html>
