@@ -39,6 +39,7 @@ Danav operates as a unified two-part platform:
 
 ## Documentation & References
 
+- [Official Website](https://danav.si): Product overview and interactive routing simulator.
 - [README.md](README.md): Full architectural overview, core value proposition, and quickstart guide.
 - [Danav Master Specification](docs/ideation/Danav_Master_Spec.md): The complete 110-feature specification across all 6 architectural subsystems.
 - [Landing Page & Routing Simulator](index.html): Interactive visualizer, System one routing demonstration, and UI specifications.

@@ -444,7 +444,7 @@ To let Danav agents interact with any desktop application (Slack, Figma, Linear,
 Agents created in the Danav App can be exported and shared as a single signed archive or declarative manifest:
 
 ```yaml
-apiVersion: danav.ai/v1
+apiVersion: danav.si/v1
 kind: AgentBlueprint
 metadata:
   name: pr-triage-and-fix
