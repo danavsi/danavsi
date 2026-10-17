@@ -1,0 +1,3544 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><script>document.documentElement.classList.add("js")</script><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Cdefs%3E%3CclipPath%20id='c'%3E%3Crect%20width='15.25'%20height='32'/%3E%3C/clipPath%3E%3C/defs%3E%3Cpath%20clip-path='url%28%23c%29'%20d='M15.61%2014.55L13.36%206.15M14.94%2014.94L7.02%207.02M14.55%2015.61L5.18%2013.10M14.55%2016.39L5.18%2018.90M14.94%2017.06L7.02%2024.98M15.61%2017.45L13.36%2025.85'%20fill='none'%20stroke='%236f86f0'%20stroke-width='2.6'%20stroke-linecap='round'/%3E%3Cpath%20fill='%23a7b7ff'%20fill-rule='evenodd'%20d='M16.75%2012.2L21%209.6C22%206.6%2024.8%204.3%2029%202.6C27.9%206.2%2027.4%208.8%2026.6%2011.4C27%2014.6%2026.6%2017.6%2024.8%2020.4L16.75%2029Z%20M18.5%2017.6L24.6%2014.1L23.9%2017.5Z'/%3E%3C/svg%3E"><title>Danav: One brain, every model</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"><style>:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--color-bg);z-index:30}[hidden]{display:none!important}/*
+  tokens.css
+  Non-color design tokens: type, spacing, layout, shape, motion, control sizes.
+  Colors live in theme.css. Change a value here and every component follows.
+
+  Breakpoints (custom properties cannot be used inside @media, so these values
+  are repeated literally in the stylesheets):
+    compact  40rem
+    wide     48rem
+    desktop  64rem
+*/
+
+:root {
+  /* Typeface roles */
+  --font-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Display face width axis and weights */
+  --display-stretch: 118%;
+  --display-stretch-wide: 125%;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-display: 700;
+  --weight-display-heavy: 800;
+
+  /* Type scale */
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.3125rem;
+  --text-xl: clamp(1.5rem, 1rem + 1.8vw, 2.125rem);
+  --text-2xl: clamp(1.875rem, 1rem + 3vw, 3.125rem);
+  --text-hero: clamp(2.25rem, 0.9rem + 5.6vw, 4.75rem);
+
+  --leading-tight: 1.05;
+  --leading-snug: 1.3;
+  --leading-body: 1.6;
+  --tracking-label: 0.08em;
+  --tracking-display: -0.015em;
+
+  /* Spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-section: clamp(3.5rem, 2rem + 6vw, 7rem);
+
+  /* Layout */
+  --container-max: 76rem;
+  --measure: 62ch;
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --nav-height: 3.5rem;
+
+  /* Shape */
+  --radius-none: 0;
+  --radius-control: 3px;
+  --radius-panel: 6px;
+  --border-width: 1px;
+
+  /* Focus treatment (thin and quiet, always present for keyboard users) */
+  --focus-width: 1.5px;
+  --focus-offset: 2px;
+
+  /* Controls */
+  --control-height: 2.75rem;
+  --control-height-compact: 2.25rem;
+
+  /* Motion */
+  --duration-fast: 120ms;
+  --duration-base: 220ms;
+  --duration-slow: 600ms;
+  --ease-standard: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* Relative compute per lane (L0 Rust tool to L3 frontier), used by the demo bars */
+  --budget-l0: 0.04;
+  --budget-l1: 0.24;
+  --budget-l2: 0.56;
+  --budget-l3: 0.94;
+
+  /* Pill badges and reveal motion */
+  --radius-pill: var(--radius-control);
+  --duration-reveal: 700ms;
+  --stagger: 70ms;
+  --reveal-distance: 14px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Flow diagrams */
+  --flow-link-h: 3rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+  }
+}
+/*
+  theme.css
+  Every color token. The page is dark-first: neutral black shades with no hue
+  in the greys, and one cobalt accent. Dark values live on bare :root so the
+  page is black for every viewer. A neutral light theme is available through
+  data-theme="light" (the theme toggle and the host's explicit light setting).
+
+  Lane colors (--color-tier-*) form one sequential ramp: the more compute a
+  lane uses, the brighter the color.
+*/
+
+:root {
+  --color-bg: #0a0a0b;
+  --color-surface: #18181a;
+  --color-surface-sunken: #111112;
+  --color-text: #ededed;
+  --color-text-muted: #a0a0a4;
+  --color-line: #28282b;
+  --color-line-strong: #66666b;
+
+  --color-accent: #8fa4ff;
+  --color-accent-strong: #b2c0ff;
+  --color-accent-tint: #1f2644;
+  --color-on-accent: #0b1530;
+  --color-focus: #ededed;
+
+  --color-success: #5cc28d;
+  --color-danger: #ff8a70;
+
+  --color-badge-bg: #26262a;
+  --color-badge-text: #b4b4b8;
+  --color-badge-accent-bg: #232a4d;
+  --color-badge-accent-text: #b2c0ff;
+  --color-badge-success-bg: #14291f;
+  --color-badge-success-text: #6fd1a0;
+  --color-badge-danger-bg: #33201b;
+  --color-badge-danger-text: #ff9c85;
+
+  --color-tier-0: #66666b;
+  --color-tier-1: #5c72d0;
+  --color-tier-2: #6f86f0;
+  --color-tier-3: #a7b7ff;
+
+  --color-band-bg: #1e1e21;
+  --color-band-text: #ededed;
+  --color-band-muted: #a0a0a4;
+  --color-band-accent: #8fa4ff;
+
+  --elevation-raised: 0 1px 2px rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --color-bg: #ebebec;
+  --color-surface: #f7f7f7;
+  --color-surface-sunken: #e0e0e1;
+  --color-text: #111112;
+  --color-text-muted: #4a4a4e;
+  --color-line: #c6c6c8;
+  --color-line-strong: #727277;
+
+  --color-accent: #2742d6;
+  --color-accent-strong: #1b31a8;
+  --color-accent-tint: #d6dcf5;
+  --color-on-accent: #ffffff;
+  --color-focus: #111112;
+
+  --color-success: #1f7a4d;
+  --color-danger: #b3361f;
+
+  --color-badge-bg: #dcdcde;
+  --color-badge-text: #3d3d41;
+  --color-badge-accent-bg: #d6dcf5;
+  --color-badge-accent-text: #1b31a8;
+  --color-badge-success-bg: #d3ead9;
+  --color-badge-success-text: #165a38;
+  --color-badge-danger-bg: #f2d9d2;
+  --color-badge-danger-text: #9c2c18;
+
+  --color-tier-0: #727277;
+  --color-tier-1: #93a5ee;
+  --color-tier-2: #5f79e6;
+  --color-tier-3: #2742d6;
+
+  --color-band-bg: #111112;
+  --color-band-text: #ebebec;
+  --color-band-muted: #a0a0a4;
+  --color-band-accent: #9db0ff;
+
+  --elevation-raised: 0 1px 2px rgba(17, 17, 18, 0.28);
+  color-scheme: light;
+}
+/*
+  typography.css
+  Type roles: display (Archivo, variable width), body (IBM Plex Sans),
+  utility (IBM Plex Mono). All sizes come from tokens.css.
+*/
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-stretch: var(--display-stretch);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--text-hero);
+  font-weight: var(--weight-display-heavy);
+  font-stretch: var(--display-stretch-wide);
+}
+
+h2 {
+  font-size: var(--text-2xl);
+}
+
+h3 {
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.lede {
+  max-width: var(--measure);
+  font-size: var(--text-md);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+/*
+  global.css
+  Reset, page background, shared layout patterns and the single shared
+  keyboard focus treatment.
+*/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-height) + var(--space-4));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+/* All scrollbars invisible across the entire page */
+*, *::before, *::after {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Shared focus treatment: thin, quiet, never removed entirely */
+:where(a, button, [role="tab"]):focus {
+  outline: none;
+}
+
+:where(a, button, [role="tab"]):focus-visible {
+  outline: var(--focus-width) solid var(--color-focus);
+  outline-offset: var(--focus-offset);
+}
+
+/* Layout */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--space-section);
+}
+
+.section--sunken {
+  background: var(--color-surface-sunken);
+}
+
+.section__header {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 48rem;
+}
+
+.stack {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-7);
+}
+
+.split__lead {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+}
+
+.columns-2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-7);
+}
+
+@media (min-width: 48rem) {
+  .columns-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-8);
+  }
+}
+
+@media (min-width: 64rem) {
+  .split {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: var(--space-8);
+  }
+
+  .split__lead {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-6));
+    align-self: start;
+  }
+}
+/*
+  utilities.css
+  Small single-purpose helpers. Visual design belongs in tokens, theme and
+  component files, not here.
+*/
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 40;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: var(--text-sm);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+/*
+  buttons.css
+  One button component. Variants: primary, secondary, inverse (on the band),
+  icon, compact.
+*/
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--control-height);
+  padding-inline: var(--space-5);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button--primary {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.button--primary:hover,
+.button--primary:active {
+  background: var(--color-accent-strong);
+  border-color: var(--color-accent-strong);
+}
+
+.button--secondary {
+  border-color: var(--color-line-strong);
+}
+
+.button--secondary:hover,
+.button--secondary:active {
+  border-color: var(--color-text);
+}
+
+.button--inverse {
+  background: var(--color-band-text);
+  border-color: var(--color-band-text);
+  color: var(--color-band-bg);
+}
+
+.button--inverse:hover,
+.button--inverse:active {
+  background: transparent;
+  color: var(--color-band-text);
+}
+
+.button--compact {
+  min-height: var(--control-height-compact);
+  padding-inline: var(--space-4);
+}
+
+.button--icon {
+  width: var(--control-height);
+  padding-inline: 0;
+}
+
+.icon {
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+}
+/*
+  navigation.css
+  Sticky site bar and the wordmark.
+*/
+
+.site-nav {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 50;
+  background: var(--color-bg);
+  border-bottom: var(--border-width) solid var(--color-line);
+}
+
+.site-nav__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: var(--nav-height);
+  padding-block: var(--space-2);
+}
+
+.site-nav__links {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1) var(--space-5);
+  margin-inline-start: auto;
+  font-size: var(--text-sm);
+}
+
+.site-nav__links a {
+  padding-block: var(--space-2);
+  border-bottom: var(--border-width) solid transparent;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.site-nav__links a:hover {
+  color: var(--color-text);
+  border-bottom-color: var(--color-line-strong);
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-stretch: var(--display-stretch-wide);
+  font-weight: var(--weight-display-heavy);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
+
+.wordmark__mark {
+  width: 1.75rem;
+  height: 1.75rem;
+  overflow: visible;
+}
+
+/* Left half: Claude's spark. Right half: a horned demon head (dānava).
+   The halves are cut at a shared seam and never overlap. */
+.wordmark__spark {
+  fill: none;
+  stroke: var(--color-tier-2);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
+.wordmark__head {
+  fill: var(--color-tier-3);
+}
+
+.wordmark__half {
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+
+.wordmark:hover .wordmark__half--spark {
+  transform: translateX(-0.8px);
+}
+
+.wordmark:hover .wordmark__half--head {
+  transform: translateX(0.8px);
+}
+
+.site-nav__links a[aria-current="location"] {
+  color: var(--color-text);
+}
+
+.site-nav__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.site-nav__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-height-compact);
+  height: var(--control-height-compact);
+  min-height: var(--control-height-compact);
+  padding: 0;
+  border-radius: var(--radius-control);
+  border: var(--border-width) solid var(--color-line-strong);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.site-nav__btn:hover {
+  border-color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.site-nav__toggle {
+  display: none;
+}
+
+.site-nav__toggle .icon--close {
+  display: none;
+}
+
+/* Sliding underline that follows the section in view */
+.site-nav__indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--indicator-w, 0);
+  height: 2px;
+  background: var(--color-accent);
+  opacity: 0;
+  transform: translate(var(--indicator-x, 0), var(--indicator-y, 0));
+  pointer-events: none;
+}
+
+.site-nav__links.has-active .site-nav__indicator {
+  opacity: 1;
+}
+
+.site-nav__links.is-ready .site-nav__indicator {
+  transition:
+    transform var(--duration-slow) var(--ease-out),
+    width var(--duration-slow) var(--ease-out),
+    opacity var(--duration-base) var(--ease-standard);
+}
+
+@media (max-width: 47.99rem) {
+  html {
+    scroll-padding-top: calc(3.5rem + var(--space-3) + env(safe-area-inset-top, 0px));
+  }
+
+  .site-nav__inner {
+    min-height: 3.25rem;
+    padding-block: var(--space-2);
+    justify-content: space-between;
+  }
+
+  .site-nav__toggle {
+    display: inline-flex;
+  }
+
+  .site-nav.is-open .site-nav__toggle .icon--menu {
+    display: none;
+  }
+
+  .site-nav.is-open .site-nav__toggle .icon--close {
+    display: block;
+  }
+
+  .site-nav__links {
+    position: absolute;
+    top: calc(100% + var(--space-2));
+    right: var(--gutter);
+    left: auto;
+    width: min(calc(100vw - 2 * var(--gutter)), 16rem);
+    display: none;
+    flex-direction: column;
+    gap: var(--space-1);
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--color-line-strong);
+    border-radius: var(--radius-panel);
+    padding: var(--space-2);
+    box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3);
+    margin-inline-start: 0;
+    transform-origin: top right;
+  }
+
+  .site-nav.is-open .site-nav__links {
+    display: flex;
+    animation: popover-in var(--duration-base) var(--ease-out);
+  }
+
+  .site-nav__links a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    border: var(--border-width) solid transparent;
+    border-radius: var(--radius-control);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-muted);
+  }
+
+  .site-nav__links a::after {
+    content: attr(data-index);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-line-strong);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .site-nav__links a:hover,
+  .site-nav__links a:active {
+    background: var(--color-surface-sunken);
+    color: var(--color-text);
+    border-color: var(--color-line);
+  }
+
+  .site-nav__links a[aria-current="location"] {
+    background: var(--color-surface-sunken);
+    color: var(--color-accent);
+    border-color: var(--color-line);
+    font-weight: var(--weight-semibold);
+  }
+
+  .site-nav__links a[aria-current="location"]::after {
+    color: var(--color-accent);
+  }
+
+  .site-nav__indicator {
+    display: none !important;
+  }
+}
+
+@keyframes popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+/*
+  tabs.css
+  Segmented tab control. Selected and unselected tabs share the same border
+  width so nothing shifts when the selection changes. Labels never wrap.
+*/
+
+.segmented {
+  display: inline-grid;
+  grid-template-columns: repeat(3, auto);
+  justify-self: start;
+  gap: 2px;
+  padding: 2px;
+  border: var(--border-width) solid var(--color-line-strong);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+}
+
+.segmented__tab {
+  min-height: var(--control-height);
+  padding-inline: var(--space-5);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.segmented__tab:hover {
+  color: var(--color-text);
+}
+
+.segmented__tab[aria-selected="true"] {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+/*
+  hero.css
+  Opening region. Sized to its content, never to the viewport.
+*/
+
+.hero {
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-section);
+}
+
+.hero__inner {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.hero__title {
+  max-width: 16em;
+}
+
+.hero__intro {
+  display: grid;
+  gap: var(--space-5);
+  align-items: end;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+@media (min-width: 64rem) {
+  .hero__intro {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    column-gap: var(--space-7);
+  }
+
+  .hero__actions {
+    justify-content: flex-end;
+  }
+}
+/*
+  scale-frame.css
+  A fixed-ratio container. The canvas is laid out once at its design width and
+  scaled as a whole to fit the frame, so nothing reflows, wraps differently or
+  breaks as the page gets narrower or wider. Script sets --scale and
+  --canvas-height on the frame (runtime values) and marks it data-ready.
+
+  Without script the canvas stays at its design size and scrolls sideways
+  inside the frame.
+*/
+
+.scale-frame {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.scale-canvas {
+  width: var(--canvas-width, 62.5rem);
+  transform-origin: top left;
+}
+
+.scale-frame[data-ready] {
+  height: calc(var(--canvas-height) * var(--scale));
+  overflow: hidden;
+}
+
+.scale-frame[data-ready] .scale-canvas {
+  transform: scale(var(--scale));
+}
+/*
+  stage.css
+  The System One routing demo: requests on the left, the router in the middle, lanes on
+  the right. It is a scale canvas (see scale-frame.css), so it always uses this
+  one three-column layout. Wires and the moving token are positioned by script
+  from the measured layout (runtime values); everything else is styled here.
+*/
+
+.stage {
+  --canvas-width: 62.5rem;
+  border: var(--border-width) solid var(--color-line-strong);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+}
+
+.stage__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--border-width) solid var(--color-line);
+}
+
+.stage__body {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.15fr);
+  column-gap: 4rem;
+  padding: var(--space-6);
+}
+
+.stage__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.stage__col-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* Requests */
+.stage__requests,
+.stage__levels {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.request {
+  display: grid;
+  gap: var(--space-1);
+  width: 100%;
+  min-height: 5rem;
+  padding: var(--space-3) var(--space-4);
+  align-content: center;
+  border: var(--border-width) solid var(--color-line-strong);
+  border-radius: var(--radius-control);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.request:hover {
+  border-color: var(--color-text);
+}
+
+.request[aria-current="true"] {
+  border-color: var(--color-accent);
+  background: var(--color-accent-tint);
+}
+
+.request__text {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-snug);
+}
+
+.request__kind {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* Router */
+.router {
+  position: relative;
+  display: grid;
+  gap: var(--space-3);
+  margin-block: auto;
+  padding: var(--space-4);
+  overflow: hidden;
+  border: var(--border-width) solid var(--color-text);
+  border-radius: var(--radius-control);
+  background: var(--color-bg);
+}
+
+.router__bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 2px;
+  background: var(--color-accent);
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.router[data-state="thinking"] .router__bar {
+  opacity: 1;
+  animation: router-scan 900ms linear infinite;
+}
+
+@keyframes router-scan {
+  to {
+    transform: translateX(250%);
+  }
+}
+
+.router__readout {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.router__row {
+  display: grid;
+  grid-template-columns: 4.25rem minmax(0, 1fr);
+  gap: var(--space-2);
+}
+
+.router__row dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding-top: 0.2em;
+}
+
+.router__row dd {
+  margin: 0;
+  min-height: calc(var(--leading-snug) * 2em);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+}
+
+/* Levels */
+.level {
+  --level-color: var(--color-tier-0);
+  --level-budget: var(--budget-l0);
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: var(--border-width) solid var(--color-line-strong);
+  border-radius: var(--radius-control);
+  background: var(--color-bg);
+  transition:
+    background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard);
+}
+
+.level[data-level="1"] {
+  --level-color: var(--color-tier-1);
+  --level-budget: var(--budget-l1);
+}
+
+.level[data-level="2"] {
+  --level-color: var(--color-tier-2);
+  --level-budget: var(--budget-l2);
+}
+
+.level[data-level="3"] {
+  --level-color: var(--color-tier-3);
+  --level-budget: var(--budget-l3);
+}
+
+.level__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.level__swatch {
+  flex: none;
+  width: 0.625rem;
+  height: 0.625rem;
+  background: var(--level-color);
+}
+
+.level__id {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+}
+
+.level__name {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.level__status {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.level__note {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.level__budget {
+  height: 4px;
+  background: var(--color-line);
+}
+
+.level__fill {
+  display: block;
+  height: 100%;
+  background: var(--level-color);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-slow) var(--ease-standard);
+}
+
+.level[data-state="active"],
+.level[data-state="checking"] {
+  border-color: var(--color-accent);
+  background: var(--color-accent-tint);
+}
+
+.level[data-state="passed"] {
+  border-color: var(--color-success);
+}
+
+.level[data-state="passed"] .level__status {
+  color: var(--color-success);
+}
+
+.level[data-state="failed"] {
+  border-color: var(--color-danger);
+}
+
+.level[data-state="failed"] .level__status {
+  color: var(--color-danger);
+}
+
+.level:is([data-state="active"], [data-state="checking"], [data-state="passed"], [data-state="failed"]) .level__fill {
+  transform: scaleX(var(--level-budget));
+}
+
+/* Wires and token */
+.stage__wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.wire {
+  fill: none;
+  stroke: var(--color-line-strong);
+  stroke-width: 1;
+  opacity: 0.55;
+}
+
+.wire.is-active {
+  stroke: var(--color-accent);
+  stroke-width: 2;
+  opacity: 1;
+}
+
+.stage__token {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 2px solid var(--color-bg);
+  background: var(--color-accent);
+  box-shadow: var(--elevation-raised);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+
+.stage__token[data-visible="true"] {
+  opacity: 1;
+}
+
+/* Result strip */
+.stage__result {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-top: var(--border-width) solid var(--color-line);
+}
+
+.stage__result-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.stage__result-text {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-sm);
+}
+
+.stage__result-chip {
+  padding: 0.25rem 0.625rem;
+  border: var(--border-width) solid currentColor;
+  border-radius: var(--radius-control);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.stage__result[data-state="working"] .stage__result-chip {
+  color: var(--color-accent);
+}
+
+.stage__result[data-state="done"] .stage__result-chip {
+  color: var(--color-success);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .router[data-state="thinking"] .router__bar {
+    animation: none;
+    transform: none;
+    width: 100%;
+  }
+}
+/*
+  steps.css
+  Step lists (context_pack pipeline and roadmap). The rail fills as each step scrolls past the
+  reading line (script toggles .is-passed). Text is always visible.
+*/
+
+.steps {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  column-gap: var(--space-4);
+  padding-bottom: var(--space-6);
+}
+
+.step:last-child {
+  padding-bottom: 0;
+}
+
+.step__marker {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: var(--border-width) solid var(--color-line-strong);
+  background: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  transition:
+    background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard);
+}
+
+/* Connector from this marker down to the next one */
+.step:not(:last-child)::before,
+.step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 1.25rem;
+  bottom: -1.25rem;
+  left: calc(1.25rem - 1px);
+  width: 2px;
+}
+
+.step:not(:last-child)::before {
+  background: var(--color-line);
+}
+
+.step:not(:last-child)::after {
+  background: var(--color-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--duration-slow) var(--ease-standard);
+}
+
+.step.is-passed .step__marker {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.step.is-passed:not(:last-child)::after {
+  transform: scaleY(1);
+}
+
+.step__body {
+  display: grid;
+  gap: var(--space-2);
+  padding-top: var(--space-1);
+  min-width: 0;
+}
+
+.step__tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.step__text {
+  max-width: var(--measure);
+  color: var(--color-text-muted);
+}
+/*
+  topology.css
+  Where the server runs. A scale canvas (see scale-frame.css) holding the tabs
+  and the diagram, so both keep one layout at every size. The three modes
+  differ in enclosure and in the distance between client and server, set by
+  data-mode.
+*/
+
+.topology-canvas {
+  --canvas-width: 56rem;
+  display: grid;
+  gap: var(--space-5);
+}
+
+.topology {
+  --link-length: 6rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--link-length) minmax(0, 1fr);
+  gap: var(--space-4) 0;
+  padding: 0;
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-panel);
+  transition:
+    border-color var(--duration-base) var(--ease-standard),
+    grid-template-columns var(--duration-slow) var(--ease-standard);
+}
+
+.topology[data-mode="same"] {
+  border-color: var(--color-line-strong);
+  background: var(--color-surface);
+}
+
+.topology[data-mode="lan"] {
+  --link-length: 8rem;
+}
+
+.topology[data-mode="remote"] {
+  --link-length: 10rem;
+}
+
+.topology__site {
+  align-content: start;
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: 0;
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-panel);
+  transition:
+    border-color var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard);
+}
+
+.topology[data-mode="lan"] .topology__site,
+.topology[data-mode="remote"] .topology__site {
+  border-color: var(--color-line-strong);
+  background: var(--color-surface);
+}
+
+.topology__site-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.node {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--color-text);
+  border-radius: var(--radius-control);
+  background: var(--color-bg);
+}
+
+.node__role {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.node__detail {
+  font-size: var(--text-sm);
+}
+
+/* Relative machine load: the server uses the whole machine, the client stays light */
+.node__meter {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.node__meter[data-load="high"] {
+  --meter-level: var(--budget-l3);
+}
+
+.node__meter[data-load="low"] {
+  --meter-level: var(--budget-l1);
+}
+
+.node__meter-label,
+.node__list-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.node__meter-track {
+  height: 4px;
+  background: var(--color-line);
+}
+
+.node__meter-fill {
+  display: block;
+  height: 100%;
+  background: var(--color-accent);
+  transform: scaleX(var(--meter-level));
+  transform-origin: left;
+}
+
+.node__group {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: var(--border-width) solid var(--color-line);
+}
+
+.node__list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+}
+
+.node__list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.node__list li::before {
+  content: "";
+  flex: none;
+  width: 0.625rem;
+  height: 0.625rem;
+  background: var(--color-accent);
+}
+
+.node__list--tiers li:nth-child(1)::before {
+  background: var(--color-tier-0);
+}
+
+.node__list--tiers li:nth-child(2)::before {
+  background: var(--color-tier-1);
+}
+
+.node__list--tiers li:nth-child(3)::before {
+  background: var(--color-tier-2);
+}
+
+.node__list--tiers li:nth-child(4)::before {
+  background: var(--color-tier-3);
+}
+
+/* Link between the two sites. Dashes move from client to server. */
+.topology__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.topology__link-label {
+  max-width: 100%;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-label);
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.topology__line {
+  width: 100%;
+  height: 2px;
+  background-image: linear-gradient(90deg, var(--color-accent) 50%, transparent 50%);
+  background-size: 14px 100%;
+  animation: topology-flow 700ms linear infinite;
+}
+
+.topology__caption {
+  grid-column: 1 / -1;
+  min-height: calc(var(--leading-body) * 2em);
+  padding-inline: 0;
+  color: var(--color-text-muted);
+}
+
+@keyframes topology-flow {
+  to {
+    background-position-x: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topology__line {
+    animation: none;
+  }
+}
+/*
+  lists.css
+  Marker list (square markers) for capabilities, and the definition list used for the problem statement and the 110 features.
+*/
+
+.product {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+  min-width: 0;
+}
+
+.marker-list {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.marker-list li {
+  display: grid;
+  grid-template-columns: 0.375rem minmax(0, 1fr);
+  column-gap: var(--space-3);
+}
+
+.marker-list li::before {
+  content: "";
+  width: 0.375rem;
+  height: 0.375rem;
+  margin-top: 0.6em;
+  background: var(--color-accent);
+}
+
+.definition-list {
+  display: grid;
+  margin: 0;
+  border-top: var(--border-width) solid var(--color-text);
+}
+
+.definition-list__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+  padding-block: var(--space-4);
+  border-bottom: var(--border-width) solid var(--color-line);
+}
+
+.definition-list__term {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-stretch: var(--display-stretch);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-snug);
+}
+
+.definition-list__desc {
+  max-width: var(--measure);
+  margin: 0;
+}
+
+@media (min-width: 48rem) {
+  .definition-list__row {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    column-gap: var(--space-6);
+    align-items: baseline;
+  }
+}
+/*
+  band.css
+  Full-width closing statement on the inverse surface.
+*/
+
+.band {
+  padding-block: var(--space-section);
+  background: var(--color-band-bg);
+  color: var(--color-band-text);
+}
+
+.band__inner {
+  display: grid;
+  gap: var(--space-5);
+  justify-items: start;
+}
+
+.band__eyebrow {
+  color: var(--color-band-muted);
+}
+
+.band__statement {
+  max-width: 24em;
+  font-size: var(--text-xl);
+}
+
+.band__text {
+  max-width: var(--measure);
+  color: var(--color-band-muted);
+}
+
+.band :focus-visible {
+  outline-color: var(--color-band-text);
+}
+/*
+  footer.css
+*/
+
+.site-footer {
+  padding-block: var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-6);
+}
+
+.site-footer__note {
+  max-width: var(--measure);
+}
+/* spec.css: markdown prose, formulas, feature groups. Uses existing tokens only. */
+.prose{display:grid;gap:var(--space-4);min-width:0}
+.prose h3{margin-top:var(--space-5)}
+.prose h3:first-child{margin-top:0}
+.prose h4{font-family:var(--font-display);font-size:var(--text-md)}
+.prose ul,.prose ol{margin:0;padding-left:1.25rem;display:grid;gap:var(--space-2)}
+.prose li>ul,.prose li>ol{margin-top:var(--space-1)}
+.prose li{display:list-item}
+.prose p{max-width:var(--measure)}
+.prose code,.definition-list code,.step__text code,.marker-list code,.lede code,.text-muted code{font-family:var(--font-mono);font-size:.86em;padding:.1em .4em;border:0;border-radius:var(--radius-control);background:var(--color-badge-bg);color:var(--color-text);overflow-wrap:anywhere;display:inline-block;vertical-align:baseline}
+.prose pre{margin:0;padding:var(--space-4);overflow-x:auto;border:var(--border-width) solid var(--color-line);border-radius:var(--radius-panel);background:var(--color-surface);font-size:var(--text-xs);line-height:1.35}
+.prose pre code{padding:0;border:0;background:none;font-size:inherit;overflow-wrap:normal;white-space:pre}
+.prose table,table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;font-size:var(--text-sm);scrollbar-width:none;-ms-overflow-style:none}
+.prose table::-webkit-scrollbar,table::-webkit-scrollbar{display:none;width:0;height:0}
+.prose th,.prose td{padding:var(--space-3);border-bottom:var(--border-width) solid var(--color-line);text-align:left;vertical-align:top;min-width:9rem}
+.prose th{font-family:var(--font-mono);font-size:var(--text-xs);letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--color-text-muted);border-bottom-color:var(--color-text)}
+.prose hr{border:0;border-top:var(--border-width) solid var(--color-line)}
+.prose > hr:last-child{display:none}
+.prose a{color:var(--color-accent)}
+.math{margin-block:var(--space-2);padding:var(--space-2) var(--space-3);overflow-x:auto;text-align:center;font-family:var(--font-body);font-size:var(--text-md);border:var(--border-width) solid var(--color-line);border-radius:var(--radius-control);background:var(--color-surface)}
+.m{font-family:var(--font-body);white-space:nowrap}
+.frac{display:inline-block;vertical-align:middle;text-align:center}
+.frac .num{display:block;padding:0 var(--space-2) 2px;border-bottom:var(--border-width) solid var(--color-text)}
+.frac .den{display:block;padding:2px var(--space-2) 0}
+.step__text ul{margin:var(--space-3) 0 0}
+.step__text{display:grid;gap:var(--space-2)}
+.dg-fig{margin:0;display:grid;gap:var(--space-3)}
+.dg-scroll{overflow-x:auto;border:var(--border-width) solid var(--color-line);border-radius:var(--radius-panel);background:var(--color-surface-sunken)}
+.dg{display:block;width:100%;min-width:44rem;height:auto}
+.dg-fig figcaption{font-size:var(--text-sm);color:var(--color-text-muted);max-width:var(--measure)}
+.dg-panel{fill:var(--color-surface);stroke:var(--color-line-strong);stroke-width:1}
+.dg-card{fill:var(--color-bg);stroke:var(--color-line-strong);stroke-width:1}
+.dg-base{fill:none;stroke:var(--color-line-strong);stroke-width:1;stroke-dasharray:5 4}
+.dg-sq{fill:var(--color-accent)}
+.dg-label,.dg-labelr,.dg-tag,.dg-chiptxt,.dg-pilltxt,.dg-basetxt{font-family:var(--font-mono);font-weight:500}
+.dg-label{font-size:12px;letter-spacing:.08em;fill:var(--color-text)}
+.dg-labelr{font-size:10.5px;letter-spacing:.08em;fill:var(--color-text-muted)}
+.dg-title{font-family:var(--font-display);font-stretch:var(--display-stretch);font-weight:700;font-size:16px;fill:var(--color-text)}
+.dg-title.sm{font-size:14.5px}
+.dg-sub{font-family:var(--font-body);font-size:12.5px;fill:var(--color-text-muted)}
+.dg-tag{font-size:11px;fill:var(--color-accent)}
+.dg-chip{fill:var(--color-badge-accent-bg);stroke:none;rx:3px}
+.dg-chiptxt{font-size:11px;fill:var(--color-badge-accent-text)}
+.dg-pill{fill:var(--color-accent);rx:3px}
+.dg-pilltxt{font-size:12.5px;fill:var(--color-on-accent)}
+.dg-basetxt{font-size:11.5px;letter-spacing:.04em;fill:var(--color-text-muted)}
+.dg-bar.t0{fill:var(--color-tier-0)}.dg-bar.t1{fill:var(--color-tier-1)}.dg-bar.t2{fill:var(--color-tier-2)}.dg-bar.t3{fill:var(--color-tier-3)}
+.dg-ico{fill:none;stroke:var(--color-accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.dg-icof rect{fill:var(--color-accent)}
+.dg-flow{stroke:var(--color-accent);stroke-width:2;stroke-dasharray:5 5;fill:none}
+.dg-arrf{fill:var(--color-accent)}
+@media (prefers-reduced-motion:no-preference){.dg-flow{animation:dg-dash 1.4s linear infinite}}
+@keyframes dg-dash{to{stroke-dashoffset:-20}}
+.feature-tools{display:flex;justify-content:flex-end}
+.feature-groups{display:grid;gap:0;border-top:var(--border-width) solid var(--color-text)}
+.feature-group{border-bottom:var(--border-width) solid var(--color-line)}
+.feature-group summary{display:grid;grid-template-columns:3rem minmax(0,1fr) auto;gap:var(--space-3);align-items:baseline;padding-block:var(--space-4);cursor:pointer;list-style:none}
+.feature-group summary::-webkit-details-marker{display:none}
+.feature-group summary:focus-visible{outline:var(--focus-width) solid var(--color-focus);outline-offset:var(--focus-offset)}
+.feature-group__num{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--color-accent)}
+.feature-group__name{font-family:var(--font-display);font-size:var(--text-lg);font-stretch:var(--display-stretch);font-weight:var(--weight-display);line-height:var(--leading-snug)}
+.feature-group__count{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-text-muted)}
+.feature-group__count::after{content:" +";color:var(--color-accent)}
+.feature-group[open] .feature-group__count::after{content:" \2212"}
+.feature-group .definition-list{border-top:var(--border-width) solid var(--color-line);margin-bottom:0}
+.feature-group .definition-list .definition-list__row:last-child{border-bottom:none}
+.feature__n{display:block;font-family:var(--font-mono);font-size:var(--text-xs);font-weight:var(--weight-medium);color:var(--color-accent);letter-spacing:var(--tracking-label)}
+.feature-group .definition-list__desc{display:block}
+.feature-group .definition-list__desc > * + *{margin-top:var(--space-3)}
+.feature-group .definition-list__desc code{display:inline-block;white-space:nowrap}
+.feature-group .definition-list__row{grid-template-columns:minmax(0,1fr)}
+@media (min-width:48rem){.feature-group .definition-list__row{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}}
+
+/*
+  badges.css
+  Pill badges. Filled and never outlined: the tint carries the meaning, so no
+  badge has a border. Variants: neutral (default), accent, success, danger.
+  Existing status labels share the same base so they stay consistent.
+*/
+
+.badge,
+.request__kind,
+.level__status,
+.step__tag,
+.stage__result-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  width: fit-content;
+  padding: 0.2rem 0.65rem;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: var(--color-badge-bg);
+  color: var(--color-badge-text);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  line-height: 1.5;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    background-color var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard);
+}
+
+.badge--accent {
+  background: var(--color-badge-accent-bg);
+  color: var(--color-badge-accent-text);
+}
+
+.badge--success {
+  background: var(--color-badge-success-bg);
+  color: var(--color-badge-success-text);
+}
+
+.badge--danger {
+  background: var(--color-badge-danger-bg);
+  color: var(--color-badge-danger-text);
+}
+
+.badge--text {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Lane status follows the lane state */
+.level[data-state="active"] .level__status,
+.level[data-state="checking"] .level__status {
+  background: var(--color-badge-accent-bg);
+  color: var(--color-badge-accent-text);
+}
+
+.level[data-state="passed"] .level__status {
+  background: var(--color-badge-success-bg);
+  color: var(--color-badge-success-text);
+}
+
+.level[data-state="failed"] .level__status {
+  background: var(--color-badge-danger-bg);
+  color: var(--color-badge-danger-text);
+}
+
+/* Result chip follows the demo state */
+.stage__result[data-state="working"] .stage__result-chip {
+  background: var(--color-badge-accent-bg);
+  color: var(--color-badge-accent-text);
+}
+
+.stage__result[data-state="done"] .stage__result-chip {
+  background: var(--color-badge-success-bg);
+  color: var(--color-badge-success-text);
+}
+
+/*
+  flow.css
+  Architecture flow, workspace tree and pipeline. Tokens only. Lines carry a
+  quiet accent pulse once the figure is on screen (motion respects the user's
+  reduced-motion setting).
+*/
+
+.flow {
+  margin: 0;
+  display: grid;
+  gap: 0;
+}
+
+.flow .flow__layer {
+  display: grid;
+  gap: 0;
+  padding: var(--space-5);
+  border: var(--border-width) solid var(--color-line-strong);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+}
+
+.flow .flow__label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text);
+  max-width: none;
+}
+
+.flow .flow__label::before {
+  content: "";
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--color-accent);
+}
+
+.flow .flow__clients {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Cards */
+.flow .flow__row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.flow .flow__card,
+.pipeline__stage {
+  --flow-accent: var(--color-tier-1);
+  position: relative;
+  display: grid;
+  gap: var(--space-1);
+  align-content: start;
+  min-width: 0;
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--color-line-strong);
+  border-top: 4px solid var(--flow-accent);
+  border-radius: var(--radius-control);
+  background: var(--color-bg);
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+
+.flow .flow__card:hover {
+  border-color: var(--color-text);
+  border-top-color: var(--flow-accent);
+}
+
+.flow__card--1 { --flow-accent: var(--color-tier-1); }
+.flow__card--2 { --flow-accent: var(--color-tier-2); }
+.flow__card--3 { --flow-accent: var(--color-tier-3); }
+
+.flow .flow__card--wide {
+  --flow-accent: var(--color-accent);
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--space-4);
+}
+
+.flow .flow__name {
+  max-width: none;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-stretch: var(--display-stretch);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-snug);
+}
+
+.flow .flow__tech {
+  max-width: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.flow .flow__caption {
+  margin-top: var(--space-4);
+  max-width: var(--measure);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* Connectors */
+.flow .flow__links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  justify-items: start;
+  justify-content: start;
+  margin-block: var(--space-4);
+}
+
+.flow .flow__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  justify-items: start;
+  height: var(--flow-link-h);
+}
+
+.flow .flow__link .flow__line {
+  position: absolute;
+  top: 0;
+  left: 2rem;
+}
+
+.flow .flow__protocol {
+  position: relative;
+  z-index: 1;
+  justify-self: start;
+  border-radius: var(--radius-control);
+  margin-left: 0.5rem;
+}
+
+.flow .flow__label code {
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.flow .flow__line {
+  --line-h: var(--flow-link-h);
+  position: relative;
+  display: block;
+  width: 2px;
+  height: var(--line-h);
+  background-color: var(--color-line-strong);
+  background-repeat: no-repeat;
+  background-size: 100% 14px;
+  background-position: 0 -14px;
+}
+
+.flow .flow__line--half {
+  --line-h: calc(var(--flow-link-h) / 2);
+}
+
+.flow .flow__line--arrow::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  border-inline: 5px solid transparent;
+  border-top: 7px solid var(--color-line-strong);
+  transform: translateX(-50%);
+}
+
+.flow .flow__merge,
+.flow .flow__split {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  justify-items: center;
+}
+
+.flow .flow__merge::before,
+.flow .flow__split::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--flow-link-h) / 2 - 1px);
+  right: calc(100% / 6);
+  left: calc(100% / 6);
+  height: 2px;
+  background: var(--color-line-strong);
+}
+
+.flow .flow__merge-out {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.flow .flow__split-in {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.flow .flow__split-in::after {
+  display: none;
+}
+
+.flow .flow__split > :nth-child(2) { grid-column: 1; grid-row: 2; }
+.flow .flow__split > :nth-child(3) { grid-column: 2; grid-row: 2; }
+.flow .flow__split > :nth-child(4) { grid-column: 3; grid-row: 2; }
+
+.flow .flow__merge,
+.flow .flow__split {
+  margin-block: 0;
+}
+
+@media (max-width: 47.99rem) {
+  .flow .flow__layer {
+    padding: var(--space-4);
+  }
+
+  .flow .flow__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+
+  .flow .flow__links {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: flex-start;
+    justify-items: start;
+    justify-content: flex-start;
+    margin-block: var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .flow .flow__link {
+    --flow-link-h: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    justify-items: start;
+  }
+
+  .flow .flow__link .flow__line {
+    left: 2rem;
+  }
+
+  .flow .flow__protocol {
+    justify-self: start;
+    border-radius: var(--radius-control);
+    margin-left: 0.5rem;
+  }
+
+  .flow .flow__card--wide {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .flow .flow__merge::before,
+  .flow .flow__split::before,
+  .flow .flow__merge > :nth-child(-n + 3),
+  .flow .flow__split-out {
+    display: none;
+  }
+
+  .flow .flow__merge-out,
+  .flow .flow__split-in {
+    --line-h: 2.5rem;
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .flow .flow__split-in::after {
+    display: block;
+  }
+
+  .flow .flow__merge,
+  .flow .flow__split {
+    margin-block: var(--space-3);
+  }
+
+
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .flow.is-in .flow__line {
+    background-image: linear-gradient(var(--color-accent), var(--color-accent));
+    animation: flow-pulse 2.4s var(--ease-standard) infinite;
+    animation-delay: var(--pulse-delay, 0s);
+  }
+
+  .flow.is-in .flow__merge .flow__line { --pulse-delay: 0.4s; }
+  .flow.is-in .flow__merge .flow__merge-out { --pulse-delay: 0.8s; }
+  .flow.is-in .flow__split .flow__split-in { --pulse-delay: 1.2s; }
+  .flow.is-in .flow__split .flow__split-out { --pulse-delay: 1.6s; }
+}
+
+@keyframes flow-pulse {
+  0% { background-position: 0 -14px; }
+  60%,
+  100% { background-position: 0 var(--line-h); }
+}
+
+/* Workspace tree */
+.tree {
+  --stagger: 35ms;
+  margin: 0;
+  padding: var(--space-5);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface);
+  overflow-x: auto;
+}
+
+.tree .tree__root {
+  margin-bottom: var(--space-2);
+  max-width: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-accent);
+}
+
+.tree .tree__branch {
+  display: block;
+  margin: 0;
+  padding: 0 0 0 var(--space-3);
+  list-style: none;
+}
+
+.tree .tree__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+  column-gap: var(--space-4);
+  padding: var(--space-2) 0 var(--space-2) var(--space-5);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+}
+
+.tree .tree__item--dir {
+  display: block;
+}
+
+.tree .tree__item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-left: var(--border-width) solid var(--color-line-strong);
+}
+
+.tree .tree__item:last-child::before {
+  bottom: auto;
+  height: calc(var(--space-2) + 0.65em);
+}
+
+.tree .tree__item::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--space-2) + 0.65em);
+  left: 0;
+  width: var(--space-4);
+  border-top: var(--border-width) solid var(--color-line-strong);
+}
+
+.tree .tree__name {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  overflow-wrap: anywhere;
+}
+
+.tree .tree__item--dir > .tree__name {
+  display: block;
+  color: var(--color-accent);
+  font-weight: var(--weight-semibold);
+}
+
+.tree .tree__item--dir > .tree__branch {
+  margin-top: var(--space-1);
+  padding-left: var(--space-3);
+}
+
+.tree .tree__note {
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 47.99rem) {
+  .tree .tree__item {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--space-1);
+  }
+}
+
+/* Pipeline (DAG compile, execute, enforce) */
+.prose .pipeline {
+  --pipeline-gap: var(--space-6);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--pipeline-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pipeline__stage {
+  padding: var(--space-5);
+  gap: var(--space-3);
+  background: var(--color-surface);
+  border-radius: var(--radius-panel);
+}
+
+.pipeline__stage:nth-child(1) { --flow-accent: var(--color-tier-1); }
+.pipeline__stage:nth-child(2) { --flow-accent: var(--color-tier-2); }
+.pipeline__stage:nth-child(3) { --flow-accent: var(--color-tier-3); }
+
+.prose .pipeline__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-stretch: var(--display-stretch);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-snug);
+}
+
+.prose .pipeline__text {
+  max-width: none;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* Connector between stages: vertical when stacked, horizontal when side by side */
+.pipeline__stage:not(:last-child)::after,
+.pipeline__stage:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.pipeline__stage:not(:last-child)::after {
+  top: calc(100% + 4px);
+  left: calc(var(--space-5) + 0.5rem);
+  width: 2px;
+  height: calc(var(--pipeline-gap) - 4px);
+  background-color: var(--color-line-strong);
+  background-repeat: no-repeat;
+  background-size: 100% 14px;
+  background-position: 0 -14px;
+}
+
+.pipeline__stage:not(:last-child)::before {
+  top: calc(100% + var(--pipeline-gap) - 7px);
+  left: calc(var(--space-5) + 0.5rem - 4px);
+  border-inline: 5px solid transparent;
+  border-top: 7px solid var(--color-line-strong);
+}
+
+@media (min-width: 64rem) {
+  .prose .pipeline {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pipeline__stage:not(:last-child)::after {
+    top: 2.25rem;
+    left: calc(100% + 1px);
+    width: calc(var(--pipeline-gap) - 1px);
+    height: 2px;
+    background-size: 14px 100%;
+    background-position: -14px 0;
+  }
+
+  .pipeline__stage:not(:last-child)::before {
+    top: calc(2.25rem - 4px);
+    left: calc(100% + var(--pipeline-gap) - 7px);
+    border-inline: 0;
+    border-block: 5px solid transparent;
+    border-left: 7px solid var(--color-line-strong);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pipeline.is-in .pipeline__stage:not(:last-child)::after {
+    background-image: linear-gradient(var(--color-accent), var(--color-accent));
+    animation: pipeline-pulse-y 2.2s var(--ease-standard) infinite;
+  }
+
+  .pipeline.is-in .pipeline__stage:nth-child(2)::after {
+    animation-delay: 0.7s;
+  }
+
+  @media (min-width: 64rem) {
+    .pipeline.is-in .pipeline__stage:not(:last-child)::after {
+      animation-name: pipeline-pulse-x;
+    }
+  }
+}
+
+@keyframes pipeline-pulse-y {
+  0% { background-position: 0 -14px; }
+  60%,
+  100% { background-position: 0 var(--pipeline-gap); }
+}
+
+@keyframes pipeline-pulse-x {
+  0% { background-position: -14px 0; }
+  60%,
+  100% { background-position: var(--pipeline-gap) 0; }
+}
+
+/*
+  motion.css
+  One motion system. Page load runs a single orchestrated sequence (hero and
+  logo). Below the fold, headers, lists and figures reveal once as they enter
+  the viewport. Only opacity and transform animate. Everything is gated on
+  prefers-reduced-motion, and content stays visible without JavaScript.
+*/
+
+:root {
+  interpolate-size: allow-keywords;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Hero sequence */
+  .hero__inner > * {
+    animation: rise var(--duration-reveal) var(--ease-out) backwards;
+  }
+
+  .hero__inner > :nth-child(1) { animation-delay: 80ms; }
+  .hero__inner > :nth-child(2) { animation-delay: 160ms; }
+  .hero__inner > :nth-child(3) { animation-delay: 260ms; }
+  .hero__inner > :nth-child(4) { animation-delay: 380ms; }
+
+  /* Logo: the two halves slide together and lock */
+  .site-nav .wordmark__half--spark {
+    animation: mark-spark 800ms var(--ease-out) 100ms backwards;
+  }
+
+  .site-nav .wordmark__half--head {
+    animation: mark-head 800ms var(--ease-out) 100ms backwards;
+  }
+
+  .site-nav .wordmark > span {
+    animation: rise 600ms var(--ease-out) 350ms backwards;
+  }
+
+  /* Scroll reveal (once) */
+  .js [data-reveal]:not(.is-in),
+  .js [data-reveal-group]:not(.is-in) [data-reveal-item] {
+    opacity: 0;
+  }
+
+  .js [data-reveal].is-in {
+    animation: rise var(--duration-reveal) var(--ease-out) backwards;
+  }
+
+  .js [data-reveal-group].is-in [data-reveal-item] {
+    animation: rise var(--duration-reveal) var(--ease-out) backwards;
+    animation-delay: calc(var(--reveal-index, 0) * var(--stagger));
+  }
+
+  /* Feature accordion: height follows the content */
+  .feature-group::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition:
+      block-size var(--duration-slow) var(--ease-standard),
+      content-visibility var(--duration-slow) allow-discrete;
+  }
+
+  .feature-group[open]::details-content {
+    block-size: auto;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--reveal-distance));
+  }
+}
+
+@keyframes mark-spark {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+}
+
+@keyframes mark-head {
+  from {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+}
+
+/* Accordion indicator turns from plus to cross */
+.feature-group__count::after {
+  content: " +";
+  display: inline-block;
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+
+.feature-group[open] .feature-group__count::after {
+  content: " +";
+  transform: rotate(45deg);
+}
+</style></head><body><a class="skip-link" href="#main">Skip to content</a><header class="site-nav"><div class="container site-nav__inner"><a class="wordmark" href="#top" aria-label="Danav, back to top"><svg class="wordmark__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><defs><clipPath id="danav-mark-nav"><rect width="15.25" height="32"/></clipPath></defs><g class="wordmark__half wordmark__half--spark"><path class="wordmark__spark" clip-path="url(#danav-mark-nav)" d="M15.61 14.55L13.36 6.15M14.94 14.94L7.02 7.02M14.55 15.61L5.18 13.10M14.55 16.39L5.18 18.90M14.94 17.06L7.02 24.98M15.61 17.45L13.36 25.85"/></g><g class="wordmark__half wordmark__half--head"><path class="wordmark__head" fill-rule="evenodd" d="M16.75 12.2L21 9.6C22 6.6 24.8 4.3 29 2.6C27.9 6.2 27.4 8.8 26.6 11.4C27 14.6 26.6 17.6 24.8 20.4L16.75 29Z M18.5 17.6L24.6 14.1L23.9 17.5Z"/></g></svg><span>Danav</span></a><nav class="site-nav__links" id="site-nav-links" aria-label="Primary"><a href="#products" data-index="01">Products</a><a href="#system-one" data-index="02">System One</a><a href="#features" data-index="03">Features</a><a href="#architecture" data-index="04">Architecture</a><span class="site-nav__indicator" aria-hidden="true"></span></nav><div class="site-nav__actions"><button class="site-nav__btn" id="theme-toggle" type="button" aria-label="Switch to light theme"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg></button><button class="site-nav__btn site-nav__toggle" id="nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="site-nav-links"><svg class="icon icon--menu" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><svg class="icon icon--close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div></div></header><main id="main"><section class="hero" id="top" aria-labelledby="hero-title"><div class="container hero__inner"><p class="eyebrow">Local-first cognitive infrastructure and agent OS</p><h1 class="hero__title" id="hero-title">One brain, every model.</h1><div class="hero__intro"><p class="lede">Danav is built 100% in Rust and Tauri. Danav Brain gives every AI CLI, IDE and model one relational memory graph, one AST code index and a sub-50 ms TypeSafe decision router. Danav Desktop pools the subscriptions, API keys and local models you already have into agents you control.</p><div class="hero__actions"><a class="button button--primary" href="#problem">See the problem</a><a class="button button--secondary" href="#products">Meet the two products</a></div></div><div class="scale-frame" data-scale-frame><div class="stage scale-canvas" id="router-stage" role="group" aria-labelledby="stage-title"><div class="stage__head"><p class="eyebrow" id="stage-title">Illustrative System One routing with example requests</p><button class="button button--secondary button--compact" id="stage-toggle" type="button">Pause demo</button></div><div class="stage__body" id="stage-body"><svg class="stage__wires" id="stage-wires" aria-hidden="true" focusable="false"></svg><div class="stage__col"><p class="stage__col-title">Example requests</p><ul class="stage__requests"><li><button class="request" type="button" data-scenario="0"><span class="request__text">Rename a symbol across the repo</span><span class="request__kind">Edit</span></button></li><li><button class="request" type="button" data-scenario="1"><span class="request__text">Is this diff risky to apply?</span><span class="request__kind">Safety</span></button></li><li><button class="request" type="button" data-scenario="2"><span class="request__text">Fix the failing test</span><span class="request__kind">Debug</span></button></li><li><button class="request" type="button" data-scenario="3"><span class="request__text">Refactor auth across five files</span><span class="request__kind">Plan</span></button></li></ul></div><div class="stage__col"><p class="stage__col-title">System One router</p><div class="router" id="router-node" data-state="idle"><span class="router__bar" aria-hidden="true"></span><dl class="router__readout"><div class="router__row"><dt>Needs</dt><dd id="ro-needs">Waiting for a request</dd></div><div class="router__row"><dt>Path</dt><dd id="ro-path">Not decided</dd></div><div class="router__row"><dt>Gate</dt><dd id="ro-budget">Not decided</dd></div><div class="router__row"><dt>Now</dt><dd id="ro-now">Idle</dd></div></dl></div></div><div class="stage__col"><p class="stage__col-title">Lanes, cheapest first</p><ol class="stage__levels" aria-label="Lanes"><li class="level" data-level="0" data-state="idle"><div class="level__head"><span class="level__swatch" aria-hidden="true"></span><span class="level__id">L0</span><span class="level__name">Rust tool or operation</span><span class="level__status">Idle</span></div><p class="level__note">Deterministic, no model call</p><div class="level__budget" aria-hidden="true"><span class="level__fill"></span></div></li><li class="level" data-level="1" data-state="idle"><div class="level__head"><span class="level__swatch" aria-hidden="true"></span><span class="level__id">L1</span><span class="level__name">System One gate</span><span class="level__status">Idle</span></div><p class="level__note">Choice, Score, Noul in under 50 ms</p><div class="level__budget" aria-hidden="true"><span class="level__fill"></span></div></li><li class="level" data-level="2" data-state="idle"><div class="level__head"><span class="level__swatch" aria-hidden="true"></span><span class="level__id">L2</span><span class="level__name">Cheap lane</span><span class="level__status">Idle</span></div><p class="level__note">Local model or CLI session</p><div class="level__budget" aria-hidden="true"><span class="level__fill"></span></div></li><li class="level" data-level="3" data-state="idle"><div class="level__head"><span class="level__swatch" aria-hidden="true"></span><span class="level__id">L3</span><span class="level__name">Frontier lane (System Two)</span><span class="level__status">Idle</span></div><p class="level__note">Planning and hard problems</p><div class="level__budget" aria-hidden="true"><span class="level__fill"></span></div></li></ol></div><span class="stage__token" id="stage-token" aria-hidden="true"></span></div><div class="stage__result" id="stage-result" data-state="idle"><span class="stage__result-label">Result</span><span class="stage__result-text" id="result-text">Select a request to see where it runs.</span><span class="stage__result-chip" id="result-chip">Waiting</span></div><p class="sr-only" id="stage-live" aria-live="polite"></p></div></div></div></section><section class="section section--sunken" id="problem" aria-labelledby="problem-t"><div class="container stack"><header class="section__header" data-reveal><p class="eyebrow">Problem statement</p><h2 id="problem-t">Four systemic failures across fragmented AI silos</h2><p class="lede">Modern developers and power users operate across fragmented AI silos—Claude Code in one terminal, Cursor in an IDE, Gemini CLI in another tab, Codex for background tasks, and local models via Ollama. Every tool suffers from four systemic failures:</p></header><dl class="definition-list" data-reveal-group><div class="definition-list__row" data-reveal-item><dt class="definition-list__term">Context Amnesia &amp; Siloing</dt><dd class="definition-list__desc">Architectural decisions, bug fixes, and user preferences learned in one tool are invisible to the others.</dd></div><div class="definition-list__row" data-reveal-item><dt class="definition-list__term">Token &amp; Latency Bloat</dt><dd class="definition-list__desc">Agents repeatedly read 1,500-line files from scratch instead of surgical AST symbol slices, wasting context windows and money.</dd></div><div class="definition-list__row" data-reveal-item><dt class="definition-list__term">Generative Routing Waste</dt><dd class="definition-list__desc">Slow, expensive frontier models are used for trivial classification, routing, and safety checks that should take less than 20ms.</dd></div><div class="definition-list__row" data-reveal-item><dt class="definition-list__term">Subscription Lock-In</dt><dd class="definition-list__desc">Users pay for multiple AI subscriptions and API quotas but lack a single unified workspace to pool those subscriptions and run custom cross-app agents on their own hardware.</dd></div></dl></div></section><section class="section" id="vision" aria-labelledby="vision-t"><div class="container stack"><header class="section__header" data-reveal><p class="eyebrow">Vision and personas</p><h2 id="vision-t">One brain, every model, owned by you</h2></header><div class="columns-2"><div class="product" data-reveal><h3>Core value proposition</h3><ul class="marker-list"><li><span><strong>One Brain, Every Model:</strong> Every CLI, IDE, and agent reads from and writes to a single local relational memory graph and AST index.</span></li><li><span><strong>Zero-Search Surgical Context:</strong> Turn-1 prompts automatically receive a sub-15ms, 400–600 token <code>context_pack</code> containing exact AST symbol line ranges, relevant relational memories, and active test states—cutting token consumption by up to 80%.</span></li><li><span><strong>Sub-50ms TypeSafe System One Routing:</strong> Every internal decision (routing, tool selection, safety gating, memory promotion) uses constrained zero-text primitives (<code>Choice</code>, <code>Score</code>, <code>Noul</code>) with a 0% structural hallucination guarantee.</span></li><li><span><strong>Bring Your Own Subscription (BYOS) Agent OS:</strong> The Danav Desktop App turns passive AI subscriptions and local models into proactive, cross-app workers governed by strict local privacy and resource caps.</span></li></ul></div><div class="product" data-reveal><h3>Target personas</h3><ul class="marker-list"><li><span><strong>Persona A — The Polyglot AI Engineer (Danav Brain CLI):</strong> Uses multiple coding agents daily; wants instant context sharing across tools, lower API bills, zero-latency AST slicing, and 100% local data ownership.</span></li><li><span><strong>Persona B — The Autonomous Power User / Builder (Danav Desktop App):</strong> Wants to build custom background agents that connect GitHub, Notion, Gmail, Slack, Browser, and local files using their existing AI plans without paying a SaaS middleman.</span></li><li><span><strong>Persona C — Privacy-Conscious Engineering Teams:</strong> Needs peer-to-peer memory and skill syncing across a local network with strict secret redaction and zero cloud lock-in.</span></li></ul></div></div><div class="prose"><h3>Product scope and phased rollout</h3><table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Phase</th>
+<th>Deliverable</th>
+<th>Core Focus</th>
+<th>Target Metrics</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Phase 1: Core Wedge</strong></td>
+<td><code>danav</code> Single-Binary CLI &amp; Proxy</td>
+<td>Multi-CLI auto-wiring, OpenAI/Anthropic proxy, Tree-sitter AST
+slicer, Relational Memory Graph.</td>
+<td><code>&lt; 15ms</code> context pack generation;
+<code>&gt; 70%</code> file-read token reduction.</td>
+</tr>
+<tr class="even">
+<td><strong>Phase 2: Cognitive Moat</strong></td>
+<td>TypeSafe System One + Web UI (<code>:7420</code>)</td>
+<td>Constrained decision engine
+(<code>Choice</code>/<code>Score</code>/<code>Noul</code>), local ONNX
+micro-models, Trace Replay UI, MemoryBench.</td>
+<td><code>&lt; 50ms</code> System One routing; <code>0%</code> schema/tool
+hallucination.</td>
+</tr>
+<tr class="odd">
+<td><strong>Phase 3: Danav App</strong></td>
+<td>Native Tauri Desktop Application</td>
+<td>BYO-Subscription pool manager, visual Agent Builder, DAG workflow
+compiler, OS/Browser automation bridge.</td>
+<td><code>&lt; 150MB</code> idle RAM; 1-click agent packaging
+(<code>.danav-agent</code>).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div></div></section><section class="section section--sunken" id="products" aria-labelledby="products-t"><div class="container stack"><header class="section__header" data-reveal><p class="eyebrow">Two products</p><h2 id="products-t">A brain that remembers and decides, and an app that does the work</h2><p class="lede">Danav Brain is the headless backend. Danav Desktop is the native application built on top of it, from a single Tauri v2 frontend.</p></header><div class="scale-frame" data-scale-frame><div class="scale-canvas topology-canvas"><div class="segmented" role="tablist" aria-label="How clients reach Danav Brain"><button class="segmented__tab" role="tab" type="button" id="tab-desktop" data-mode="desktop" aria-selected="true" aria-controls="topology">Native app</button><button class="segmented__tab" role="tab" type="button" id="tab-web" data-mode="web" aria-selected="false" aria-controls="topology" tabindex="-1">Local web UI</button><button class="segmented__tab" role="tab" type="button" id="tab-cli" data-mode="cli" aria-selected="false" aria-controls="topology" tabindex="-1">CLIs and IDEs</button></div><div class="topology" id="topology" role="tabpanel" aria-labelledby="tab-desktop" data-mode="desktop"><div class="topology__site"><p class="topology__site-label" id="site-a">Native desktop app</p><div class="node"><h3 id="a-name">Danav Desktop</h3><p class="node__role" id="a-role">Application</p><p class="node__detail" id="a-detail">Tauri v2 app that embeds danav-daemon directly, with system tray hooks, global shortcuts and accessibility permissions.</p><div class="node__meter" data-load="low"><p class="node__meter-label">Machine resources used: low (idle under 150 MB)</p><div class="node__meter-track" aria-hidden="true"><span class="node__meter-fill"></span></div></div><div class="node__group"><p class="node__list-label">Surfaces</p><ul class="node__list" id="a-list"><li>Agent Studio and DAG Builder</li><li>Memory Graph and Trace Replay</li><li>BYO-Sub Pool and Budget Router</li><li>Escalation Inbox</li></ul></div></div></div><div class="topology__link"><span class="topology__link-label" id="link-label">Tauri IPC</span><span class="topology__line" aria-hidden="true"></span></div><div class="topology__site"><p class="topology__site-label" id="site-b">Embedded on this machine</p><div class="node"><h3>Danav Brain</h3><p class="node__role">Daemon (danavd)</p><p class="node__detail">Single-binary Rust daemon: relational memory graph, Tree-sitter AST index, TypeSafe System One router and streaming API proxy.</p><div class="node__meter" data-load="low"><p class="node__meter-label">Machine resources used: low (idle under 60 MB)</p><div class="node__meter-track" aria-hidden="true"><span class="node__meter-fill"></span></div></div><div class="node__group"><p class="node__list-label">Inside the daemon</p><ul class="node__list node__list--tiers"><li>Relational memory graph</li><li>Fast AST engine</li><li>TypeSafe System One</li><li>Proxy and policy engine</li></ul></div></div></div><p class="topology__caption" id="topology-caption">Native Desktop Mode: Tauri embeds danav-daemon into the OS binary and talks to it over zero-copy IPC commands.</p></div></div></div><div class="columns-2"><div class="product" data-reveal><h3>Danav Brain</h3><p class="text-muted">The headless, single-binary cognitive backend (<code>danavd</code> / <code>danav</code> CLI). It acts as the hippocampus and prefrontal cortex for every AI CLI, IDE and model you run.</p><ul class="marker-list"><li><span>Auto-wire every installed CLI with <code>danav init</code> and share one memory through MCP.</span></li><li><span>OpenAI/Anthropic-compatible proxy that injects a 400–600 token <code>context_pack</code> on Turn 1.</span></li><li><span>Tree-sitter AST index with <code>read_symbol</code>, <code>read_skeleton</code>, <code>edit_symbol</code> and <code>impact_check</code>.</span></li><li><span>Relational memory graph with <code>UPDATES</code>, <code>EXTENDS</code> and <code>DERIVES</code> edges.</span></li><li><span>Policy engine, secret redactor, rootless sandbox and an OS-keychain vault.</span></li><li><span>Resource monitor, <code>danav clean</code> and hard RAM and disk budgets.</span></li></ul></div><div class="product" data-reveal><h3>Danav Desktop</h3><p class="text-muted">The native cross-platform application built directly on Danav Brain. It pools your existing AI subscriptions, CLI sessions, API keys and local models into one compute layer and orchestrates agents across codebases, desktop apps and cloud services.</p><ul class="marker-list"><li><span>Unified Compute Pool: official CLI sessions, BYOK API keys and local Ollama, LM Studio or vLLM lanes.</span></li><li><span>Visual Agent Studio and DAG compiler: plain English to deterministic pipelines.</span></li><li><span>Event-driven triggers: webhooks, Git pushes, email, Slack, cron and file changes.</span></li><li><span>OS accessibility and browser bridge that drives desktop apps with low token overhead.</span></li><li><span>Escalation Inbox with scoped OAuth, taint tracking and one-click approvals.</span></li><li><span>Portable <code>.danav-agent</code> blueprints to install and share agents.</span></li></ul></div></div></div></section><section class="section" id="system-one" aria-labelledby="system-one-t"><div class="container split"><div class="split__lead" data-reveal><p class="eyebrow">TypeSafe System One</p><h2 id="system-one-t">Zero-text decisions before any model writes a word</h2><p class="lede">Every internal judgment (routing, tool selection, safety gating, memory promotion) is a schema-locked Choice, Score or Noul that outputs numbers only. Anything below the confidence bar escalates to System Two.</p></div><div class="prose"><p>Instead of prompting a generative LLM with <em>“Please respond in
+JSON,”</em> <code>danav-system1</code> intercepts state and evaluates
+constrained primitives in a single forward pass using logit masking over
+a local quantized model (e.g., Qwen-2.5-0.5B/1.5B-Instruct or a
+fine-tuned ModernBERT classifier via ONNX):</p>
+<ol type="1">
+<li><strong><code>Choice(options: &amp;[&amp;str]) -&gt;ChoiceResult</code>:</strong>
+<ul>
+<li>Masks the vocabulary softmax layer exclusively to the token
+sequences representing <code>options[0..N]</code>.</li>
+<li>Computes exact normalized sequence probabilities:</li>
+</ul>
+<div class="math">
+<i>P</i>(<i>o</i><sub>i</sub> | <i>S</i>) = <span class="frac"><span
+class="num">exp(logit(<i>o</i><sub>i</sub>))</span><span
+class="den">Σ<sub>j=1</sub><sup>N</sup>
+exp(logit(<i>o</i><sub>j</sub>))</span></span>
+</div>
+<ul>
+<li>If <span class="m">max<sub>i</sub> <i>P</i>(<i>o</i><sub>i</sub> |
+<i>S</i>) &lt; τ<sub>choice</sub></span> (pinned in
+<code>danav-decisions.lock</code>, default <code>0.80</code>), triggers
+automatic System Two escalation (#30).</li>
+</ul></li>
+<li><strong><code>Score(rubric: &amp;Rubric) -&gt; f32</code>:</strong>
+<ul>
+<li>Masks logits to integer tokens <code>[1..K]</code> corresponding to
+explicit literal criteria definitions.</li>
+<li>Computes the expected continuous score via probability-weighted
+interpolation:</li>
+</ul>
+<div class="math">
+Score(<i>S</i>) = Σ<sub>k=1</sub><sup>K</sup> <i>k</i> ·
+<i>P</i>(<i>k</i> | <i>S</i>)
+</div></li>
+<li><strong><code>Noul(predicate: &amp;str) -&gt; f32</code>:</strong>
+<ul>
+<li>Evaluates a strict boolean invariant by masking output exclusively
+to <code>{Yes, No}</code> tokens:</li>
+</ul>
+<div class="math">
+<i>P</i>(Yes | <i>S</i>) = <span class="frac"><span
+class="num">exp(logit(Yes))</span><span class="den">exp(logit(Yes)) +
+exp(logit(No))</span></span>
+</div></li>
+</ol>
+</div></div></section><section class="section section--sunken" id="pack" data-nav-group="system-one" aria-labelledby="pack-t"><div class="container split"><div class="split__lead" data-reveal><p class="eyebrow">Context pack pipeline</p><h2 id="pack-t">A 15 ms budget on every Turn 1</h2><p class="lede">When a prompt is sent from Claude Code, Cursor or the Danav App, danav-proxy or danav-mcp assembles the surgical context under a strict 15 ms wall-clock budget.</p></div><ol class="steps" data-reveal-group><li class="step" data-reveal-item><span class="step__marker" aria-hidden="true">1</span><div class="step__body"><p class="step__tag">0–2ms</p><h3>Deterministic Pre-Compute</h3><div class="step__text">Reads dirty <code>git status</code>, active terminal stack trace (#41), and open file cursors from the in-memory watcher.</div></div></li><li class="step" data-reveal-item><span class="step__marker" aria-hidden="true">2</span><div class="step__body"><p class="step__tag">2–7ms</p><h3>Parallel Hybrid Recall + AST Lookup</h3><div class="step__text"><ul class="marker-list"><li><span>Runs FTS5 BM25 + quantized <code>sqlite-vec</code> search across active memories (<code>status = 'active'</code>).</span></li><li><span>Traverses 1-hop <code>UPDATES</code>/<code>EXTENDS</code> edges and <code>memory_symbol_anchors</code> to pull linked AST symbols.</span></li><li><span>Queries <code>ast_symbols</code> for compressed skeletons (<code>read_skeleton</code>) of co-edited files (#40).</span></li></ul></div></div></li><li class="step" data-reveal-item><span class="step__marker" aria-hidden="true">3</span><div class="step__body"><p class="step__tag">7–12ms</p><h3>System One Filtering &amp; Compaction</h3><div class="step__text">Runs a parallel <code>Noul</code> relevance pass and strips any secret/PII strings (#62).</div></div></li><li class="step" data-reveal-item><span class="step__marker" aria-hidden="true">4</span><div class="step__body"><p class="step__tag">12–15ms</p><h3>Prefix-Aligned Injection</h3><div class="step__text">Formats the deterministic 400–600 token XML/Markdown <code>&lt;danav_context_pack&gt;</code> block and appends it after the static cached system prefix (#9).</div></div></li></ol></div></section><section class="section" id="features" aria-labelledby="features-t"><div class="container stack"><header class="section__header" data-reveal><p class="eyebrow">The 110-feature specification</p><h2 id="features-t">Eleven categories, nothing skipped</h2><p class="lede">110 features across the core, memory, System One, code routing, tools, search, security, observability, collaboration, plasticity and desktop layers.</p></header><div class="feature-tools"><button class="button button--secondary button--compact" id="features-toggle" type="button">Expand all</button></div><div class="feature-groups" data-reveal-group><details class="feature-group" data-reveal-item open><summary><span class="feature-group__num">I</span><span class="feature-group__name">Core Architecture, Multi-CLI &amp; Proxy Layer (Danav Core)</span><span class="feature-group__count">10</span></summary><dl class="definition-list"><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">001</span>Local-First Single-Binary Daemon</dt><dd class="definition-list__desc">Runs locally on the user’s machine (or private server over a tunnel) as a single compiled Rust executable with zero monthly fee, keeping all files, indexes, and memories on user-owned storage.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">002</span>Model-Agnostic Context Layer</dt><dd class="definition-list__desc">Treats Claude, Codex, Gemini, Cursor, and local endpoints as swappable workers sharing one unified brain.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">003</span>Universal Multi-CLI Auto-Wiring (<code>danav init</code>)</dt><dd class="definition-list__desc">Automatically detects installed CLIs and generates synchronized instruction stubs (<code>CLAUDE.md</code>, <code>AGENTS.md</code>, <code>GEMINI.md</code>, <code>.cursorrules</code>) plus MCP server configs.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">004</span>Session Hooks &amp; CLI Wrapper (<code>danav run &lt;tool&gt;</code>)</dt><dd class="definition-list__desc">Captures session start, tool calls, file edits, and final outcomes across any CLI via PTY wrapping, even when native hooks aren’t supported.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">005</span>Built-in CLI Memory Disabler</dt><dd class="definition-list__desc">Automatically turns off isolated tool-specific memories during setup so context never drifts from the central brain.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">006</span>One-Time History Importer</dt><dd class="definition-list__desc">Imports existing <code>.claude</code> folders, Cursor rules, and local Markdown notes into the unified store on first setup.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">007</span>Canonical Markdown Exporter</dt><dd class="definition-list__desc">Stores rules and skills in one canonical Markdown-with-frontmatter format and compiles them out to each CLI’s specific config format.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">008</span>OpenAI/Anthropic-Compatible Proxy</dt><dd class="definition-list__desc">Intercepts API requests to automatically inject the surgical context brief and record responses with zero added wait for the first streaming token.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">009</span>Static Prefix-Cache Alignment</dt><dd class="definition-list__desc">Structures injected system prompts, tool schemas, and project rules in a deterministic byte order so upstream APIs hit their prompt cache on every turn.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">010</span>Multi-Lane Cost &amp; Capability Router</dt><dd class="definition-list__desc">Routes simple queries to fast/cheap configured endpoints and automatically escalates to frontier reasoning endpoints when a test, schema check, or confidence gate fails.</dd></div></dl></details><details class="feature-group" data-reveal-item><summary><span class="feature-group__num">II</span><span class="feature-group__name">Relational Memory Graph, Profiles &amp; Recall Engine</span><span class="feature-group__count">15</span></summary><dl class="definition-list"><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">011</span>Dual Store Architecture (Documents vs. Atomic Memories)</dt><dd class="definition-list__desc">Separates raw ingested Documents (files, logs, PDFs, code, URLs kept for chunk retrieval) from extracted Atomic Memories (self-contained facts that evolve over time).</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">012</span>Ontology-Aware Relational Memory Graph (3 Edge Types)</dt><dd class="definition-list__desc">Connects every new fact to existing memories using three explicit graph relationships:<ul class="marker-list"><li><span><strong><code>UPDATES</code> (State Mutation &amp; Contradiction Resolution):</strong> When a fact changes, the new memory supersedes the old one while preserving audit history.</span></li><li><span><strong><code>EXTENDS</code> (Context Enrichment):</strong> Adds detail to an existing memory without invalidating it, keeping both active in retrieval.</span></li><li><span><strong><code>DERIVES</code> (Pattern Inference):</strong> Infers unstated second-order facts from patterns across multiple sessions and memories.</span></li></ul></dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">013</span>Inferred Memory Review Queue</dt><dd class="definition-list__desc">Flags low-confidence <code>DERIVES</code> inferences in a review queue so the user can approve or decline them before they become permanent rules.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">014</span>Automatic User &amp; Project Profiles (Static + Dynamic + Buckets)</dt><dd class="definition-list__desc">Maintains an instant single-call profile per scope containing stable facts, active tasks, and custom topic-scoped profile slices.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">015</span>Dreaming Modes (Instant vs. Background Consolidation)</dt><dd class="definition-list__desc">Supports immediate synchronous graph extraction when a fact is needed on the next turn, and background batch “dreaming” to consolidate and deduplicate asynchronously.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">016</span>Temporal Truth &amp; Automatic TTL Forgetting</dt><dd class="definition-list__desc">Automatically expires transient facts via <code>forgetAfter</code> timestamps, filters out casual noise, and suppresses contradicted facts.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">017</span>Semantic “Forget by Meaning” with Mandatory <code>dryRun</code> Preview</dt><dd class="definition-list__desc">Lets users run <code>forget_matching(query, dryRun=true)</code> to semantically preview all memories about a topic before soft-deleting them.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">018</span>Virtual Memory Filesystem (<code>DanavFS</code> Mount)</dt><dd class="definition-list__desc">Exposes a virtual directory where agents can <code>ls</code>, <code>cat</code>, and semantically <code>grep</code> memories alongside a live, auto-generated <code>profile.md</code> digest at the root.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">019</span>Unified 3-Mode Recall API (<code>memories | chunks | hybrid</code>)</dt><dd class="definition-list__desc">Searches extracted atomic memories, raw document/code chunks, or both in a single call.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">020</span>Graph-Attached Recall (<code>include: { related, documents, forgotten }</code>)</dt><dd class="definition-list__desc">Optionally attaches parent/child/sibling graph edges, source documents, and historical/forgotten context alongside every search hit.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">021</span>Multi-Query Rewrite &amp; Cross-Encoder Reranking</dt><dd class="definition-list__desc">Optionally expands complex queries into multiple search rewrites, merges BM25 + vector hits, and reranks results with a similarity threshold gate.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">022</span>Rich Metadata Filter Engine</dt><dd class="definition-list__desc">Filters memories and profile synthesis by exact operators (<code>eq</code>, <code>neq</code>, <code>contains</code>, <code>notContains</code>, <code>gt</code>, <code>gte</code>, <code>lt</code>, <code>lte</code>) before ranking.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">023</span>Namespace &amp; Container-Tag Isolation + Merging</dt><dd class="definition-list__desc">Scopes every memory, profile, and connector to strict namespaces (<code>user</code>, <code>project</code>, <code>repo</code>, <code>client</code>) with support for merging or resetting container tags.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">024</span>Multimodal Ingestion Pipeline</dt><dd class="definition-list__desc">Extracts, chunks, and indexes Markdown, code, PDFs (with page/diagram descriptions), images, and audio transcripts into the local index.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">025</span>Auto-Syncing Knowledge Connectors</dt><dd class="definition-list__desc">Background sync connectors (with webhook/schedule support and <code>deleteDocuments: true/false</code> lifecycle control) for GitHub repos, Notion, Google Drive, Gmail, S3, local folders, and a targeted Web Crawler.</dd></div></dl></details><details class="feature-group" data-reveal-item><summary><span class="feature-group__num">III</span><span class="feature-group__name">TypeSafe System One Decision Engine</span><span class="feature-group__count">10</span></summary><dl class="definition-list"><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">026</span>System One vs. System Two Split Architecture</dt><dd class="definition-list__desc">Never wastes a slow generative LLM call on routing, classification, relevance filtering, or safety checks; runs a sub-50ms TypeSafe Decision Layer in front of every generative model.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">027</span>Zero-Text Constrained Decision Primitives (<code>Choice</code>, <code>Score</code>, <code>Noul</code>)</dt><dd class="definition-list__desc">Every internal brain judgment is framed as one of three strict, schema-locked question types that output numbers/enums only—never free-form text:<ul class="marker-list"><li><span><strong><code>Choice(options[1..255])</code>:</strong> Picks from an enumerated list and returns a probability distribution plus confidence score.</span></li><li><span><strong><code>Score(rubric[2..10])</code>:</strong> Evaluates state on an ordered 2–10 level rubric with continuous interpolation.</span></li><li><span><strong><code>Noul</code> (Binary 0.0–1.0 Probability):</strong> Answers a strict Yes/No predicate as a single probability value.</span></li></ul></dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">028</span>Single-Pass Parallel Question Evaluation</dt><dd class="definition-list__desc">Evaluates multiple <code>Choice</code>, <code>Score</code>, and <code>Noul</code> questions against a piece of state in a single parallel forward pass (routing + tool selection + risk check + memory promotion).</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">029</span>0% Structural Hallucination Guarantee</dt><dd class="definition-list__desc">Constrained decoding and logit-level token masking make off-schema strings, invalid tool names, or fabricated file paths structurally impossible.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">030</span>Confidence-Threshold Gating &amp; Escalation</dt><dd class="definition-list__desc">Every <code>Choice</code> and <code>Noul</code> decision checks a tuned probability bar (e.g., <span class="m"><i>p</i> &ge; 0.80</span>); anything below automatically escalates to a System Two reasoning model.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">031</span>Pre-Decision State Compaction</dt><dd class="definition-list__desc">Automatically strips unrelated conversation history and noise before passing state to the TypeSafe decision layer so irrelevant context never degrades classification accuracy.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">032</span>Deterministic Pre-Compute for Math, Counts &amp; Dates</dt><dd class="definition-list__desc">Computes line counts, timestamps, token budgets, and file sizes deterministically in native Rust code first, then feeds exact values into the TypeSafe decision layer.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">033</span>Literal Criteria &amp; Structural Invariant Enforcement</dt><dd class="definition-list__desc">Defines explicit boundary conditions on every boolean/enum gate and enforces logical invariants in code.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">034</span>Pinned Decision Rubrics &amp; Version Locking</dt><dd class="definition-list__desc">Locks tuned threshold bars to specific decision-model/classifier versions in a lockfile (<code>danav-decisions.lock</code>) so updates never silently shift routing behavior.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">035</span>Loose-Text-to-Schema Extractor</dt><dd class="definition-list__desc">Converts messy session transcripts and terminal logs directly into strictly typed JSON/Rust memory schemas, leaving low-confidence fields <code>null</code> rather than guessing.</dd></div></dl></details><details class="feature-group" data-reveal-item><summary><span class="feature-group__num">IV</span><span class="feature-group__name">Fast Context Graph &amp; Surgical Code Routing (Zero-Search Engine)</span><span class="feature-group__count">10</span></summary><dl class="definition-list"><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">036</span>Background Tree-Sitter AST Indexer</dt><dd class="definition-list__desc">Parses project files on save and git hooks to index every class, function, method, route, interface, and exact <code>start_line</code>–<code>end_line</code> range in sub-millisecond time.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">037</span>Compressed File Skeletons (<code>read_skeleton</code>)</dt><dd class="definition-list__desc">Stores and serves header-only views (imports, type definitions, function signatures, docstrings—no bodies), cutting file-reading token costs by ~85%.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">038</span>Bidirectional Memory <span class="m">&harr;</span> Code Symbol Anchors</dt><dd class="definition-list__desc">Links every memory, architectural rule, and bug fix directly to the exact file paths, AST symbol names, and line ranges it describes.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">039</span>Call Graph &amp; Import Dependency Map</dt><dd class="definition-list__desc">Tracks which symbols import, call, or inherit from each other across the repository.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">040</span>Git Co-Edit &amp; Co-Access Heatmap</dt><dd class="definition-list__desc">Learns from Git history and past agent sessions which files are almost always modified together and groups them into Co-Change Clusters.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">041</span>Live Dirty-State &amp; Stack-Trace Watcher</dt><dd class="definition-list__desc">Watches <code>git diff</code>, uncommitted files, and terminal test failures in real time to pre-resolve failing files and line numbers before the user even asks “fix this”.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">042</span>Sub-15ms Surgical <code>context_pack</code> Generator</dt><dd class="definition-list__desc">Combines hybrid memory recall, AST symbol hits, and 1-hop graph links to inject a 400–600 token map of exact files, line ranges, agent notes, and test commands on Turn 1.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">043</span>AST-Sliced Symbol Reader (<code>read_symbol</code>)</dt><dd class="definition-list__desc">Lets the AI read only the 30–50 lines of a target function plus its immediate imports instead of loading a 1,500-line file.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">044</span>Syntax-Validated Symbol Editor (<code>edit_symbol</code>)</dt><dd class="definition-list__desc">Applies edits directly to a target AST symbol and validates syntax via Tree-sitter before writing to disk.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">045</span>Pre-Edit Blast-Radius Checker (<code>impact_check</code>)</dt><dd class="definition-list__desc">Returns all callers, dependent files, co-edit partners, and test suites that could break before the agent modifies a function.</dd></div></dl></details><details class="feature-group" data-reveal-item><summary><span class="feature-group__num">V</span><span class="feature-group__name">Typed Tools, Skills &amp; Sandboxed Plugins</span><span class="feature-group__count">9</span></summary><dl class="definition-list"><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">046</span>Minimal Default Toolset (5–8 Core Tools)</dt><dd class="definition-list__desc">Exposes only essential surgical tools by default and uses the TypeSafe <code>Choice</code> router to preselect task-specific tools so the model isn’t overwhelmed.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">047</span>Negative-Boundary Tool Descriptions</dt><dd class="definition-list__desc">Writes every tool and skill description in strict <code>"Use when X, NOT for Y"</code> format, benchmarked against the evaluation task set.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">048</span>Lazy-Loaded Skill Packages (<code>SKILL.md</code> + <code>scripts/</code> + <code>tests.yaml</code>)</dt><dd class="definition-list__desc">Keeps only skill names and one-line descriptions in context until <code>load_skill</code> pulls the full procedure on demand.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">049</span>Per-Model Skill Variants</dt><dd class="definition-list__desc">Allows skills to include model-specific instruction notes (e.g., formatting tweaks for Claude vs. Gemini vs. Codex).</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">050</span>Automated Skill Distillation from Traces</dt><dd class="definition-list__desc">Detects when a multi-step agent workflow succeeds repeatedly and drafts a reusable, tested skill for user approval.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">051</span>Skill Regression Testing &amp; Scoring</dt><dd class="definition-list__desc">Runs each skill’s <code>tests.yaml</code> against configured models, tracks real-world success rates, flags flaky skills, and blocks regressions.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">052</span>Manifest-Locked Plugins (<code>plugin.yaml</code>)</dt><dd class="definition-list__desc">Bundles tools, skills, and adapters with SHA-256 hash verification, version lockfiles, staged updates, and one-step rollback.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">053</span>Rootless Process Sandbox (Linux Namespaces / macOS Seatbelt / Containers)</dt><dd class="definition-list__desc">Executes all plugins, <code>run_python</code>, and <code>run_shell</code> calls under an unprivileged user with no default network access and strict CPU/RAM/time caps.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">054</span>Output Truncation with URI Pointers</dt><dd class="definition-list__desc">Caps tool output size in the prompt and stores full logs under a local <code>danav://logs/&lt;id&gt;</code> URI pointer so massive stack traces never blow up the context window.</dd></div></dl></details><details class="feature-group" data-reveal-item><summary><span class="feature-group__num">VI</span><span class="feature-group__name">Offline-First Search, Knowledge &amp; Browser Engine</span><span class="feature-group__count">5</span></summary><dl class="definition-list"><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">055</span>6-Tier Local-First Lookup Cascade</dt><dd class="definition-list__desc">Resolves queries in order: (1) Response Cache <span class="m">&rarr;</span> (2) Local Offline Doc Index <span class="m">&rarr;</span> (3) Free Site APIs (GitHub, StackExchange, PyPI, Crates.io) <span class="m">&rarr;</span> (4) Targeted Doc Crawler <span class="m">&rarr;</span> (5) Self-Hosted SearXNG <span class="m">&rarr;</span> (6) Headless Browser.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">056</span>Offline Documentation &amp; Changelog Indexer</dt><dd class="definition-list__desc">Maintains a local SQLite FTS5 + vector index of project-relevant library docs, man pages, and changelogs with scheduled background refreshes.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">057</span>Accessibility-Tree Browser Tools (<code>browser_*</code>)</dt><dd class="definition-list__desc">Serves clean, clickable text/accessibility snapshots over MCP by default (fast, low-token, works with text models), escalating to screenshots/vision only for canvas or charts.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">058</span>Isolated, Allow-Listed Browser Profile</dt><dd class="definition-list__desc">Runs browser tools in a clean profile with zero personal cookies/logins and requires explicit confirmation before any form submission or purchase.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">059</span>Citation-Grounded Web Synthesis</dt><dd class="definition-list__desc">Rewrites web searches into short queries, extracts relevant passages from top results, cites URLs, and treats all fetched web text strictly as untrusted data.</dd></div></dl></details><details class="feature-group" data-reveal-item><summary><span class="feature-group__num">VII</span><span class="feature-group__name">Security, Policy, Privacy &amp; Resource Control</span><span class="feature-group__count">8</span></summary><dl class="definition-list"><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">060</span>Single-Chokepoint Policy Engine</dt><dd class="definition-list__desc">Evaluates effective permissions as the strict intersection of <span class="m">User Scope &cap; Client Scope &cap; Plugin Manifest</span> before any tool, file, or memory operation runs.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">061</span>Prompt-Injection Firewall (Data vs. Instruction Separation)</dt><dd class="definition-list__desc">Treats all text from web pages, external files, and memories as passive data envelopes that can never autonomously trigger code execution, file deletion, or network sends without confirmation.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">062</span>Outbound Secret &amp; PII Redactor</dt><dd class="definition-list__desc">Scans and strips API keys, tokens, <code>.env</code> variables, emails, and private paths using deterministic regex + entropy analysis before any context brief is sent to a hosted model API.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">063</span>Encrypted System Secret Vault</dt><dd class="definition-list__desc">Stores upstream API keys and connector credentials in an OS-backed encrypted keychain/vault, never in plaintext configs or memory files.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">064</span>Append-Only Security Audit Log</dt><dd class="definition-list__desc">Records every permission check, blocked tool call, redaction event, and confirmation prompt in an immutable cryptographically chained log.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">065</span>Live Per-Component Resource Monitor (<code>danav status</code> &amp; UI Panel)</dt><dd class="definition-list__desc">Displays real-time RAM (MB), CPU (%), and Disk (MB) usage broken down by Core Daemon, Local Embedder, Active Sandboxes, Browser instances, and SQLite caches.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">066</span>One-Click &amp; CLI Resource Cleanup (<code>danav clean</code>)</dt><dd class="definition-list__desc">Lets users immediately unload the idle embedding/decision models from RAM, kill lingering sandboxes/browsers, purge expired web/trace caches, and <code>VACUUM</code> SQLite without touching core memories.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">067</span>Hard RAM &amp; Disk Budget Enforcement</dt><dd class="definition-list__desc">Enforces user-defined <code>max_ram_mb</code> and <code>max_disk_mb</code> limits with automatic LRU cache eviction and idle worker unloading.</dd></div></dl></details><details class="feature-group" data-reveal-item><summary><span class="feature-group__num">VIII</span><span class="feature-group__name">Observability, Benchmarking &amp; User Experience</span><span class="feature-group__count">5</span></summary><dl class="definition-list"><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">068</span>Step-by-Step JSONL Request Tracing</dt><dd class="definition-list__desc">Logs every request ID, CLI client, TypeSafe routing decision, loaded skills, retrieved memory IDs, AST slices read, latency, and token cost.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">069</span>Interactive Trace Replay Viewer</dt><dd class="definition-list__desc">Lets users open any past session in the local web/desktop dashboard (<code>localhost:7420</code>) to inspect the exact context pack injected and why the brain routed or answered as it did.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">070</span>Built-in Memory &amp; Context Evaluation Suite (<code>/benchmark-context</code>)</dt><dd class="definition-list__desc">Ships with a 50-task benchmark and memory precision/recall evaluator (covering long-horizon recall, multi-session state mutation, and surgical SWE context) to gate every prompt, router, or skill update.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">071</span>Local Web &amp; Desktop Control Center</dt><dd class="definition-list__desc">Provides a visual Memory Graph browser, Pending Inference review queue, Skill manager, Token Savings analytics, and the Live RAM/Disk Cleanup panel.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">072</span>Zero-Lock-In Markdown Export &amp; 1-Step Wipe</dt><dd class="definition-list__desc">Exports the entire brain as clean, portable Markdown files and supports encrypted, restore-tested backups (<code>danav backup</code>) or complete one-step deletion.</dd></div></dl></details><details class="feature-group" data-reveal-item><summary><span class="feature-group__num">IX</span><span class="feature-group__name">Advanced Agentic Collaboration &amp; Autonomous Task Orchestration</span><span class="feature-group__count">23</span></summary><dl class="definition-list"><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">073</span>Multi-Agent Shared Workspace Lockfile (<code>.danav/locks.lock</code>)</dt><dd class="definition-list__desc">Prevents concurrent local agents (e.g., Claude Code in Terminal 1 and Codex in Terminal 2) from editing the exact same file or AST symbol simultaneously via AST-node-level advisory locks.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">074</span>Autonomous Background “Sweeper” Agent</dt><dd class="definition-list__desc">A lightweight local worker that runs during idle times to refactor deprecated code patterns found in recent memories, update project documentation, and clean up stale tests.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">075</span>Agentic Self-Correction Loop on Test Failure</dt><dd class="definition-list__desc">When <code>run_sandbox</code> catches a test failure, the brain automatically intercepts the stack trace, pulls the relevant AST symbols, and injects a corrective micro-brief without requiring user intervention.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">076</span>Deterministic Task Checkpoints &amp; Rollback</dt><dd class="definition-list__desc">Automatically creates a lightweight local git tree snapshot before executing any agent tool call batch, allowing one-click rollback if the model breaks the build.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">077</span>Cross-Project Memory Transfer (“Cherry-Pick”)</dt><dd class="definition-list__desc">Allows users or agents to safely export and import specific memory subtrees (e.g., sharing a custom authentication pattern from Project A to Project B).</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">078</span>Natural Language Memory &amp; Rule Linter</dt><dd class="definition-list__desc">A background lint engine that scans Markdown memories and project rules for internal contradictions, syntactic ambiguity, or outdated guidelines and prompts the user to resolve them.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">079</span>Adaptive Tool Timeout &amp; Retry Backoff</dt><dd class="definition-list__desc">Dynamically adjusts tool execution timeouts and token budget caps based on historical success rates and latency profiles per tool.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">080</span>Federated Multi-User Team Sync (Optional Peer-to-Peer)</dt><dd class="definition-list__desc">Allows developers on the same local network or team to securely sync verified project memories and distilled skills peer-to-peer over encrypted mDNS/QUIC channels without relying on a central cloud.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">081</span>Agent Handoff Protocol (“Session Stashing”)</dt><dd class="definition-list__desc">Lets an agent serialize its current working state, active hypothesis, and memory pointers into a structured JSON artifact so another model (or human) can resume the task instantly.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">082</span>Incremental AST Diffing for Fast Re-Indexing</dt><dd class="definition-list__desc">Instead of reparsing whole files on save, uses incremental Tree-sitter parsing to update only modified AST nodes in the database in sub-millisecond time.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">083</span>Token Cost &amp; Budget Guardian</dt><dd class="definition-list__desc">Real-time token budget tracking across all connected CLIs with hard spending alerts and automatic fallback to cheaper local/cloud lanes when monthly budgets approach their limit.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">084</span>Episodic Memory Clustering &amp; Timeline Visualizer</dt><dd class="definition-list__desc">Automatically groups past debugging sessions and feature additions into chronological “epics” or timelines in the dashboard for quick historical audits.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">085</span>Custom Schema Injector for Domain-Specific Agents</dt><dd class="definition-list__desc">Lets users define custom frontmatter schemas for specialized domains (e.g., legal contracts, medical charts, ERP specs, game design docs) without breaking the core brain engine.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">086</span>Headless IDE &amp; Editor Extensions (VS Code, Neovim, Zed)</dt><dd class="definition-list__desc">Native extensions that stream surgical context briefs directly into the editor status bar, gutter indicators, and inline completion prompts.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">087</span>Semantic Git Commit Message Generator</dt><dd class="definition-list__desc">Automatically analyzes staged diffs, linked memories, and System One decision outputs to draft descriptive, standards-compliant commit messages.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">088</span>Automatic Dependency Vulnerability Watcher</dt><dd class="definition-list__desc">Indexes local <code>package.json</code>, <code>Cargo.toml</code>, or <code>requirements.txt</code> files and maps them to local advisory databases for instant CVE-aware context packing.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">089</span>Prompt-Caching Hit Rate Optimizer</dt><dd class="definition-list__desc">Continuously re-orders static prefixes, tool manifests, and project instructions to maximize cache hit ratios across OpenAI, Anthropic, and Gemini API providers.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">090</span>Interactive “Why Did You Do That?” Trace Inspector</dt><dd class="definition-list__desc">A conversational debug tool in the UI where users can query an execution trace (e.g., <em>“Why did the agent edit file X?”</em>) and receive a deterministic breakdown of the retrieved memories and AST graph hops.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">091</span>Ephemeral Sandbox Workspaces</dt><dd class="definition-list__desc">Spins up isolated, copy-on-write scratchpad directories (<code>git worktree</code> / OverlayFS) for agents to test risky refactors or prototype code without touching the main working tree.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">092</span>Automated Dead Code &amp; Ghost Memory Detection</dt><dd class="definition-list__desc">Identifies memories pointing to deleted files or symbols and automatically prunes or flags them during the nightly consolidation cycle.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">093</span>Multi-Modal OCR &amp; Diagram Analyzer</dt><dd class="definition-list__desc">Automatically parses architecture diagrams, UI mockups, and whiteboard screenshots dropped into the workspace, converting them into structured reference memories.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">094</span>Configurable Privacy Boundaries (Per-Folder Exclusion)</dt><dd class="definition-list__desc">Allows users to designate specific folders (e.g., <code>secrets/</code>, <code>personal/</code>) via <code>.danavignore</code> as strictly off-limits to both proxy redaction scans and memory extraction.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">095</span>One-Command Diagnostic Doctor (<code>danav doctor</code>)</dt><dd class="definition-list__desc">Automatically diagnoses database corruption, missing Tree-sitter grammars, broken MCP socket connections, and stale lockfiles, offering automatic repairs.</dd></div></dl></details><details class="feature-group" data-reveal-item><summary><span class="feature-group__num">X</span><span class="feature-group__name">Cognitive Plasticity, Speculative Execution &amp; Failure Immunity</span><span class="feature-group__count">7</span></summary><dl class="definition-list"><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">096</span>Negative-Constraint &amp; Anti-Pattern Ledger (“Scar Tissue Memory”)</dt><dd class="definition-list__desc">Explicitly records failed approaches, rejected libraries, and reverted git commits with higher retrieval weight than normal memories, ensuring no connected model ever repeats the same mistake twice.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">097</span>Speculative Context Pre-Fetching (Zero-Latency Turn 2)</dt><dd class="definition-list__desc">While the user is reading Turn 1 or typing in the terminal/UI, the System One engine predicts the 3 most likely next AST symbols and memories based on the active call graph and pre-loads them into hot RAM.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">098</span>Cross-Model Consensus &amp; Adversarial Verification Gate</dt><dd class="definition-list__desc">For high-risk edits (flagged by a System One <code>Score</code> rubric), automatically pipes the proposed diff created by Model A (e.g., Claude) through Model B (e.g., Gemini or Codex) in a blind adversarial review before presenting it to the user.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">099</span>Counterfactual Replay Simulator (<code>danav replay --what-if</code>)</dt><dd class="definition-list__desc">Runs historical session traces from JSONL logs against a newly tweaked System One rubric, new skill, or cheaper model to prove quantitatively whether the new setup solves bugs faster or cheaper.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">100</span>Decay-Weighted Synaptic Pruning (Hebbian Memory Scoring)</dt><dd class="definition-list__desc">Tracks how often a retrieved memory actually contributed to an accepted git diff or successful tool call; memories that are retrieved often but ignored by the agent lose synaptic weight and sink in ranking.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">101</span>Semantic Diff Compression for Long Sessions</dt><dd class="definition-list__desc">Instead of keeping raw turn-by-turn file edit history in the conversation window, collapses intermediate edits into a single mathematical state transition (<span class="m">State<sub>0</sub> &rarr; State<sub>N</sub></span>) to keep long debugging sessions sharp.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">102</span>Local ONNX/GGUF Micro-Model Hot-Swapper</dt><dd class="definition-list__desc">Dynamically loads quantized 0.5B–3B models into RAM strictly for the System One decision gates and embedding passes, keeping inference under 20ms on consumer laptops without requiring a dedicated GPU.</dd></div></dl></details><details class="feature-group" data-reveal-item><summary><span class="feature-group__num">XI</span><span class="feature-group__name">Danav Desktop App: Cross-App Orchestration &amp; BYO-Subscription Runtime</span><span class="feature-group__count">8</span></summary><dl class="definition-list"><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">103</span>Unified Subscription &amp; Quota Pool Manager</dt><dd class="definition-list__desc">Aggregates the user’s existing CLI sessions (Claude Code, Gemini CLI, Codex), API keys, and local models (Ollama/vLLM) into a single “Compute Pool,” automatically load-balancing tasks based on remaining rate limits and token quotas.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">104</span>Event-Driven Reactive Triggers (“When X, Wake Agent Y”)</dt><dd class="definition-list__desc">Turns Danav from a passive request-response brain into an event-driven daemon that wakes up autonomous agents on webhooks, Git pushes, incoming emails, Slack messages, cron schedules, or file system changes.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">105</span>Universal App-State Graph (OS Accessibility + DOM Bridge)</dt><dd class="definition-list__desc">Extends the Tree-sitter AST concept beyond code to the user’s OS—mapping open desktop windows, active browser tabs, and native OS accessibility trees into a compact text graph so Danav agents can drive non-API desktop apps with low token overhead.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">106</span>Scoped OAuth &amp; Session Delegator for Third-Party Apps</dt><dd class="definition-list__desc">Allows users in the Danav UI to grant an agent temporary, capability-scoped access to external apps (e.g., <em>“Agent can read Jira tickets and draft Notion pages, but cannot delete or send external emails”</em>).</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">107</span>DAG Workflow Compiler (Natural Language to Deterministic Pipelines)</dt><dd class="definition-list__desc">Lets users describe a multi-app workflow in plain English inside the Danav App once, and compiles it into a deterministic, repeatable Directed Acyclic Graph (DAG) gated by System One <code>Choice</code> and <code>Noul</code> checkpoints so daily runs cost almost zero LLM tokens.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">108</span>Human-in-the-Loop Escalation Inbox (Async Approval Queue)</dt><dd class="definition-list__desc">When a background agent hits a low-confidence System One gate (<span class="m"><i>p</i> &lt; 0.80</span>) or a high-risk policy boundary while working across apps, it pauses state and pushes a 1-click “Approve / Modify / Reject” card to the Danav App UI and mobile notification channel.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">109</span>Cross-App Data Lineage &amp; Taint Tracking</dt><dd class="definition-list__desc">Tags data pulled from untrusted external apps (e.g., an incoming email or public web page) as <code>tainted</code>, preventing any downstream agent from passing that payload into a shell command or private database query.</dd></div><div class="definition-list__row"><dt class="definition-list__term"><span class="feature__n">110</span>Portable Agent Blueprints (<code>.danav-agent</code> Manifests)</dt><dd class="definition-list__desc">Packages an agent’s persona, System One decision rubrics, required app connectors, and distilled skills into a single shareable file so users can install or share community-built agents in one click.</dd></div></dl></details></div></div></section><section class="section section--sunken" id="architecture" aria-labelledby="architecture-t"><div class="container stack"><header class="section__header" data-reveal><p class="eyebrow">Danav Brain technical requirements</p><h2 id="architecture-t">A 100% Rust core in one Cargo workspace</h2><p class="lede">One daemon, proxy, MCP server, System One engine and AST indexer, split across twelve crates and shipped as a single binary.</p></header><div class="prose"><h3 id="language-runtime-architecture-100-rust-core">3.1 Language &amp;
+Runtime Architecture (100% Rust Core)</h3>
+<p>To guarantee Feature #1 (Single-Binary Daemon), Feature #26 (Sub-50ms
+System One), and Feature #42 (Sub-15ms Context Pack), <strong>Danav Brain
+(<code>danavd</code>) is written 100% in Rust</strong>.</p>
+<figure class="flow" data-reveal-group aria-label="Danav Brain architecture">
+<div class="flow__layer flow__layer--clients" data-reveal-item>
+<p class="flow__label">Clients</p>
+<ul class="flow__clients">
+<li class="badge badge--accent badge--text">Claude Code</li>
+<li class="badge badge--accent badge--text">Cursor</li>
+<li class="badge badge--accent badge--text">Gemini CLI</li>
+<li class="badge badge--accent badge--text">Codex</li>
+<li class="badge badge--accent badge--text">VS Code</li>
+<li class="badge badge--accent badge--text">Danav Desktop (Tauri UI)</li>
+</ul>
+</div>
+<div class="flow__links" data-reveal-item>
+<div class="flow__link"><span class="flow__line flow__line--arrow" aria-hidden="true"></span><span class="badge flow__protocol">OpenAI/Anthropic SSE</span></div>
+<div class="flow__link"><span class="flow__line flow__line--arrow" aria-hidden="true"></span><span class="badge flow__protocol">MCP (stdio / SSE)</span></div>
+<div class="flow__link"><span class="flow__line flow__line--arrow" aria-hidden="true"></span><span class="badge flow__protocol">Tauri IPC / REST</span></div>
+</div>
+<div class="flow__layer flow__layer--daemon" data-reveal-item>
+<p class="flow__label">Danav Brain daemon <code>danavd</code></p>
+<ul class="flow__row">
+<li class="flow__card flow__card--1" data-reveal-item><p class="flow__name">Proxy &amp; Router</p><p class="flow__tech">axum + hyper SSE</p></li>
+<li class="flow__card flow__card--2" data-reveal-item><p class="flow__name">TypeSafe System One</p><p class="flow__tech">Choice / Score / Noul</p></li>
+<li class="flow__card flow__card--3" data-reveal-item><p class="flow__name">Security &amp; Policy</p><p class="flow__tech">Redactor + Vault</p></li>
+</ul>
+<div class="flow__merge" aria-hidden="true">
+<span class="flow__line flow__line--half"></span><span class="flow__line flow__line--half"></span><span class="flow__line flow__line--half"></span>
+<span class="flow__line flow__line--half flow__line--arrow flow__merge-out"></span>
+</div>
+<div class="flow__card flow__card--wide" data-reveal-item><p class="flow__name">Surgical Context Pack Generator</p><p class="flow__tech">Sub-15ms</p></div>
+<div class="flow__split" aria-hidden="true">
+<span class="flow__line flow__line--half flow__line--arrow flow__split-in"></span>
+<span class="flow__line flow__line--half flow__line--arrow flow__split-out"></span><span class="flow__line flow__line--half flow__line--arrow flow__split-out"></span><span class="flow__line flow__line--half flow__line--arrow flow__split-out"></span>
+</div>
+<ul class="flow__row">
+<li class="flow__card flow__card--1" data-reveal-item><p class="flow__name">Relational Memory</p><p class="flow__tech">SQLite + Vector + UPDATES/EXTENDS</p></li>
+<li class="flow__card flow__card--2" data-reveal-item><p class="flow__name">Fast AST Engine</p><p class="flow__tech">Tree-sitter + Call Graph + Git Diffs</p></li>
+<li class="flow__card flow__card--3" data-reveal-item><p class="flow__name">Sandboxed Execution</p><p class="flow__tech">Bubblewrap/Seatbelt + Headless Browser</p></li>
+</ul>
+</div>
+<figcaption class="flow__caption">Danav Brain runtime architecture (spec 3.1). Clients reach the daemon over SSE, MCP or IPC. The proxy, System One and policy layers feed one context pack generator, which reads from the memory graph, the AST engine and the sandbox.</figcaption>
+</figure>
+<h3 id="cargo-workspace-structure">3.2 Cargo Workspace Structure</h3>
+<figure class="tree" data-reveal-group aria-label="Cargo workspace structure"><p class="tree__root">danav/</p><ul class="tree__branch"><li class="tree__item" data-reveal-item><span class="tree__name">Cargo.toml</span><span class="tree__note">Workspace root</span></li><li class="tree__item tree__item--dir" data-reveal-item><span class="tree__name">crates/</span><ul class="tree__branch"><li class="tree__item" data-reveal-item><span class="tree__name">danav-cli/</span><span class="tree__note">Binary entry (<code>danav init</code>, <code>danav run</code>, <code>danav clean</code>, <code>danav doctor</code>)</span></li><li class="tree__item" data-reveal-item><span class="tree__name">danav-daemon/</span><span class="tree__note">Background daemon (<code>danavd</code>), IPC socket, lifecycle &amp; RAM watchdog</span></li><li class="tree__item" data-reveal-item><span class="tree__name">danav-proxy/</span><span class="tree__note">Axum OpenAI/Anthropic/Gemini proxy, prefix-cache aligner, SSE injector</span></li><li class="tree__item" data-reveal-item><span class="tree__name">danav-mcp/</span><span class="tree__note">MCP server implementation (<code>read_symbol</code>, <code>edit_symbol</code>, <code>recall</code>, <code>browser_*</code>)</span></li><li class="tree__item" data-reveal-item><span class="tree__name">danav-system1/</span><span class="tree__note">Constrained logit-masking engine (<code>Choice</code>, <code>Score</code>, <code>Noul</code>) via ONNX/GGUF</span></li><li class="tree__item" data-reveal-item><span class="tree__name">danav-memory/</span><span class="tree__note">Dual-store engine, relational graph (<code>UPDATES</code>/<code>EXTENDS</code>/<code>DERIVES</code>), Dreamer</span></li><li class="tree__item" data-reveal-item><span class="tree__name">danav-ast/</span><span class="tree__note">Incremental Tree-sitter indexer, skeleton generator, call-graph &amp; blast radius</span></li><li class="tree__item" data-reveal-item><span class="tree__name">danav-pack/</span><span class="tree__note">Sub-15ms <code>context_pack</code> assembler, speculative pre-fetcher, token budgeter</span></li><li class="tree__item" data-reveal-item><span class="tree__name">danav-sandbox/</span><span class="tree__note">Rootless execution (Linux userns/bwrap, macOS seatbelt), PTY wrapper</span></li><li class="tree__item" data-reveal-item><span class="tree__name">danav-connectors/</span><span class="tree__note">Native async connectors (GitHub, Notion, Drive, Gmail, S3, Crawler, Browser)</span></li><li class="tree__item" data-reveal-item><span class="tree__name">danav-security/</span><span class="tree__note">Intersection policy engine, taint tracker, secret redactor, OS keyring vault</span></li><li class="tree__item" data-reveal-item><span class="tree__name">danav-bench/</span><span class="tree__note">Built-in 50-task evaluation harness &amp; counterfactual trace replay engine</span></li></ul></li><li class="tree__item tree__item--dir" data-reveal-item><span class="tree__name">apps/</span><ul class="tree__branch"><li class="tree__item" data-reveal-item><span class="tree__name">danav-desktop/</span><span class="tree__note">Tauri v2 + React/Next.js + Tailwind CSS (serves :7420 &amp; native Desktop App)</span></li></ul></li></ul></figure>
+<h3 id="core-rust-crate-dependencies">3.3 Core Rust Crate
+Dependencies</h3>
+<ul>
+<li><strong>Async &amp; HTTP Proxy:</strong> <code>tokio</code>,
+<code>axum</code>, <code>hyper</code>, <code>tower-http</code>,
+<code>reqwest</code>, <code>eventsource-stream</code></li>
+<li><strong>CLI &amp; Terminal Wrapping:</strong> <code>clap</code>,
+<code>portable-pty</code>, <code>nix</code>, <code>crossterm</code></li>
+<li><strong>Storage, Graph &amp; Vectors:</strong> <code>rusqlite</code>
+(bundled with <code>fts5</code> + <code>sqlite-vec</code>),
+<code>r2d2_sqlite</code>, <code>blake3</code></li>
+<li><strong>Local Inference &amp; System One Logit Masking:</strong>
+<code>ort</code> (ONNX Runtime for embeddings/reranking/classification)
++ <code>llama-cpp-2</code> (for local GGUF micro-models with custom
+token logit-bias grammars)</li>
+<li><strong>AST &amp; Git Intelligence:</strong>
+<code>tree-sitter</code> (plus language grammars), <code>git2</code>,
+<code>ignore</code>, <code>notify</code> (file system watcher)</li>
+<li><strong>Security &amp; Vault:</strong> <code>keyring</code>,
+<code>chacha20poly1305</code>, <code>ed25519-dalek</code></li>
+</ul>
+<h3 id="storage-database-schema-.danavbrain.db-sqlite-wal-mode">3.4
+Storage &amp; Database Schema (<code>~/.danav/brain.db</code> — SQLite
+WAL Mode)</h3>
+<p>Using a single embedded SQLite database in <code>WAL</code>
+(Write-Ahead Logging) mode with <code>mmap_size = 268435456</code>
+guarantees sub-millisecond reads, transactional safety, and zero
+external database processes.</p>
+<pre class="sql"><code>-- 1. Raw Documents Store (Files, Docs, Transcripts)
+CREATE TABLE documents (
+    id TEXT PRIMARY KEY,                  -- BLAKE3 content-addressed ID
+    namespace TEXT NOT NULL,              -- e.g., &#39;project:danav&#39;, &#39;user:global&#39;
+    source_uri TEXT NOT NULL,             -- File path or connector URL
+    content_hash TEXT NOT NULL,
+    mime_type TEXT NOT NULL,
+    metadata_json TEXT NOT NULL,          -- Filterable via JSONB operators
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL
+);
+
+-- 2. Atomic Memories Store
+CREATE TABLE memories (
+    id TEXT PRIMARY KEY,
+    namespace TEXT NOT NULL,
+    memory_type TEXT NOT NULL,            -- &#39;fact&#39; | &#39;rule&#39; | &#39;scar_tissue&#39; | &#39;inferred&#39; | &#39;profile_slice&#39;
+    content TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT &#39;active&#39;,-- &#39;active&#39; | &#39;superseded&#39; | &#39;pending_review&#39; | &#39;forgotten&#39;
+    confidence REAL NOT NULL DEFAULT 1.0,
+    hebbian_weight REAL NOT NULL DEFAULT 1.0, -- Synaptic utility score (#100)
+    forget_after INTEGER,                 -- Temporal TTL (#16)
+    source_doc_id TEXT REFERENCES documents(id),
+    created_at INTEGER NOT NULL
+);
+
+-- 3. Ontology-Aware Relational Memory Graph Edges
+CREATE TABLE memory_edges (
+    id TEXT PRIMARY KEY,
+    source_id TEXT NOT NULL REFERENCES memories(id),
+    target_id TEXT NOT NULL REFERENCES memories(id),
+    edge_type TEXT NOT NULL,              -- &#39;UPDATES&#39; | &#39;EXTENDS&#39; | &#39;DERIVES&#39;
+    reason TEXT,
+    created_at INTEGER NOT NULL
+);
+
+-- 4. Tree-Sitter AST Symbol Index &amp; Bidirectional Anchors
+CREATE TABLE ast_symbols (
+    id TEXT PRIMARY KEY,                  -- repo + file_path + symbol_qname
+    repo_id TEXT NOT NULL,
+    file_path TEXT NOT NULL,
+    symbol_name TEXT NOT NULL,
+    symbol_kind TEXT NOT NULL,            -- &#39;fn&#39; | &#39;struct&#39; | &#39;class&#39; | &#39;interface&#39; | &#39;route&#39;
+    start_line INTEGER NOT NULL,
+    end_line INTEGER NOT NULL,
+    signature_skeleton TEXT NOT NULL,     -- Header-only representation (#37)
+    ast_hash TEXT NOT NULL
+);
+
+CREATE TABLE memory_symbol_anchors (
+    memory_id TEXT NOT NULL REFERENCES memories(id),
+    symbol_id TEXT NOT NULL REFERENCES ast_symbols(id),
+    PRIMARY KEY (memory_id, symbol_id)
+);</code></pre>
+</div></div></section><section class="section" id="app" data-nav-group="architecture" aria-labelledby="app-t"><div class="container stack"><header class="section__header" data-reveal><p class="eyebrow">Danav Application technical requirements</p><h2 id="app-t">Tauri v2, React and a Rust core</h2><p class="lede">One frontend serves both the localhost:7420 dashboard and the native desktop app.</p></header><div class="prose"><h3 id="application-architecture-tauri-v2-react-rust-core">4.1
+Application Architecture (Tauri v2 + React + Rust Core)</h3>
+<p>Rather than building two separate codebases for the local web
+dashboard (<code>localhost:7420</code>) and the standalone <strong>Danav
+Desktop Application</strong>, both are built from a single
+<code>apps/danav-desktop</code> frontend wrapped with <strong>Tauri
+v2</strong>:</p>
+<ul>
+<li><strong>Headless Server Mode (<code>danav ui</code>):</strong>
+<code>danavd</code> serves the compiled static frontend bundle directly
+on <code>http://127.0.0.1:7420</code> over
+WebSockets/REST.</li>
+<li><strong>Native Desktop Mode (<code>Danav.app</code> /
+<code>Danav.exe</code>):</strong> Tauri embeds <code>danav-daemon</code>
+directly into the native OS binary, communicating via zero-copy Tauri
+IPC commands and managing system tray hooks, global OS shortcuts, and
+accessibility permissions.</li>
+</ul>
+<figure class="dg-fig" data-reveal><div class="dg-scroll"><svg class="dg" viewBox="0 0 960 606" role="img" aria-labelledby="dg-t dg-d" xmlns="http://www.w3.org/2000/svg"><title id="dg-t">Danav Desktop application architecture</title><desc id="dg-d">Four desktop surfaces (Agent Studio and DAG Builder, Memory Graph and Trace Replay, BYO-Sub Pool and Budget Router, Escalation Inbox) talk over Tauri IPC and WebSocket to the Danav Agent Runtime and Orchestrator, which holds the Unified Compute Adapter, the Event Bus and Triggers, and the OS Accessibility and Browser Bridge, on top of the embedded danav-daemon.</desc><defs><marker id="dg-arr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1L10 5L0 9z" class="dg-arrf"/></marker></defs><rect class="dg-panel" x="16" y="12" width="928" height="206" rx="6"/><rect class="dg-sq" x="40" y="34" width="8" height="8"/><text class="dg-label" x="58" y="43">DANAV DESKTOP APPLICATION</text><text class="dg-labelr" x="920" y="43" text-anchor="end">TAURI V2 + REACT</text><g><rect class="dg-card" x="40" y="62" width="208" height="140" rx="4"/><rect class="dg-bar t0" x="40" y="62" width="208" height="4" rx="2"/><g transform="translate(58,82)"><g class="dg-ico"><path d="M6 18L18 8M6 18L18 28M18 8L30 18M18 28L30 18"/><circle cx="6" cy="18" r="4"/><circle cx="18" cy="8" r="4"/><circle cx="18" cy="28" r="4"/><circle cx="30" cy="18" r="4"/></g></g><text class="dg-title" x="58" y="146">Agent Studio</text><text class="dg-title" x="58" y="166">&amp; DAG Builder</text><text class="dg-tag" x="58" y="190">#107 · #110</text></g><g><rect class="dg-card" x="264" y="62" width="208" height="140" rx="4"/><rect class="dg-bar t1" x="264" y="62" width="208" height="4" rx="2"/><g transform="translate(282,82)"><g class="dg-ico"><path d="M18 18L6 7M18 18L30 7M18 18L6 29M18 18L30 29"/><circle cx="18" cy="18" r="5"/><circle cx="6" cy="7" r="3"/><circle cx="30" cy="7" r="3"/><circle cx="6" cy="29" r="3"/><circle cx="30" cy="29" r="3"/></g></g><text class="dg-title" x="282" y="146">Memory Graph &amp;</text><text class="dg-title" x="282" y="166">Trace Replay</text><text class="dg-tag" x="282" y="190">#71 · #69</text></g><g><rect class="dg-card" x="488" y="62" width="208" height="140" rx="4"/><rect class="dg-bar t2" x="488" y="62" width="208" height="4" rx="2"/><g transform="translate(506,82)"><g class="dg-icof"><rect x="2" y="5" width="14" height="6"/><rect x="2" y="15" width="24" height="6"/><rect x="2" y="25" width="32" height="6"/></g></g><text class="dg-title" x="506" y="146">BYO-Sub Pool &amp;</text><text class="dg-title" x="506" y="166">Budget Router</text><text class="dg-tag" x="506" y="190">#103 · #83</text></g><g><rect class="dg-card" x="712" y="62" width="208" height="140" rx="4"/><rect class="dg-bar t3" x="712" y="62" width="208" height="4" rx="2"/><g transform="translate(730,82)"><g class="dg-ico"><path d="M3 20L10 7H26L33 20V31H3ZM3 20H13Q14 25 18 25T23 20H33"/></g></g><text class="dg-title" x="730" y="146">Escalation</text><text class="dg-title" x="730" y="166">Inbox</text><text class="dg-tag" x="730" y="190">#108 · #109</text></g><line class="dg-flow" x1="144" y1="218" x2="144" y2="298" marker-end="url(#dg-arr)"/><line class="dg-flow" x1="368" y1="218" x2="368" y2="298" marker-end="url(#dg-arr)"/><line class="dg-flow" x1="592" y1="218" x2="592" y2="298" marker-end="url(#dg-arr)"/><line class="dg-flow" x1="816" y1="218" x2="816" y2="298" marker-end="url(#dg-arr)"/><rect class="dg-pill" x="378" y="244" width="204" height="28" rx="3"/><text class="dg-pilltxt" x="480" y="263" text-anchor="middle">Tauri IPC / WS</text><rect class="dg-panel" x="16" y="302" width="928" height="236" rx="6"/><rect class="dg-sq" x="40" y="324" width="8" height="8"/><text class="dg-label" x="58" y="333">DANAV AGENT RUNTIME &amp; ORCHESTRATOR</text><text class="dg-labelr" x="920" y="333" text-anchor="end">RUST CORE</text><g><rect class="dg-card" x="40" y="352" width="282" height="168" rx="4"/><rect class="dg-bar t1" x="40" y="352" width="282" height="4" rx="2"/><text class="dg-title sm" x="58" y="386">Unified Compute Adapter</text><text class="dg-sub" x="58" y="408">CLI PTY Pool + API Keys + Local Ollama</text><rect class="dg-chip" x="58.0" y="424" width="98.4" height="22" rx="3"/><text class="dg-chiptxt" x="67.0" y="439">CLI PTY Pool</text><rect class="dg-chip" x="164.4" y="424" width="71.6" height="22" rx="3"/><text class="dg-chiptxt" x="173.4" y="439">API Keys</text><rect class="dg-chip" x="58.0" y="454" width="98.4" height="22" rx="3"/><text class="dg-chiptxt" x="67.0" y="469">Local Ollama</text><text class="dg-tag" x="58" y="508">#103</text></g><g><rect class="dg-card" x="333" y="352" width="282" height="168" rx="4"/><rect class="dg-bar t2" x="333" y="352" width="282" height="4" rx="2"/><text class="dg-title sm" x="351" y="386">Event Bus &amp; Triggers</text><text class="dg-sub" x="351" y="408">Cron, Webhook, FS, Git, Mail, Slack</text><rect class="dg-chip" x="351.0" y="424" width="44.8" height="22" rx="3"/><text class="dg-chiptxt" x="360.0" y="439">Cron</text><rect class="dg-chip" x="403.8" y="424" width="64.9" height="22" rx="3"/><text class="dg-chiptxt" x="412.8" y="439">Webhook</text><rect class="dg-chip" x="476.7" y="424" width="31.4" height="22" rx="3"/><text class="dg-chiptxt" x="485.7" y="439">FS</text><rect class="dg-chip" x="516.1" y="424" width="38.1" height="22" rx="3"/><text class="dg-chiptxt" x="525.1" y="439">Git</text><rect class="dg-chip" x="351.0" y="454" width="44.8" height="22" rx="3"/><text class="dg-chiptxt" x="360.0" y="469">Mail</text><rect class="dg-chip" x="403.8" y="454" width="51.5" height="22" rx="3"/><text class="dg-chiptxt" x="412.8" y="469">Slack</text><text class="dg-tag" x="351" y="508">#104</text></g><g><rect class="dg-card" x="626" y="352" width="282" height="168" rx="4"/><rect class="dg-bar t3" x="626" y="352" width="282" height="4" rx="2"/><text class="dg-title sm" x="644" y="376">OS Accessibility &amp;</text><text class="dg-title sm" x="644" y="394">Browser Bridge</text><text class="dg-sub" x="644" y="411">DOM + AXTree</text><rect class="dg-chip" x="644.0" y="424" width="91.7" height="22" rx="3"/><text class="dg-chiptxt" x="653.0" y="439">AXUIElement</text><rect class="dg-chip" x="743.7" y="424" width="98.4" height="22" rx="3"/><text class="dg-chiptxt" x="752.7" y="439">UIAutomation</text><rect class="dg-chip" x="644.0" y="454" width="64.9" height="22" rx="3"/><text class="dg-chiptxt" x="653.0" y="469">AT-SPI2</text><rect class="dg-chip" x="716.9" y="454" width="38.1" height="22" rx="3"/><text class="dg-chiptxt" x="725.9" y="469">CDP</text><text class="dg-tag" x="644" y="508">#105 · #57</text></g><line class="dg-flow" x1="180" y1="538" x2="180" y2="558"/><line class="dg-flow" x1="480" y1="538" x2="480" y2="558"/><line class="dg-flow" x1="780" y1="538" x2="780" y2="558"/><rect class="dg-base" x="16" y="558" width="928" height="36" rx="4"/><text class="dg-basetxt" x="480" y="581" text-anchor="middle">EMBEDDED DANAV BRAIN · danav-daemon · memory graph · AST index · System One · policy engine</text></svg></div><figcaption>Danav Desktop architecture (spec 4.1). Four surfaces call the Agent Runtime over Tauri IPC and WebSocket; the runtime pools compute, wakes agents on events and drives desktop apps, on top of the embedded Danav Brain.</figcaption></figure>
+<h3 id="unified-byo-subscription-compute-pool-engine-103">4.2 Unified
+BYO-Subscription &amp; Compute Pool Engine (#103)</h3>
+<p>Users should never have to pay Danav a markup on tokens when they
+already pay for AI tools. Danav Desktop implements three compliant
+adapter lanes inside the <strong>Unified Compute Pool</strong>:</p>
+<ol type="1">
+<li><strong>Official CLI Session Lane (Zero API Cost):</strong> Spawns
+and pools persistent headless sessions of installed official CLIs
+(<code>claude</code>, <code>gemini</code>, <code>codex</code>) inside
+managed PTYs (<code>portable-pty</code>), routing agent subtasks through
+the user’s existing CLI plans while respecting rate limits.</li>
+<li><strong>Direct API Key Lane (BYOK):</strong> Connects directly to
+Anthropic, OpenAI, Google Gemini, Groq, and OpenRouter keys stored in
+the OS Keychain (#63), applying automatic prefix caching (#9) and budget
+ceilings (#83).</li>
+<li><strong>Local Inference Lane (Zero Cloud Cost):</strong>
+Auto-discovers local Ollama, LM Studio, vLLM, and embedded
+<code>llama.cpp</code> endpoints for offline coding, privacy-restricted
+folders (#94), and background Sweeper tasks (#74).</li>
+</ol>
+<h3 id="deterministic-dag-workflow-compiler-107">4.3 Deterministic DAG
+Workflow Compiler (#107)</h3>
+<p>When a user creates an agent in Danav (e.g., <em>“Every morning at 9
+AM, check my GitHub PR reviews, cross-reference failing CI logs with our
+local codebase, draft a fix in an ephemeral worktree, and ping me on
+Slack with an approval card”</em>):</p>
+<ol class="pipeline" data-reveal-group><li class="pipeline__stage" data-reveal-item><span class="badge badge--accent">Compile</span><h4 class="pipeline__title">Compilation Step</h4><p class="pipeline__text">A System Two model translates the natural language prompt into a typed <code>workflow.danav.json</code> Directed Acyclic Graph (DAG).</p></li><li class="pipeline__stage" data-reveal-item><span class="badge badge--accent">Execute</span><h4 class="pipeline__title">Execution Step</h4><p class="pipeline__text">Every node transition in the DAG is governed by a deterministic Rust tool call or a sub-50ms System One <code>Choice</code>/<code>Noul</code> gate. Generative LLMs are invoked <strong>only</strong> at nodes that require synthesis or code generation.</p></li><li class="pipeline__stage" data-reveal-item><span class="badge badge--accent">Enforce</span><h4 class="pipeline__title">Taint Enforcement (#109)</h4><p class="pipeline__text">Every edge in the DAG carries a <code>SecurityLabel { integrity: Trusted | Untrusted, confidentiality: Public | Private }</code>. If a node ingests an external email or web page (<code>Untrusted</code>), the Policy Engine (#60) blocks any downstream node in that execution trace from invoking <code>run_shell</code>, <code>edit_symbol</code>, or outbound network POSTs unless the user clicks <strong>Approve</strong> in the Escalation Inbox (#108).</p></li></ol>
+<h3 id="universal-app-state-graph-os-browser-automation-57-105">4.4
+Universal App-State Graph: OS &amp; Browser Automation (#57, #105)</h3>
+<p>To let Danav agents interact with any desktop application (Slack,
+Figma, Linear, ERP dashboards, Excel) without burning thousands of
+vision tokens on screenshots:</p>
+<ul>
+<li><strong>macOS (<code>AXUIElement</code>) / Windows
+(<code>UIAutomation</code>) / Linux (<code>AT-SPI2</code>):</strong> A
+native Rust OS bridge queries the active window’s accessibility tree and
+serializes interactive elements (buttons, text fields, tables, menus)
+into a compact, numbered Markdown/DOM snapshot
+(<code>&lt;button id="@e14"&gt;Submit&lt;/button&gt;</code>).</li>
+<li><strong>Playwright / CDP Bridge:</strong> Attaches to an isolated
+browser profile (#58) and extracts the accessibility tree. Vision models
+are called only when a System One
+<code>Noul("contains_canvas_or_chart")</code> check returns <span
+class="m"><i>p</i> ≥ 0.80</span>.</li>
+</ul>
+<h3 id="portable-.danav-agent-blueprint-format-110">4.5 Portable
+<code>.danav-agent</code> Blueprint Format (#110)</h3>
+<p>Agents created in the Danav App can be exported and shared as a
+single signed archive or declarative manifest:</p>
+<pre class="yaml"><code>apiVersion: danav.ai/v1
+kind: AgentBlueprint
+metadata:
+  name: pr-triage-and-fix
+  version: 1.2.0
+  sha256: &quot;e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&quot;
+spec:
+  compute_lane_preference: [&quot;local_system1&quot;, &quot;cli:claude&quot;, &quot;api:gemini-2.5-pro&quot;]
+  triggers:
+    - type: github_webhook
+      events: [&quot;pull_request.opened&quot;, &quot;check_suite.failed&quot;]
+  permissions:
+    filesystem: [&quot;read:repo&quot;, &quot;write:ephemeral_worktree&quot;]
+    connectors: [&quot;github:read&quot;, &quot;slack:post_draft&quot;]
+    network_egress: false
+  system1_gates:
+    - id: requires_human_review
+      primitive: Score
+      rubric_ref: &quot;blast_radius_severity_v1&quot;
+      escalate_above: 6.5
+  skills:
+    - &quot;skills/rust-test-healer&quot;
+    - &quot;skills/git-bisect-surgical&quot;</code></pre>
+<hr />
+</div></div></section><section class="section section--sunken" id="sla" data-nav-group="architecture" aria-labelledby="sla-t"><div class="container stack"><header class="section__header" data-reveal><p class="eyebrow">Non-functional requirements</p><h2 id="sla-t">Performance SLAs, enforced by design</h2></header><div class="prose"><table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>Target SLA</th>
+<th>Enforcement Mechanism</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Single-Binary Size (<code>danav</code>)</strong></td>
+<td><code>&lt; 35 MB</code> (stripped release binary)</td>
+<td>LTO (<code>fat</code>), <code>codegen-units = 1</code>,
+<code>strip = true</code>, dynamic model download on first run.</td>
+</tr>
+<tr class="even">
+<td><strong>Turn-1 <code>context_pack</code> Latency</strong></td>
+<td><code>&lt; 15 ms</code> (P95)</td>
+<td>Pre-indexed Tree-sitter SQLite tables + in-memory git diff watcher +
+quantized vectors.</td>
+</tr>
+<tr class="odd">
+<td><strong>System One Decision Pass
+(<code>Choice</code>/<code>Score</code>/<code>Noul</code>)</strong></td>
+<td><code>&lt; 45 ms</code> (P95 on CPU)</td>
+<td>Quantized INT8 ONNX Runtime + single-pass batch evaluation
+(#28).</td>
+</tr>
+<tr class="even">
+<td><strong>Proxy First-Token Overhead</strong></td>
+<td><code>&lt; 5 ms</code> over raw upstream API</td>
+<td>Zero-copy <code>hyper</code> SSE streaming + asynchronous
+post-response memory extraction.</td>
+</tr>
+<tr class="odd">
+<td><strong>Idle Daemon RAM Footprint</strong></td>
+<td><code>&lt; 60 MB</code> (Brain CLI) / <code>&lt; 150 MB</code>
+(Desktop App)</td>
+<td>Automatic LRU cache eviction and unloading of idle ONNX models via
+<code>danav clean</code> (#66, #67).</td>
+</tr>
+<tr class="even">
+<td><strong>Structural Hallucination Rate</strong></td>
+<td><code>0.0%</code> on internal routing &amp; tool selection</td>
+<td>Hard token-level logit masking in <code>danav-system1</code>
+(#29).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div></div></section><section class="section" id="roadmap" aria-labelledby="roadmap-t"><div class="container split"><div class="split__lead" data-reveal><p class="eyebrow">Engineering roadmap</p><h2 id="roadmap-t">Sixteen weeks, four milestones</h2><p class="lede">From the surgical code and memory core to the desktop agent OS.</p></div><ol class="steps" data-reveal-group><li class="step" data-reveal-item><span class="step__marker" aria-hidden="true">1</span><div class="step__body"><p class="step__tag">Weeks 1–4</p><h3>Milestone 1 — The Surgical Code &amp; Memory Core</h3><div class="step__text"><ul class="marker-list"><li><span>Scaffold the Rust workspace (<code>danav-cli</code>, <code>danav-daemon</code>, <code>danav-ast</code>, <code>danav-memory</code>).</span></li><li><span>Implement the SQLite WAL schema, Tree-sitter background indexer (#36), <code>read_skeleton</code> (#37), <code>read_symbol</code> (#43), and <code>edit_symbol</code> (#44).</span></li><li><span>Build the Dual Store and <code>UPDATES</code>/<code>EXTENDS</code>/<code>DERIVES</code> relational memory graph (#11–12).</span></li><li><span>Ship <code>danav init</code> (#3) and the MCP server so Claude Code, Cursor, and Gemini CLI immediately share one brain.</span></li></ul></div></div></li><li class="step" data-reveal-item><span class="step__marker" aria-hidden="true">2</span><div class="step__body"><p class="step__tag">Weeks 5–8</p><h3>Milestone 2 — Proxy, System One &amp; Security Engine</h3><div class="step__text"><ul class="marker-list"><li><span>Build <code>danav-proxy</code> with prefix-cache alignment (#8, #9) and the Outbound Secret Redactor (#62).</span></li><li><span>Integrate <code>ort</code> / <code>llama-cpp-2</code> in <code>danav-system1</code> for constrained <code>Choice</code>, <code>Score</code>, and <code>Noul</code> primitives (#26–35).</span></li><li><span>Wire the Sub-15ms <code>context_pack</code> generator (#42) and Rootless Process Sandbox (#53).</span></li></ul></div></div></li><li class="step" data-reveal-item><span class="step__marker" aria-hidden="true">3</span><div class="step__body"><p class="step__tag">Weeks 9–12</p><h3>Milestone 3 — Local Web Control Center &amp; Benchmarks</h3><div class="step__text"><ul class="marker-list"><li><span>Launch <code>localhost:7420</code> UI (#71) featuring the Interactive Trace Replay Viewer (#69), Visual Memory Graph, and Live Resource Cleanup panel (#65–66).</span></li><li><span>Implement the 50-task <code>/benchmark-context</code> suite (#70) and Counterfactual Replay Simulator (#99).</span></li></ul></div></div></li><li class="step" data-reveal-item><span class="step__marker" aria-hidden="true">4</span><div class="step__body"><p class="step__tag">Weeks 13–16</p><h3>Milestone 4 — Danav Desktop App &amp; Agent OS</h3><div class="step__text"><ul class="marker-list"><li><span>Wrap the web UI and Rust daemon into the native <strong>Tauri v2 Desktop App</strong>.</span></li><li><span>Build the Unified BYO-Subscription Pool Manager (#103), Event-Driven Triggers (#104), DAG Workflow Compiler (#107), OS Accessibility Bridge (#105), and <code>.danav-agent</code> packaging (#110).</span></li></ul></div></div></li></ol></div></section><section class="band" aria-labelledby="idea-title"><div class="container band__inner" data-reveal-group><p class="eyebrow band__eyebrow" data-reveal-item>The idea</p><h2 class="band__statement" data-reveal-item id="idea-title">Danav gives every model the same memory, decides in milliseconds what each task needs, and keeps your data and compute yours.</h2><p class="band__text" data-reveal-item>The Brain remembers, slices code surgically and routes with zero-text decisions. The Desktop turns the subscriptions you already pay for into governed, cross-app agents.</p><a class="button button--inverse" data-reveal-item href="#top">Back to the routing demo</a></div></section></main><footer class="site-footer"><div class="container site-footer__inner"><a class="wordmark" href="#top" aria-label="Danav, back to top"><svg class="wordmark__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><defs><clipPath id="danav-mark-foot"><rect width="15.25" height="32"/></clipPath></defs><g class="wordmark__half wordmark__half--spark"><path class="wordmark__spark" clip-path="url(#danav-mark-foot)" d="M15.61 14.55L13.36 6.15M14.94 14.94L7.02 7.02M14.55 15.61L5.18 13.10M14.55 16.39L5.18 18.90M14.94 17.06L7.02 24.98M15.61 17.45L13.36 25.85"/></g><g class="wordmark__half wordmark__half--head"><path class="wordmark__head" fill-rule="evenodd" d="M16.75 12.2L21 9.6C22 6.6 24.8 4.3 29 2.6C27.9 6.2 27.4 8.8 26.6 11.4C27 14.6 26.6 17.6 24.8 20.4L16.75 29Z M18.5 17.6L24.6 14.1L23.9 17.5Z"/></g></svg><span>Danav</span></a><p class="site-footer__note">Danav Master Product and Technical Specification. This page describes the planned platform, shows illustrative examples only, and collects no data.</p></div></footer><script>/*
+  scale-frame.js
+  Fits each [data-scale-frame] canvas to the width of its frame by scaling it
+  uniformly. The canvas keeps its design layout at every size.
+*/
+(function () {
+  'use strict';
+
+  var frames = [].slice.call(document.querySelectorAll('[data-scale-frame]'));
+  if (!frames.length) {
+    return;
+  }
+
+  function fit(frame) {
+    var canvas = frame.querySelector('.scale-canvas');
+    var designWidth = canvas.offsetWidth;
+    if (!designWidth) {
+      return;
+    }
+    var scale = frame.clientWidth / designWidth;
+    frame.style.setProperty('--scale', scale.toFixed(4));
+    frame.style.setProperty('--canvas-height', canvas.offsetHeight + 'px');
+    frame.setAttribute('data-ready', '');
+  }
+
+  function fitAll() {
+    frames.forEach(fit);
+  }
+
+  var queued = false;
+  function queueFit() {
+    if (queued) { return; }
+    queued = true;
+    window.requestAnimationFrame(function () {
+      queued = false;
+      fitAll();
+    });
+  }
+
+  fitAll();
+  window.addEventListener('resize', queueFit);
+
+  if (window.ResizeObserver) {
+    var observer = new ResizeObserver(queueFit);
+    frames.forEach(function (frame) {
+      observer.observe(frame);
+      observer.observe(frame.querySelector('.scale-canvas'));
+    });
+  }
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(queueFit);
+  }
+})();
+
+/*
+  theme.js
+  Theme toggle. The page is dark by default. A viewer's explicit data-theme or
+  a remembered choice (when storage is available) switches it to light.
+*/
+(function () {
+  'use strict';
+
+  var KEY = 'danav-theme';
+  var root = document.documentElement;
+  var button = document.getElementById('theme-toggle');
+
+  function readStored() {
+    try {
+      var value = window.localStorage.getItem(KEY);
+      return value === 'dark' || value === 'light' ? value : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function writeStored(value) {
+    try {
+      window.localStorage.setItem(KEY, value);
+    } catch (error) {
+      /* storage unavailable, the choice lasts for this visit only */
+    }
+  }
+
+  function effective() {
+    return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  }
+
+  function updateLabel() {
+    if (button) {
+      button.setAttribute('aria-label', effective() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+    }
+  }
+
+  var stored = readStored();
+  if (stored) {
+    root.setAttribute('data-theme', stored);
+  }
+  updateLabel();
+
+  if (button) {
+    button.addEventListener('click', function () {
+      var next = effective() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      writeStored(next);
+      updateLabel();
+    });
+  }
+})();
+
+/*
+  router-stage.js
+  The System One routing demo in the hero (illustrative). Four example requests run
+  through the router and land on the cheapest lane that can do the job. One
+  falls below the 0.80 confidence bar and escalates, one is planned by System Two
+  and delegated. Scenarios map to Danav_Master_Spec.md features #10, #30, #44,
+  #45, #75 and #98.
+
+  The demo lives in a scale canvas, so it always has one layout. Wire paths and
+  the token position are measured once per run and converted back to the
+  canvas's own coordinates, so they stay correct at any scale. All appearance
+  rules live in styles/components/stage.css.
+*/
+(function () {
+  'use strict';
+
+  var stage = document.getElementById('router-stage');
+  if (!stage) {
+    return;
+  }
+
+  var SVG_NS = 'http://www.w3.org/2000/svg';
+  var CANCEL = { cancelled: true };
+
+  var body = document.getElementById('stage-body');
+  var wiresSvg = document.getElementById('stage-wires');
+  var token = document.getElementById('stage-token');
+  var routerEl = document.getElementById('router-node');
+  var toggle = document.getElementById('stage-toggle');
+  var live = document.getElementById('stage-live');
+  var resultEl = document.getElementById('stage-result');
+  var resultText = document.getElementById('result-text');
+  var resultChip = document.getElementById('result-chip');
+  var out = {
+    needs: document.getElementById('ro-needs'),
+    path: document.getElementById('ro-path'),
+    budget: document.getElementById('ro-budget'),
+    now: document.getElementById('ro-now')
+  };
+  var requestButtons = [].slice.call(stage.querySelectorAll('.request'));
+  var levelEls = [].slice.call(stage.querySelectorAll('.level'));
+
+  var motionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  var LEVEL_NAMES = ['L0 Rust tool', 'L1 System One', 'L2 cheap lane', 'L3 frontier lane'];
+  var STATUS = { idle: 'Idle', active: 'Running', checking: 'Checking', passed: 'Passed', failed: 'Not resolved' };
+
+  /* Each step: [kind, ...args]. Kinds: go, work, verify, mark, now, back, final */
+  var SCENARIOS = [
+    { needs: 'AST symbol edit, no reasoning', path: 'Rust tool, no model call', budget: 'Not needed',
+      result: 'edit_symbol applied, Tree-sitter syntax check passed. No model call (#44).',
+      steps: [['go', 0], ['work', 0, 500], ['verify', 0, true]] },
+    { needs: 'Risk gate on a proposed diff', path: 'System One Score gate', budget: 'Score below 6.5 (blast radius)',
+      result: 'Score rubric passed in under 50 ms, so no adversarial review needed (#98).',
+      steps: [['go', 1], ['work', 1, 900], ['verify', 1, true]] },
+    { needs: 'Diagnose a failing test', path: 'System One, escalate if needed', budget: 'Choice p below 0.80, escalate',
+      result: 'Stack trace resolved to AST symbols, corrective brief injected, test passes (#41, #75).',
+      steps: [['go', 1], ['work', 1, 800], ['verify', 1, false], ['now', 'Below 0.80. Escalating.'], ['back', 1], ['go', 2], ['work', 2, 1000], ['verify', 2, true]] },
+    { needs: 'Multi-file refactor', path: 'Plan, then delegate', budget: 'Plan on L3, subtasks on L1/L0',
+      result: 'Plan from System Two, subtasks on cheaper lanes, impact_check before edits (#10, #45).',
+      steps: [['go', 3], ['work', 3, 900], ['mark', 3, 'passed', 'Plan ready'], ['back', 3], ['now', 'Delegating the first subtask'], ['go', 1], ['work', 1, 700], ['verify', 1, true], ['back', 1], ['now', 'Delegating the second subtask'], ['go', 0], ['work', 0, 500], ['verify', 0, true], ['back', 0], ['final']] }
+  ];
+
+  var RESTING_INDEX = 2;
+
+  var reqWires = [];
+  var levelWires = [];
+  var runId = 0;
+  var running = false;
+  var current = null;
+  var currentAnim = null;
+  var lastIndex = RESTING_INDEX;
+  var paused = false;
+  var loopId = 0;
+  var loopTimer = null;
+
+  /* ---------- small helpers ---------- */
+
+  function sleep(ms) {
+    return new Promise(function (resolve) { setTimeout(resolve, ms); });
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function guard(ctx) {
+    if (ctx.id !== runId) {
+      throw CANCEL;
+    }
+  }
+
+  async function pause(ms, ctx) {
+    if (!ctx.instant) {
+      await sleep(ms);
+    }
+    guard(ctx);
+  }
+
+  /* ---------- state writers ---------- */
+
+  function setRouter(state) {
+    routerEl.setAttribute('data-state', state);
+  }
+
+  function setReadout(values) {
+    Object.keys(values).forEach(function (key) {
+      out[key].textContent = values[key];
+    });
+  }
+
+  function setLevel(index, state, label) {
+    var el = levelEls[index];
+    el.setAttribute('data-state', state);
+    el.querySelector('.level__status').textContent = label || STATUS[state];
+  }
+
+  function setResult(state, chip, text) {
+    resultEl.setAttribute('data-state', state);
+    resultChip.textContent = chip;
+    resultText.textContent = text;
+  }
+
+  function selectRequest(index) {
+    requestButtons.forEach(function (btn, i) {
+      if (i === index) {
+        btn.setAttribute('aria-current', 'true');
+      } else {
+        btn.removeAttribute('aria-current');
+      }
+    });
+  }
+
+  function activateWire(wire) {
+    if (!wire) { return; }
+    wire.classList.add('is-active');
+    wiresSvg.appendChild(wire);
+  }
+
+  function resetVisuals() {
+    levelEls.forEach(function (_, i) { setLevel(i, 'idle'); });
+    reqWires.concat(levelWires).forEach(function (w) { w.classList.remove('is-active'); });
+    setRouter('idle');
+    token.setAttribute('data-visible', 'false');
+  }
+
+  /* ---------- geometry ---------- */
+
+  function makePath(points) {
+    var path = document.createElementNS(SVG_NS, 'path');
+    path.setAttribute('class', 'wire');
+    path.setAttribute('fill', 'none');
+    path.setAttribute('d', 'M' + points.map(function (p) { return p[0] + ' ' + p[1]; }).join(' L'));
+    path.points = points;
+    return path;
+  }
+
+  function buildGeometry() {
+    var origin = body.getBoundingClientRect();
+    /* The canvas is scaled as a whole: divide measured sizes by the scale to
+       get the canvas's own coordinates. */
+    var scale = origin.width / body.offsetWidth || 1;
+
+    function box(el) {
+      var r = el.getBoundingClientRect();
+      return {
+        l: (r.left - origin.left) / scale,
+        r: (r.right - origin.left) / scale,
+        y: (r.top - origin.top + r.height / 2) / scale
+      };
+    }
+
+    while (wiresSvg.firstChild) {
+      wiresSvg.removeChild(wiresSvg.firstChild);
+    }
+    reqWires = [];
+    levelWires = [];
+
+    var router = box(routerEl);
+
+    requestButtons.forEach(function (btn) {
+      var q = box(btn);
+      var mx = (q.r + router.l) / 2;
+      reqWires.push(makePath([[q.r, q.y], [mx, q.y], [mx, router.y], [router.l, router.y]]));
+    });
+
+    levelEls.forEach(function (el) {
+      var lv = box(el);
+      var mx = (router.r + lv.l) / 2;
+      levelWires.push(makePath([[router.r, router.y], [mx, router.y], [mx, lv.y], [lv.l, lv.y]]));
+    });
+
+    reqWires.concat(levelWires).forEach(function (w) { wiresSvg.appendChild(w); });
+  }
+
+  function place(point) {
+    var half = token.offsetWidth / 2;
+    token.style.transform = 'translate(' + (point[0] - half) + 'px,' + (point[1] - half) + 'px)';
+  }
+
+  async function travel(points, ctx) {
+    if (ctx.instant) { return; }
+    var half = token.offsetWidth / 2;
+    function at(p) { return 'translate(' + (p[0] - half) + 'px,' + (p[1] - half) + 'px)'; }
+    place(points[0]);
+    token.setAttribute('data-visible', 'true');
+    for (var i = 1; i < points.length; i += 1) {
+      var from = points[i - 1];
+      var to = points[i];
+      var length = Math.hypot(to[0] - from[0], to[1] - from[1]);
+      if (length < 1) { continue; }
+      var anim = token.animate(
+        [{ transform: at(from) }, { transform: at(to) }],
+        { duration: clamp(length / 0.55, 220, 800), easing: 'linear', fill: 'forwards' }
+      );
+      currentAnim = anim;
+      try {
+        await anim.finished;
+      } catch (error) {
+        throw CANCEL;
+      }
+      guard(ctx);
+      place(to);
+      anim.cancel();
+    }
+  }
+
+  /* ---------- scenario runner ---------- */
+
+  async function performStep(step, ctx) {
+    var kind = step[0];
+    var n = step[1];
+
+    if (kind === 'go') {
+      setRouter('routing');
+      setReadout({ now: 'Sending to ' + LEVEL_NAMES[n] });
+      activateWire(levelWires[n]);
+      await travel(levelWires[n].points, ctx);
+      guard(ctx);
+      setLevel(n, 'active');
+      setReadout({ now: LEVEL_NAMES[n] + ' is working' });
+    } else if (kind === 'work') {
+      await pause(step[2], ctx);
+    } else if (kind === 'verify') {
+      setLevel(n, 'checking');
+      setReadout({ now: 'Checking the output' });
+      await pause(600, ctx);
+      setLevel(n, step[2] ? 'passed' : 'failed');
+      if (!step[2]) {
+        setResult('working', 'Escalating', 'Not resolved at ' + LEVEL_NAMES[n] + '. Trying a more capable lane.');
+      }
+    } else if (kind === 'mark') {
+      setLevel(n, step[2], step[3]);
+    } else if (kind === 'now') {
+      setReadout({ now: step[1] });
+      await pause(450, ctx);
+    } else if (kind === 'back') {
+      setReadout({ now: 'Back at the router' });
+      await travel(levelWires[n].points.slice().reverse(), ctx);
+      guard(ctx);
+    } else if (kind === 'final') {
+      setRouter('thinking');
+      setReadout({ now: 'Checking the combined result' });
+      await pause(800, ctx);
+    }
+  }
+
+  async function runScenario(index, options) {
+    var ctx = { id: ++runId, instant: !!options.instant || motionMedia.matches };
+    var scenario = SCENARIOS[index];
+    running = true;
+    lastIndex = index;
+    if (currentAnim) { currentAnim.cancel(); }
+
+    try {
+      buildGeometry();
+      resetVisuals();
+      selectRequest(index);
+      setResult('working', 'Working', 'Routing the request.');
+      setReadout({ needs: 'Reading the request', path: 'Not decided', budget: 'Not decided', now: 'Classifying' });
+      setRouter('thinking');
+
+      activateWire(reqWires[index]);
+      await travel(reqWires[index].points, ctx);
+      guard(ctx);
+      await pause(650, ctx);
+
+      setReadout({ needs: scenario.needs, path: scenario.path, budget: scenario.budget, now: 'Routing' });
+      setRouter('routing');
+
+      for (var i = 0; i < scenario.steps.length; i += 1) {
+        await performStep(scenario.steps[i], ctx);
+      }
+
+      setRouter('done');
+      setReadout({ now: 'Done' });
+      setResult('done', 'Verified', scenario.result);
+      token.setAttribute('data-visible', 'false');
+      if (options.announce) {
+        live.textContent = scenario.result;
+      }
+      return true;
+    } catch (error) {
+      if (error !== CANCEL) { throw error; }
+      return false;
+    } finally {
+      if (ctx.id === runId) { running = false; }
+    }
+  }
+
+  function start(index, options) {
+    current = runScenario(index, options || {});
+    return current;
+  }
+
+  /* ---------- autoplay ---------- */
+
+  async function loop(startIndex) {
+    var mine = ++loopId;
+    var index = startIndex;
+    while (!paused && mine === loopId) {
+      var finished = await start(index);
+      if (!finished || mine !== loopId) { return; }
+      await sleep(2200);
+      index = (index + 1) % SCENARIOS.length;
+    }
+  }
+
+  function scheduleLoop(delay) {
+    clearTimeout(loopTimer);
+    if (paused || motionMedia.matches) { return; }
+    loopTimer = setTimeout(function () {
+      loop((lastIndex + 1) % SCENARIOS.length);
+    }, delay);
+  }
+
+  function updateToggle() {
+    toggle.hidden = motionMedia.matches;
+    toggle.textContent = paused ? 'Play demo' : 'Pause demo';
+  }
+
+  toggle.addEventListener('click', async function () {
+    if (paused) {
+      paused = false;
+      updateToggle();
+      if (current) {
+        try { await current; } catch (error) { /* ignore */ }
+      }
+      scheduleLoop(300);
+    } else {
+      paused = true;
+      loopId += 1;
+      clearTimeout(loopTimer);
+      updateToggle();
+    }
+  });
+
+  requestButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      paused = true;
+      loopId += 1;
+      clearTimeout(loopTimer);
+      updateToggle();
+      start(Number(btn.getAttribute('data-scenario')), { announce: true });
+    });
+  });
+
+  if (motionMedia.addEventListener) {
+    motionMedia.addEventListener('change', function () {
+      updateToggle();
+      if (motionMedia.matches) {
+        loopId += 1;
+        clearTimeout(loopTimer);
+      } else {
+        scheduleLoop(800);
+      }
+    });
+  }
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () {
+      if (!running) { start(lastIndex, { instant: true }); }
+    });
+  }
+
+  /* ---------- first frame ---------- */
+
+  updateToggle();
+  start(RESTING_INDEX, { instant: true });
+  scheduleLoop(1800);
+})();
+
+/* page.js: topology tabs, scroll rail on step lists, expand-all for feature groups */
+(function () {
+  'use strict';
+  var MODES = {
+    desktop: { siteA: 'Native desktop app', siteB: 'Embedded on this machine', link: 'Tauri IPC', name: 'Danav Desktop', role: 'Application',
+      detail: 'Tauri v2 app that embeds danav-daemon directly, with system tray hooks, global shortcuts and accessibility permissions.',
+      list: ['Agent Studio and DAG Builder', 'Memory Graph and Trace Replay', 'BYO-Sub Pool and Budget Router', 'Escalation Inbox'],
+      caption: 'Native Desktop Mode: Tauri embeds danav-daemon into the OS binary and talks to it over zero-copy IPC commands.' },
+    web: { siteA: 'Your browser', siteB: 'danavd on this machine', link: 'REST and WebSocket on 127.0.0.1:7420', name: 'Control Center', role: 'Web UI',
+      detail: 'The same frontend bundle, served as static files by danavd with the danav ui command.',
+      list: ['Visual Memory Graph browser', 'Trace Replay Viewer', 'Skill manager and review queue', 'Live RAM and disk cleanup panel'],
+      caption: 'Headless Server Mode: danavd serves the compiled frontend over WebSockets and REST at localhost:7420.' },
+    cli: { siteA: 'Your terminals and editors', siteB: 'danavd on this machine', link: 'MCP (stdio / SSE) and API proxy', name: 'CLIs and IDEs', role: 'Clients',
+      detail: 'Claude Code, Cursor, Gemini CLI, Codex and VS Code read and write one brain through MCP or the OpenAI/Anthropic-compatible proxy.',
+      list: ['Claude Code', 'Cursor', 'Gemini CLI and Codex', 'VS Code, Neovim and Zed'],
+      caption: 'Every CLI, IDE and agent shares a single local relational memory graph and AST index.' }
+  };
+  var tabs = [].slice.call(document.querySelectorAll('.segmented__tab'));
+  var topology = document.getElementById('topology');
+  function $(id) { return document.getElementById(id); }
+  function selectMode(mode, moveFocus) {
+    var c = MODES[mode];
+    if (!c || !topology) { return; }
+    tabs.forEach(function (tab) {
+      var on = tab.getAttribute('data-mode') === mode;
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+      tab.tabIndex = on ? 0 : -1;
+      if (on) { topology.setAttribute('aria-labelledby', tab.id); if (moveFocus) { tab.focus(); } }
+    });
+    topology.setAttribute('data-mode', mode);
+    $('site-a').textContent = c.siteA; $('site-b').textContent = c.siteB;
+    $('link-label').textContent = c.link; $('topology-caption').textContent = c.caption;
+    $('a-name').textContent = c.name; $('a-role').textContent = c.role; $('a-detail').textContent = c.detail;
+    $('a-list').innerHTML = c.list.map(function (t) { return '<li>' + t + '</li>'; }).join('');
+  }
+  tabs.forEach(function (tab, index) {
+    tab.addEventListener('click', function () { selectMode(tab.getAttribute('data-mode'), false); });
+    tab.addEventListener('keydown', function (e) {
+      var n = null;
+      if (e.key === 'ArrowRight') { n = (index + 1) % tabs.length; }
+      if (e.key === 'ArrowLeft') { n = (index - 1 + tabs.length) % tabs.length; }
+      if (e.key === 'Home') { n = 0; }
+      if (e.key === 'End') { n = tabs.length - 1; }
+      if (n !== null) { e.preventDefault(); selectMode(tabs[n].getAttribute('data-mode'), true); }
+    });
+  });
+
+  var steps = [].slice.call(document.querySelectorAll('.step'));
+  var ticking = false;
+  function updateSteps() {
+    ticking = false;
+    var line = window.innerHeight * 0.6;
+    steps.forEach(function (s) {
+      var m = s.querySelector('.step__marker').getBoundingClientRect();
+      s.classList.toggle('is-passed', m.top + m.height / 2 < line);
+    });
+  }
+  function req() { if (!ticking) { ticking = true; window.requestAnimationFrame(updateSteps); } }
+  if (steps.length) {
+    window.addEventListener('scroll', req, { passive: true });
+    window.addEventListener('resize', req);
+    updateSteps();
+  }
+
+  var tog = $('features-toggle');
+  if (tog) {
+    var groups = [].slice.call(document.querySelectorAll('.feature-group'));
+    tog.addEventListener('click', function () {
+      var open = tog.getAttribute('data-open') !== 'true';
+      groups.forEach(function (g) { g.open = open; });
+      tog.setAttribute('data-open', open ? 'true' : 'false');
+      tog.textContent = open ? 'Collapse all' : 'Expand all';
+    });
+  }
+})();
+
+
+/*
+  motion.js
+  Scroll reveal, section-aware navigation underline. Everything degrades to a
+  static page without IntersectionObserver or when motion is reduced.
+*/
+(function () {
+  'use strict';
+
+  var targets = [].slice.call(document.querySelectorAll('[data-reveal], [data-reveal-group]'));
+
+  targets.forEach(function (group) {
+    if (group.hasAttribute('data-reveal-group')) {
+      [].slice.call(group.querySelectorAll('[data-reveal-item]')).forEach(function (item, index) {
+        item.style.setProperty('--reveal-index', index);
+      });
+    }
+  });
+
+  function show(el) {
+    el.classList.add('is-in');
+  }
+
+  if (!('IntersectionObserver' in window)) {
+    targets.forEach(show);
+  } else {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          show(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0 });
+    targets.forEach(function (el) { observer.observe(el); });
+  }
+})();
+
+(function () {
+  'use strict';
+
+  var nav = document.querySelector('.site-nav__links');
+  var bar = document.querySelector('.site-nav');
+  var navToggle = document.getElementById('nav-toggle');
+  if (!nav || !bar) {
+    return;
+  }
+
+  var links = [].slice.call(nav.querySelectorAll('a'));
+  var byKey = {};
+  links.forEach(function (a) {
+    byKey[a.getAttribute('href').slice(1)] = a;
+  });
+
+  if (navToggle) {
+    function closeNav() {
+      bar.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.setAttribute('aria-label', 'Open navigation menu');
+    }
+
+    navToggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = bar.classList.toggle('is-open');
+      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      navToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+    });
+
+    links.forEach(function (a) {
+      a.addEventListener('click', function () {
+        closeNav();
+      });
+    });
+
+    document.addEventListener('click', function (e) {
+      if (bar.classList.contains('is-open') && !bar.contains(e.target)) {
+        closeNav();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && bar.classList.contains('is-open')) {
+        closeNav();
+        navToggle.focus();
+      }
+    });
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth >= 768 && bar.classList.contains('is-open')) {
+        closeNav();
+      }
+    });
+  }
+
+  var blocks = [].slice.call(document.querySelectorAll('main > section, main > .band'));
+  var current = null;
+  var ticking = false;
+  var ready = false;
+
+  function keyOf(el) {
+    var key = el.getAttribute('data-nav-group') || el.id;
+    return byKey[key] ? key : null;
+  }
+
+  function place() {
+    var link = current && byKey[current];
+    if (!link || window.innerWidth < 768) {
+      nav.classList.remove('has-active');
+      return;
+    }
+    var n = nav.getBoundingClientRect();
+    var r = link.getBoundingClientRect();
+    nav.style.setProperty('--indicator-x', (r.left - n.left) + 'px');
+    nav.style.setProperty('--indicator-y', (r.bottom - n.top - 2) + 'px');
+    nav.style.setProperty('--indicator-w', r.width + 'px');
+    nav.classList.add('has-active');
+    if (!ready) {
+      ready = true;
+      window.requestAnimationFrame(function () { nav.classList.add('is-ready'); });
+    }
+  }
+
+  function update() {
+    ticking = false;
+    var line = bar.offsetHeight + window.innerHeight * 0.3;
+    var key = null;
+    blocks.forEach(function (block) {
+      if (block.getBoundingClientRect().top <= line) {
+        key = keyOf(block);
+      }
+    });
+    if (key !== current) {
+      current = key;
+      links.forEach(function (a) {
+        if (key && byKey[key] === a) {
+          a.setAttribute('aria-current', 'location');
+        } else {
+          a.removeAttribute('aria-current');
+        }
+      });
+    }
+    place();
+  }
+
+  function queue() {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }
+  }
+
+  window.addEventListener('scroll', queue, { passive: true });
+  window.addEventListener('resize', queue);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(queue);
+  }
+  update();
+})();
+</script></body></html>
