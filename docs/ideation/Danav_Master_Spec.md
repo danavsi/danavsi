@@ -1,4 +1,35 @@
-# Danav & Danav Brain: Master Product & Technical Specification
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/images/banner.png">
+    <source media="(prefers-color-scheme: light)" srcset="assets/images/banner.png">
+    <img src="assets/images/banner.png" alt="Danav — One brain, every model" width="100%">
+  </picture>
+</p>
+
+<p align="center">
+  <strong>One brain, every model. Super Intelligence you own, on hardware you own.</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/danavsi/danavsi/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
+  <a href="#"><img src="https://img.shields.io/badge/rust-100%25%20core-orange.svg?style=flat-square&logo=rust" alt="Rust 100%"></a>
+  <a href="#"><img src="https://img.shields.io/badge/system%201-%3C50ms%20ONNX-success.svg?style=flat-square" alt="System 1"></a>
+  <a href="#"><img src="https://img.shields.io/badge/desktop-Tauri%20v2%20%2B%20React-blueviolet.svg?style=flat-square" alt="Tauri v2"></a>
+  <a href="#"><img src="https://img.shields.io/badge/memory-SQLite%20WAL%20%2B%20Vector-lightgrey.svg?style=flat-square" alt="Memory Graph"></a>
+</p>
+
+<p align="center">
+  <a href="#overview">Overview</a> •
+  <a href="#part-1-product-requirements-document-prd">PRD</a> •
+  <a href="#part-2-typesafe-system-one-engine-specification">System 1 Engine</a> •
+  <a href="#part-3-danav-brain-technical-specification">Danav Brain (Rust)</a> •
+  <a href="#part-4-danav-application-tauri-v2--desktop-architecture">Danav Desktop (Tauri)</a> •
+  <a href="#part-6-engineering-roadmap--milestones">Roadmap</a>
+</p>
+
+---
+
+## Overview
 
 **Danav** is a two-part, local-first cognitive infrastructure and autonomous agent operating system built **100% in Rust (Core Engine)** and **Tauri + TypeScript/React (Desktop & Web Control Center)**.
 
