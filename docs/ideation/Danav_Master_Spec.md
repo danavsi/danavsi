@@ -13,7 +13,7 @@
 <p align="center">
   <a href="https://github.com/danavsi/danavsi/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
   <a href="#"><img src="https://img.shields.io/badge/rust-100%25%20core-orange.svg?style=flat-square&logo=rust" alt="Rust 100%"></a>
-  <a href="#"><img src="https://img.shields.io/badge/system%201-%3C50ms%20ONNX-success.svg?style=flat-square" alt="System 1"></a>
+  <a href="#"><img src="https://img.shields.io/badge/system%20one-%3C50ms%20ONNX-success.svg?style=flat-square" alt="System one"></a>
   <a href="#"><img src="https://img.shields.io/badge/desktop-Tauri%20v2%20%2B%20React-blueviolet.svg?style=flat-square" alt="Tauri v2"></a>
   <a href="#"><img src="https://img.shields.io/badge/memory-SQLite%20WAL%20%2B%20Vector-lightgrey.svg?style=flat-square" alt="Memory Graph"></a>
 </p>
@@ -21,7 +21,7 @@
 <p align="center">
   <a href="#overview">Overview</a> •
   <a href="#part-1-product-requirements-document-prd">PRD</a> •
-  <a href="#part-2-typesafe-system-one-engine-specification">System 1 Engine</a> •
+  <a href="#part-2-typesafe-system-one-engine-specification">System one Engine</a> •
   <a href="#part-3-danav-brain-technical-specification">Danav Brain (Rust)</a> •
   <a href="#part-4-danav-application-tauri-v2--desktop-architecture">Danav Desktop (Tauri)</a> •
   <a href="#part-6-engineering-roadmap--milestones">Roadmap</a>
@@ -33,7 +33,7 @@
 
 **Danav** is a two-part, local-first cognitive infrastructure and autonomous agent operating system built **100% in Rust (Core Engine)** and **Tauri + TypeScript/React (Desktop & Web Control Center)**.
 
-1. **Danav Brain (`danavd` / `danav` CLI):** The headless, single-binary cognitive backend. It acts as the unified hippocampus (relational memory graph + AST code index) and prefrontal cortex (sub-50ms TypeSafe System 1 decision router + streaming API proxy) for every AI CLI, IDE, and model a user runs.
+1. **Danav Brain (`danavd` / `danav` CLI):** The headless, single-binary cognitive backend. It acts as the unified hippocampus (relational memory graph + AST code index) and prefrontal cortex (sub-50ms TypeSafe System one decision router + streaming API proxy) for every AI CLI, IDE, and model a user runs.
 2. **Danav Application (`Danav Desktop`):** The native cross-platform application built directly on top of Danav Brain. It allows users to pool their existing AI subscriptions, CLI sessions, API keys, and local models into a unified compute layer, create custom autonomous agents, and orchestrate tasks across local codebases, desktop apps, and cloud services.
 
 ---
@@ -53,7 +53,7 @@ Modern developers and power users operate across fragmented AI silos—Claude Co
 
 * **One Brain, Every Model:** Every CLI, IDE, and agent reads from and writes to a single local relational memory graph and AST index.
 * **Zero-Search Surgical Context:** Turn-1 prompts automatically receive a sub-15ms, 400–600 token `context_pack` containing exact AST symbol line ranges, relevant relational memories, and active test states—cutting token consumption by up to 80%.
-* **Sub-50ms TypeSafe System 1 Routing:** Every internal decision (routing, tool selection, safety gating, memory promotion) uses constrained zero-text primitives (`Choice`, `Score`, `Noul`) with a 0% structural hallucination guarantee.
+* **Sub-50ms TypeSafe System one Routing:** Every internal decision (routing, tool selection, safety gating, memory promotion) uses constrained zero-text primitives (`Choice`, `Score`, `Noul`) with a 0% structural hallucination guarantee.
 * **Bring Your Own Subscription (BYOS) Agent OS:** The Danav Desktop App turns passive AI subscriptions and local models into proactive, cross-app workers governed by strict local privacy and resource caps.
 
 ### 1.3 Target Personas
@@ -67,7 +67,7 @@ Modern developers and power users operate across fragmented AI silos—Claude Co
 | Phase | Deliverable | Core Focus | Target Metrics |
 | --- | --- | --- | --- |
 | **Phase 1: Core Wedge** | `danav` Single-Binary CLI & Proxy | Multi-CLI auto-wiring, OpenAI/Anthropic proxy, Tree-sitter AST slicer, Relational Memory Graph. | `< 15ms` context pack generation; `> 70%` file-read token reduction. |
-| **Phase 2: Cognitive Moat** | TypeSafe System 1 + Web UI (`:7420`) | Constrained decision engine (`Choice`/`Score`/`Noul`), local ONNX micro-models, Trace Replay UI, MemoryBench. | `< 50ms` System 1 routing; `0%` schema/tool hallucination. |
+| **Phase 2: Cognitive Moat** | TypeSafe System one + Web UI (`:7420`) | Constrained decision engine (`Choice`/`Score`/`Noul`), local ONNX micro-models, Trace Replay UI, MemoryBench. | `< 50ms` System one routing; `0%` schema/tool hallucination. |
 | **Phase 3: Danav App** | Native Tauri Desktop Application | BYO-Subscription pool manager, visual Agent Builder, DAG workflow compiler, OS/Browser automation bridge. | `< 150MB` idle RAM; 1-click agent packaging (`.danav-agent`). |
 
 ---
@@ -108,9 +108,9 @@ Modern developers and power users operate across fragmented AI silos—Claude Co
 24. **Multimodal Ingestion Pipeline:** Extracts, chunks, and indexes Markdown, code, PDFs (with page/diagram descriptions), images, and audio transcripts into the local index.
 25. **Auto-Syncing Knowledge Connectors:** Background sync connectors (with webhook/schedule support and `deleteDocuments: true/false` lifecycle control) for GitHub repos, Notion, Google Drive, Gmail, S3, local folders, and a targeted Web Crawler.
 
-### III. TypeSafe System 1 Decision Engine
+### III. TypeSafe System one Decision Engine
 
-26. **System 1 vs. System 2 Split Architecture:** Never wastes a slow generative LLM call on routing, classification, relevance filtering, or safety checks; runs a sub-50ms TypeSafe Decision Layer in front of every generative model.
+26. **System one vs. System 2 Split Architecture:** Never wastes a slow generative LLM call on routing, classification, relevance filtering, or safety checks; runs a sub-50ms TypeSafe Decision Layer in front of every generative model.
 27. **Zero-Text Constrained Decision Primitives (`Choice`, `Score`, `Noul`):** Every internal brain judgment is framed as one of three strict, schema-locked question types that output numbers/enums only—never free-form text:
     * **`Choice(options[1..255])`:** Picks from an enumerated list and returns a probability distribution plus confidence score.
     * **`Score(rubric[2..10])`:** Evaluates state on an ordered 2–10 level rubric with continuous interpolation.
@@ -192,7 +192,7 @@ Modern developers and power users operate across fragmented AI silos—Claude Co
 84. **Episodic Memory Clustering & Timeline Visualizer:** Automatically groups past debugging sessions and feature additions into chronological "epics" or timelines in the dashboard for quick historical audits.
 85. **Custom Schema Injector for Domain-Specific Agents:** Lets users define custom frontmatter schemas for specialized domains (e.g., legal contracts, medical charts, ERP specs, game design docs) without breaking the core brain engine.
 86. **Headless IDE & Editor Extensions (VS Code, Neovim, Zed):** Native extensions that stream surgical context briefs directly into the editor status bar, gutter indicators, and inline completion prompts.
-87. **Semantic Git Commit Message Generator:** Automatically analyzes staged diffs, linked memories, and System 1 decision outputs to draft descriptive, standards-compliant commit messages.
+87. **Semantic Git Commit Message Generator:** Automatically analyzes staged diffs, linked memories, and System one decision outputs to draft descriptive, standards-compliant commit messages.
 88. **Automatic Dependency Vulnerability Watcher:** Indexes local `package.json`, `Cargo.toml`, or `requirements.txt` files and maps them to local advisory databases for instant CVE-aware context packing.
 89. **Prompt-Caching Hit Rate Optimizer:** Continuously re-orders static prefixes, tool manifests, and project instructions to maximize cache hit ratios across OpenAI, Anthropic, and Gemini API providers.
 90. **Interactive "Why Did You Do That?" Trace Inspector:** A conversational debug tool in the UI where users can query an execution trace (e.g., *"Why did the agent edit file X?"*) and receive a deterministic breakdown of the retrieved memories and AST graph hops.
@@ -205,12 +205,12 @@ Modern developers and power users operate across fragmented AI silos—Claude Co
 ### X. Cognitive Plasticity, Speculative Execution & Failure Immunity
 
 96. **Negative-Constraint & Anti-Pattern Ledger ("Scar Tissue Memory"):** Explicitly records failed approaches, rejected libraries, and reverted git commits with higher retrieval weight than normal memories, ensuring no connected model ever repeats the same mistake twice.
-97. **Speculative Context Pre-Fetching (Zero-Latency Turn 2):** While the user is reading Turn 1 or typing in the terminal/UI, the System 1 engine predicts the 3 most likely next AST symbols and memories based on the active call graph and pre-loads them into hot RAM.
-98. **Cross-Model Consensus & Adversarial Verification Gate:** For high-risk edits (flagged by a System 1 `Score` rubric), automatically pipes the proposed diff created by Model A (e.g., Claude) through Model B (e.g., Gemini or Codex) in a blind adversarial review before presenting it to the user.
-99. **Counterfactual Replay Simulator (`danav replay --what-if`):** Runs historical session traces from JSONL logs against a newly tweaked System 1 rubric, new skill, or cheaper model to prove quantitatively whether the new setup solves bugs faster or cheaper.
+97. **Speculative Context Pre-Fetching (Zero-Latency Turn 2):** While the user is reading Turn 1 or typing in the terminal/UI, the System one engine predicts the 3 most likely next AST symbols and memories based on the active call graph and pre-loads them into hot RAM.
+98. **Cross-Model Consensus & Adversarial Verification Gate:** For high-risk edits (flagged by a System one `Score` rubric), automatically pipes the proposed diff created by Model A (e.g., Claude) through Model B (e.g., Gemini or Codex) in a blind adversarial review before presenting it to the user.
+99. **Counterfactual Replay Simulator (`danav replay --what-if`):** Runs historical session traces from JSONL logs against a newly tweaked System one rubric, new skill, or cheaper model to prove quantitatively whether the new setup solves bugs faster or cheaper.
 100. **Decay-Weighted Synaptic Pruning (Hebbian Memory Scoring):** Tracks how often a retrieved memory actually contributed to an accepted git diff or successful tool call; memories that are retrieved often but ignored by the agent lose synaptic weight and sink in ranking.
 101. **Semantic Diff Compression for Long Sessions:** Instead of keeping raw turn-by-turn file edit history in the conversation window, collapses intermediate edits into a single mathematical state transition ($State_0 \rightarrow State_N$) to keep long debugging sessions sharp.
-102. **Local ONNX/GGUF Micro-Model Hot-Swapper:** Dynamically loads quantized 0.5B–3B models into RAM strictly for the System 1 decision gates and embedding passes, keeping inference under 20ms on consumer laptops without requiring a dedicated GPU.
+102. **Local ONNX/GGUF Micro-Model Hot-Swapper:** Dynamically loads quantized 0.5B–3B models into RAM strictly for the System one decision gates and embedding passes, keeping inference under 20ms on consumer laptops without requiring a dedicated GPU.
 
 ### XI. Danav Desktop App: Cross-App Orchestration & BYO-Subscription Runtime
 
@@ -218,10 +218,10 @@ Modern developers and power users operate across fragmented AI silos—Claude Co
 104. **Event-Driven Reactive Triggers ("When X, Wake Agent Y"):** Turns Danav from a passive request-response brain into an event-driven daemon that wakes up autonomous agents on webhooks, Git pushes, incoming emails, Slack messages, cron schedules, or file system changes.
 105. **Universal App-State Graph (OS Accessibility + DOM Bridge):** Extends the Tree-sitter AST concept beyond code to the user's OS—mapping open desktop windows, active browser tabs, and native OS accessibility trees into a compact text graph so Danav agents can drive non-API desktop apps with low token overhead.
 106. **Scoped OAuth & Session Delegator for Third-Party Apps:** Allows users in the Danav UI to grant an agent temporary, capability-scoped access to external apps (e.g., *"Agent can read Jira tickets and draft Notion pages, but cannot delete or send external emails"*).
-107. **DAG Workflow Compiler (Natural Language to Deterministic Pipelines):** Lets users describe a multi-app workflow in plain English inside the Danav App once, and compiles it into a deterministic, repeatable Directed Acyclic Graph (DAG) gated by System 1 `Choice` and `Noul` checkpoints so daily runs cost almost zero LLM tokens.
-108. **Human-in-the-Loop Escalation Inbox (Async Approval Queue):** When a background agent hits a low-confidence System 1 gate ($p < 0.80$) or a high-risk policy boundary while working across apps, it pauses state and pushes a 1-click "Approve / Modify / Reject" card to the Danav App UI and mobile notification channel.
+107. **DAG Workflow Compiler (Natural Language to Deterministic Pipelines):** Lets users describe a multi-app workflow in plain English inside the Danav App once, and compiles it into a deterministic, repeatable Directed Acyclic Graph (DAG) gated by System one `Choice` and `Noul` checkpoints so daily runs cost almost zero LLM tokens.
+108. **Human-in-the-Loop Escalation Inbox (Async Approval Queue):** When a background agent hits a low-confidence System one gate ($p < 0.80$) or a high-risk policy boundary while working across apps, it pauses state and pushes a 1-click "Approve / Modify / Reject" card to the Danav App UI and mobile notification channel.
 109. **Cross-App Data Lineage & Taint Tracking:** Tags data pulled from untrusted external apps (e.g., an incoming email or public web page) as `tainted`, preventing any downstream agent from passing that payload into a shell command or private database query.
-110. **Portable Agent Blueprints (`.danav-agent` Manifests):** Packages an agent's persona, System 1 decision rubrics, required app connectors, and distilled skills into a single shareable file so users can install or share community-built agents in one click.
+110. **Portable Agent Blueprints (`.danav-agent` Manifests):** Packages an agent's persona, System one decision rubrics, required app connectors, and distilled skills into a single shareable file so users can install or share community-built agents in one click.
 
 ---
 
@@ -229,7 +229,7 @@ Modern developers and power users operate across fragmented AI silos—Claude Co
 
 ### 3.1 Language & Runtime Architecture (100% Rust Core)
 
-To guarantee Feature #1 (Single-Binary Daemon), Feature #26 (Sub-50ms System 1), and Feature #42 (Sub-15ms Context Pack), **Danav Brain (`danavd`) is written 100% in Rust**.
+To guarantee Feature #1 (Single-Binary Daemon), Feature #26 (Sub-50ms System one), and Feature #42 (Sub-15ms Context Pack), **Danav Brain (`danavd`) is written 100% in Rust**.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
@@ -241,7 +241,7 @@ To guarantee Feature #1 (Single-Binary Daemon), Feature #26 (Sub-50ms System 1),
 ┌────────────────────────────────────────────────────────────────────────────┐
 │                        DANAV BRAIN DAEMON (danavd)                         │
 │ ┌──────────────────────┐ ┌──────────────────────┐ ┌──────────────────────┐ │
-│ │   Proxy & Router     │ │  TypeSafe System 1   │ │   Security & Policy  │ │
+│ │   Proxy & Router     │ │  TypeSafe System one │ │   Security & Policy  │ │
 │ │  (axum + hyper SSE)  │ │ (Choice/Score/Noul)  │ │  (Redactor + Vault)  │ │
 │ └──────────┬───────────┘ └──────────┬───────────┘ └──────────┬───────────┘ │
 │            └────────────────────────┼────────────────────────┘             │
@@ -285,7 +285,7 @@ danav/
 * **Async & HTTP Proxy:** `tokio`, `axum`, `hyper`, `tower-http`, `reqwest`, `eventsource-stream`
 * **CLI & Terminal Wrapping:** `clap`, `portable-pty`, `nix`, `crossterm`
 * **Storage, Graph & Vectors:** `rusqlite` (bundled with `fts5` + `sqlite-vec`), `r2d2_sqlite`, `blake3`
-* **Local Inference & System 1 Logit Masking:** `ort` (ONNX Runtime for embeddings/reranking/classification) + `llama-cpp-2` (for local GGUF micro-models with custom token logit-bias grammars)
+* **Local Inference & System one Logit Masking:** `ort` (ONNX Runtime for embeddings/reranking/classification) + `llama-cpp-2` (for local GGUF micro-models with custom token logit-bias grammars)
 * **AST & Git Intelligence:** `tree-sitter` (plus language grammars), `git2`, `ignore`, `notify` (file system watcher)
 * **Security & Vault:** `keyring`, `chacha20poly1305`, `ed25519-dalek`
 
@@ -350,7 +350,7 @@ CREATE TABLE memory_symbol_anchors (
 );
 ```
 
-### 3.5 TypeSafe System 1 Decision Engine Specification
+### 3.5 TypeSafe System one Decision Engine Specification
 
 Instead of prompting a generative LLM with *"Please respond in JSON,"* `danav-system1` intercepts state and evaluates constrained primitives in a single forward pass using logit masking over a local quantized model (e.g., Qwen-2.5-0.5B/1.5B-Instruct or a fine-tuned ModernBERT classifier via ONNX):
 
@@ -382,7 +382,7 @@ When a user sends a prompt in Claude Code, Cursor, or the Danav App, `danav-prox
     * Runs FTS5 BM25 + quantized `sqlite-vec` search across active memories (`status = 'active'`).
     * Traverses 1-hop `UPDATES`/`EXTENDS` edges and `memory_symbol_anchors` to pull linked AST symbols.
     * Queries `ast_symbols` for compressed skeletons (`read_skeleton`) of co-edited files (#40).
-3. **7–12ms (System 1 Filtering & Compaction):** Runs a parallel `Noul` relevance pass and strips any secret/PII strings (#62).
+3. **7–12ms (System one Filtering & Compaction):** Runs a parallel `Noul` relevance pass and strips any secret/PII strings (#62).
 4. **12–15ms (Prefix-Aligned Injection):** Formats the deterministic 400–600 token XML/Markdown `<danav_context_pack>` block and appends it after the static cached system prefix (#9).
 
 ---
@@ -429,7 +429,7 @@ Users should never have to pay Danav a markup on tokens when they already pay fo
 When a user creates an agent in Danav (e.g., *"Every morning at 9 AM, check my GitHub PR reviews, cross-reference failing CI logs with our local codebase, draft a fix in an ephemeral worktree, and ping me on Slack with an approval card"*):
 
 1. **Compilation Step:** A System 2 model translates the natural language prompt into a typed `workflow.danav.json` Directed Acyclic Graph (DAG).
-2. **Execution Step:** Every node transition in the DAG is governed by a deterministic Rust tool call or a sub-50ms System 1 `Choice`/`Noul` gate. Generative LLMs are invoked **only** at nodes that require synthesis or code generation.
+2. **Execution Step:** Every node transition in the DAG is governed by a deterministic Rust tool call or a sub-50ms System one `Choice`/`Noul` gate. Generative LLMs are invoked **only** at nodes that require synthesis or code generation.
 3. **Taint Enforcement (#109):** Every edge in the DAG carries a `SecurityLabel { integrity: Trusted | Untrusted, confidentiality: Public | Private }`. If a node ingests an external email or web page (`Untrusted`), the Policy Engine (#60) blocks any downstream node in that execution trace from invoking `run_shell`, `edit_symbol`, or outbound network POSTs unless the user clicks **Approve** in the Escalation Inbox (#108).
 
 ### 4.4 Universal App-State Graph: OS & Browser Automation (#57, #105)
@@ -437,7 +437,7 @@ When a user creates an agent in Danav (e.g., *"Every morning at 9 AM, check my G
 To let Danav agents interact with any desktop application (Slack, Figma, Linear, ERP dashboards, Excel) without burning thousands of vision tokens on screenshots:
 
 * **macOS (`AXUIElement`) / Windows (`UIAutomation`) / Linux (`AT-SPI2`):** A native Rust OS bridge queries the active window's accessibility tree and serializes interactive elements (buttons, text fields, tables, menus) into a compact, numbered Markdown/DOM snapshot (`<button id="@e14">Submit</button>`).
-* **Playwright / CDP Bridge:** Attaches to an isolated browser profile (#58) and extracts the accessibility tree. Vision models are called only when a System 1 `Noul("contains_canvas_or_chart")` check returns $p \ge 0.80$.
+* **Playwright / CDP Bridge:** Attaches to an isolated browser profile (#58) and extracts the accessibility tree. Vision models are called only when a System one `Noul("contains_canvas_or_chart")` check returns $p \ge 0.80$.
 
 ### 4.5 Portable `.danav-agent` Blueprint Format (#110)
 
@@ -477,7 +477,7 @@ spec:
 | --- | --- | --- |
 | **Single-Binary Size (`danav`)** | `< 35 MB` (stripped release binary) | LTO (`fat`), `codegen-units = 1`, `strip = true`, dynamic model download on first run. |
 | **Turn-1 `context_pack` Latency** | `< 15 ms` (P95) | Pre-indexed Tree-sitter SQLite tables + in-memory git diff watcher + quantized vectors. |
-| **System 1 Decision Pass (`Choice`/`Score`/`Noul`)** | `< 45 ms` (P95 on CPU) | Quantized INT8 ONNX Runtime + single-pass batch evaluation (#28). |
+| **System one Decision Pass (`Choice`/`Score`/`Noul`)** | `< 45 ms` (P95 on CPU) | Quantized INT8 ONNX Runtime + single-pass batch evaluation (#28). |
 | **Proxy First-Token Overhead** | `< 5 ms` over raw upstream API | Zero-copy `hyper` SSE streaming + asynchronous post-response memory extraction. |
 | **Idle Daemon RAM Footprint** | `< 60 MB` (Brain CLI) / `< 150 MB` (Desktop App) | Automatic LRU cache eviction and unloading of idle ONNX models via `danav clean` (#66, #67). |
 | **Structural Hallucination Rate** | `0.0%` on internal routing & tool selection | Hard token-level logit masking in `danav-system1` (#29). |
@@ -491,7 +491,7 @@ spec:
     * Implement the SQLite WAL schema, Tree-sitter background indexer (#36), `read_skeleton` (#37), `read_symbol` (#43), and `edit_symbol` (#44).
     * Build the Dual Store and `UPDATES`/`EXTENDS`/`DERIVES` relational memory graph (#11–12).
     * Ship `danav init` (#3) and the MCP server so Claude Code, Cursor, and Gemini CLI immediately share one brain.
-* **Weeks 5–8 (Milestone 2 — Proxy, System 1 & Security Engine):**
+* **Weeks 5–8 (Milestone 2 — Proxy, System one & Security Engine):**
     * Build `danav-proxy` with prefix-cache alignment (#8, #9) and the Outbound Secret Redactor (#62).
     * Integrate `ort` / `llama-cpp-2` in `danav-system1` for constrained `Choice`, `Score`, and `Noul` primitives (#26–35).
     * Wire the Sub-15ms `context_pack` generator (#42) and Rootless Process Sandbox (#53).
