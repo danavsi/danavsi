@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://danav.ai/sitemap.xml
+Sitemap: https://danavsi.github.io/danavsi/sitemap.xml
