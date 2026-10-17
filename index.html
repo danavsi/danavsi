@@ -2027,6 +2027,7 @@ body {
 
 /* Protocol Pipeline Bus (Option B) */
 .flow .flow__bus {
+  --bus-offset: 2.5rem;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -2038,16 +2039,18 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 1rem;
+  width: 8px;
 }
 
 .flow .flow__bus-drop--in {
-  margin-left: 2.5rem;
+  margin-left: var(--bus-offset);
+  transform: translateX(-3px);
 }
 
 .flow .flow__bus-drop--out {
   align-self: flex-end;
-  margin-right: 2.5rem;
+  margin-right: var(--bus-offset);
+  transform: translateX(3px);
 }
 
 .flow .flow__bus-line--v {
@@ -2070,7 +2073,9 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  width: 100%;
+  margin-left: var(--bus-offset);
+  margin-right: var(--bus-offset);
+  width: calc(100% - (var(--bus-offset) * 2));
   padding: 0.25rem 0;
 }
 
@@ -2202,48 +2207,80 @@ body {
   }
 
   .flow .flow__bus {
-    margin-block: var(--space-3);
+    --bus-offset: 0.75rem;
+    margin-block: var(--space-2);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .flow .flow__bus-drop {
+  .flow .flow__bus::-webkit-scrollbar {
     display: none;
   }
 
+  .flow .flow__bus-drop {
+    display: flex;
+    width: 6px;
+  }
+
+  .flow .flow__bus-drop--in {
+    margin-left: var(--bus-offset);
+    transform: translateX(-2px);
+  }
+
+  .flow .flow__bus-drop--out {
+    margin-right: var(--bus-offset);
+    transform: translateX(2px);
+  }
+
+  .flow .flow__bus-line--v {
+    height: 0.85rem;
+  }
+
+  .flow .flow__bus-arrow--down {
+    border-inline: 3px solid transparent;
+    border-top: 5px solid var(--color-line-strong);
+  }
+
   .flow .flow__bus-track {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.35rem;
+    margin-left: var(--bus-offset);
+    margin-right: var(--bus-offset);
+    width: calc(100% - (var(--bus-offset) * 2));
+    min-width: calc(100% - (var(--bus-offset) * 2));
+    padding: 0.15rem 0;
   }
 
   .flow .flow__bus-seg {
-    position: relative;
-    width: 2px;
-    height: 1.5rem;
-    min-width: 0;
-    flex: none;
-    margin-left: 2rem;
+    min-width: 0.5rem;
+    height: 2px;
   }
 
   .flow .flow__bus-line--h {
-    width: 2px;
-    height: 100%;
+    width: 100%;
+    height: 2px;
   }
 
   .flow .flow__bus-arrow--right {
-    right: auto;
-    left: 50%;
-    top: auto;
-    bottom: 0;
-    transform: translateX(-50%);
-    border-inline: 4px solid transparent;
-    border-top: 6px solid var(--color-line-strong);
-    border-left: 0;
-    border-block: 0;
+    right: 0;
+    left: auto;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    border-block: 3px solid transparent;
+    border-left: 5px solid var(--color-line-strong);
+    border-top: 0;
   }
 
   .flow .flow__protocol {
-    margin-left: 0.5rem;
+    padding: 0.2rem 0.4rem;
+    font-size: clamp(0.52rem, 2vw, 0.65rem);
+    letter-spacing: 0.02em;
+    margin-left: 0;
   }
 
   .flow .flow__card--wide {
