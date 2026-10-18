@@ -2,7 +2,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="page/assets/images/logo-horizontal-dark.svg">
     <source media="(prefers-color-scheme: light)" srcset="page/assets/images/logo-horizontal-light.svg">
-    <img src="page/assets/images/logo-horizontal-dark.svg" alt="Danav" width="300">
+    <img src="page/assets/images/logo-horizontal-dark.svg" alt="Danav" width="260">
   </picture>
 </p>
 
