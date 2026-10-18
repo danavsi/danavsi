@@ -1656,9 +1656,12 @@ body {
 */
 
 .site-footer {
-  padding-block: var(--space-6);
+  position: relative;
+  padding-top: var(--space-6);
+  padding-bottom: 0;
   font-size: var(--text-sm);
   color: var(--color-text-muted);
+  overflow: hidden;
 }
 
 .site-footer__inner {
@@ -1671,6 +1674,39 @@ body {
 
 .site-footer__note {
   max-width: var(--measure);
+}
+
+.site-footer__giant {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-top: clamp(2rem, 5vw, 4.5rem);
+  padding-inline: var(--space-4);
+  margin-inline: auto;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.giant-wordmark {
+  width: 100%;
+  max-width: min(100%, 1100px);
+  height: auto;
+  display: block;
+}
+
+[data-theme="light"] #danav-footer-metal stop:nth-child(1) { stop-color: #111112; stop-opacity: 0.95; }
+[data-theme="light"] #danav-footer-metal stop:nth-child(2) { stop-color: #3f3f46; stop-opacity: 0.8; }
+[data-theme="light"] #danav-footer-metal stop:nth-child(3) { stop-color: #71717a; stop-opacity: 0.3; }
+[data-theme="light"] #danav-footer-metal stop:nth-child(4) { stop-color: #f4f4f5; stop-opacity: 0.0; }
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) #danav-footer-metal stop:nth-child(1) { stop-color: #111112; stop-opacity: 0.95; }
+  :root:not([data-theme="dark"]) #danav-footer-metal stop:nth-child(2) { stop-color: #3f3f46; stop-opacity: 0.8; }
+  :root:not([data-theme="dark"]) #danav-footer-metal stop:nth-child(3) { stop-color: #71717a; stop-opacity: 0.3; }
+  :root:not([data-theme="dark"]) #danav-footer-metal stop:nth-child(4) { stop-color: #f4f4f5; stop-opacity: 0.0; }
 }
 /* spec.css: markdown prose, formulas, feature groups. Uses existing tokens only. */
 .prose{display:grid;gap:var(--space-4);min-width:0}
