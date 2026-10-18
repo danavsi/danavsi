@@ -1,6 +1,6 @@
 # Danav
 
-> One brain, every model. Super Intelligence you own, on hardware you own.
+> One brain, every model. Superintelligence that belongs to you.
 
 Danav is a local-first cognitive infrastructure and autonomous agent operating system built 100% in Rust (Core Engine) and Tauri v2 + React (Desktop & Web Control Center). It turns fragmented AI tools (Claude Code, Cursor, Gemini CLI, Codex, Ollama) into a unified, privacy-preserving intelligence system operating on user-owned hardware.
 

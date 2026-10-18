@@ -42,7 +42,7 @@
   <!-- Typography -->
   <text class="title" x="600" y="195" text-anchor="middle" font-family="'Archivo', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif" font-size="48" font-weight="900" letter-spacing="-1px" fill="#ffffff">DANAV</text>
   <text class="mono" x="600" y="238" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="14" font-weight="500" letter-spacing="3px" text-transform="uppercase" fill="#6f86f0">ONE BRAIN · EVERY MODEL</text>
-  <text class="sans" x="600" y="285" text-anchor="middle" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, -apple-system, sans-serif" font-size="18" font-weight="400" fill="#a1a1aa">Super Intelligence you own, on hardware you own</text>
+  <text class="sans" x="600" y="285" text-anchor="middle" font-family="'IBM Plex Sans', 'Segoe UI', system-ui, -apple-system, sans-serif" font-size="18" font-weight="400" fill="#a1a1aa">Superintelligence that belongs to you</text>
   
   <!-- Badges (no borders, rounded-xs rx=2, no gradient, clean flat fill) -->
   <g transform="translate(385, 325)">

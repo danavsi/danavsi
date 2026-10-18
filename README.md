@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <strong>One brain, every model. Super Intelligence you own, on hardware you own.</strong>
+  <strong>One brain, every model. Superintelligence that belongs to you.</strong>
 </p>
 
 <p align="center">
