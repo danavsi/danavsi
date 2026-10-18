@@ -53,6 +53,6 @@
     <text class="mono" x="207" y="18" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="11" font-weight="500" fill="#a7b7ff">SUB-50MS SYSTEM ONE</text>
     
     <rect x="294" y="0" width="136" height="28" rx="0" fill="#1a1b26" stroke="none"/>
-    <text class="mono" x="362" y="18" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="11" font-weight="500" fill="#a7b7ff">TAURI V2 DESKTOP</text>
+    <text class="mono" x="362" y="18" text-anchor="middle" font-family="'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="11" font-weight="500" fill="#a7b7ff">TAURI V2 APP</text>
   </g>
 </svg>

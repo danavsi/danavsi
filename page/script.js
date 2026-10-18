@@ -585,10 +585,10 @@
 (function () {
   'use strict';
   var MODES = {
-    desktop: { siteA: 'Native desktop app', siteB: 'Embedded on this machine', link: 'Tauri IPC', name: 'Danav Desktop', role: 'Application',
-      detail: 'Tauri v2 app that embeds danav-daemon directly, with system tray hooks, global shortcuts and accessibility permissions.',
+    desktop: { siteA: 'Native app', siteB: 'Embedded on this machine', link: 'Tauri IPC', name: 'Danav App', role: 'Application',
+      detail: 'Tauri v2 app that embeds danav-daemon directly, with system hooks, global shortcuts and accessibility permissions.',
       list: ['Agent Studio and DAG Builder', 'Memory Graph and Trace Replay', 'BYO-Sub Pool and Budget Router', 'Escalation Inbox'],
-      caption: 'Native Desktop Mode: Tauri embeds danav-daemon into the OS binary and talks to it over zero-copy IPC commands.' },
+      caption: 'Native App Mode: Tauri embeds danav-daemon into the native binary and talks to it over zero-copy IPC commands.' },
     web: { siteA: 'Your browser', siteB: 'danavd on this machine', link: 'REST and WebSocket on 127.0.0.1:7420', name: 'Control Center', role: 'Web UI',
       detail: 'The same frontend bundle, served as static files by danavd with the danav ui command.',
       list: ['Visual Memory Graph browser', 'Trace Replay Viewer', 'Skill manager and review queue', 'Live RAM and disk cleanup panel'],

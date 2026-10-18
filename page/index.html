@@ -164,17 +164,17 @@
               <pre class="agent-view__code"><code id="agent-raw-spec"># Danav — One Brain, Every Model. Superintelligence That Belongs to You.
 
 &gt; System Architecture, Cognitive Infrastructure, and Autonomous Agent Operating System Specification
-&gt; Target Runtimes: 100% Rust Core Daemon (`danavd` / `danav` CLI) + Tauri v2 Desktop (`Danav Desktop`)
+&gt; Target Runtimes: 100% Rust Core Daemon (`danavd` / `danav` CLI) + Tauri v2 Native App (`Danav App`)
 &gt; Version: 1.0.0-draft | License: MIT | Canonical: https://danav.si
 
 ---
 
 ## Overview
 
-**Danav** is a two-part, local-first cognitive infrastructure and autonomous agent operating system built **100% in Rust (Core Engine)** and **Tauri + TypeScript/React (Desktop &amp; Web Control Center)**.
+**Danav** is a two-part, local-first cognitive infrastructure and autonomous agent operating system built **100% in Rust (Core Engine)** and **Tauri + TypeScript/React (Native App &amp; Web Control Center)**.
 
 1. **Danav Brain (`danavd` / `danav` CLI):** The headless, single-binary cognitive backend. It acts as the unified hippocampus (relational memory graph + AST code index) and prefrontal cortex (sub-50ms TypeSafe System one decision router + streaming API proxy) for every AI CLI, IDE, and model a user runs.
-2. **Danav Application (`Danav Desktop`):** The native cross-platform application built directly on top of Danav Brain. It allows users to pool their existing AI subscriptions, CLI sessions, API keys, and local models into a unified compute layer, create custom autonomous agents, and orchestrate tasks across local codebases, desktop apps, and cloud services.
+2. **Danav Application (`Danav App`):** The native cross-platform application built directly on top of Danav Brain. It allows users to pool their existing AI subscriptions, CLI sessions, API keys, and local models into a unified compute layer, create custom autonomous agents, and orchestrate tasks across local codebases, native apps, and cloud services.
 
 ---
 
@@ -194,12 +194,12 @@ Modern developers and power users operate across fragmented AI silos—Claude Co
 * **One Brain, Every Model:** Every CLI, IDE, and agent reads from and writes to a single local relational memory graph and AST index.
 * **Zero-Search Surgical Context:** Turn-1 prompts automatically receive a sub-15ms, 400–600 token `context_pack` containing exact AST symbol line ranges, relevant relational memories, and active test states—cutting token consumption by up to 80%.
 * **Sub-50ms TypeSafe System one Routing:** Every internal decision (routing, tool selection, safety gating, memory promotion) uses constrained zero-text primitives (`Choice`, `Score`, `Noul`) with a 0% structural hallucination guarantee.
-* **Bring Your Own Subscription (BYOS) Agent OS:** The Danav Desktop App turns passive AI subscriptions and local models into proactive, cross-app workers governed by strict local privacy and resource caps.
+* **Bring Your Own Subscription (BYOS) Agent OS:** The Danav App turns passive AI subscriptions and local models into proactive, cross-app workers governed by strict local privacy and resource caps.
 
 ### 1.3 Target Personas
 
 * **Persona A — The Polyglot AI Engineer (Danav Brain CLI):** Uses multiple coding agents daily; wants instant context sharing across tools, lower API bills, zero-latency AST slicing, and 100% local data ownership.
-* **Persona B — The Autonomous Power User / Builder (Danav Desktop App):** Wants to build custom background agents that connect GitHub, Notion, Gmail, Slack, Browser, and local files using their existing AI plans without paying a SaaS middleman.
+* **Persona B — The Autonomous Power User / Builder (Danav App):** Wants to build custom background agents that connect GitHub, Notion, Gmail, Slack, Browser, and local files using their existing AI plans without paying a SaaS middleman.
 * **Persona C — Privacy-Conscious Engineering Teams:** Needs peer-to-peer memory and skill syncing across a local network with strict secret redaction and zero cloud lock-in.
 
 ### 1.4 Product Scope &amp; Phased Rollout
@@ -208,7 +208,7 @@ Modern developers and power users operate across fragmented AI silos—Claude Co
 | --- | --- | --- | --- |
 | **Phase 1: Core Wedge** | `danav` Single-Binary CLI &amp; Proxy | Multi-CLI auto-wiring, OpenAI/Anthropic proxy, Tree-sitter AST slicer, Relational Memory Graph. | `&lt; 15ms` context pack generation; `&gt; 70%` file-read token reduction. |
 | **Phase 2: Cognitive Moat** | TypeSafe System one + Web UI (`:7420`) | Constrained decision engine (`Choice`/`Score`/`Noul`), local ONNX micro-models, Trace Replay UI, MemoryBench. | `&lt; 50ms` System one routing; `0%` schema/tool hallucination. |
-| **Phase 3: Danav App** | Native Tauri Desktop Application | BYO-Subscription pool manager, visual Agent Builder, DAG workflow compiler, OS/Browser automation bridge. | `&lt; 150MB` idle RAM; 1-click agent packaging (`.danav-agent`). |
+| **Phase 3: Danav App** | Native Tauri Application (Desktop &amp; Mobile) | BYO-Subscription pool manager, visual Agent Builder, DAG workflow compiler, OS/Browser automation bridge. | `&lt; 150MB` idle RAM; 1-click agent packaging (`.danav-agent`). |
 
 ---
 
@@ -311,9 +311,9 @@ Modern developers and power users operate across fragmented AI silos—Claude Co
 ### VIII. Observability, Benchmarking &amp; User Experience
 
 68. **Step-by-Step JSONL Request Tracing:** Logs every request ID, CLI client, TypeSafe routing decision, loaded skills, retrieved memory IDs, AST slices read, latency, and token cost.
-69. **Interactive Trace Replay Viewer:** Lets users open any past session in the local web/desktop dashboard (`localhost:7420`) to inspect the exact context pack injected and why the brain routed or answered as it did.
+69. **Interactive Trace Replay Viewer:** Lets users open any past session in the local web or app dashboard (`localhost:7420`) to inspect the exact context pack injected and why the brain routed or answered as it did.
 70. **Built-in Memory &amp; Context Evaluation Suite (`/benchmark-context`):** Ships with a 50-task benchmark and memory precision/recall evaluator (covering long-horizon recall, multi-session state mutation, and surgical SWE context) to gate every prompt, router, or skill update.
-71. **Local Web &amp; Desktop Control Center:** Provides a visual Memory Graph browser, Pending Inference review queue, Skill manager, Token Savings analytics, and the Live RAM/Disk Cleanup panel.
+71. **Local Web &amp; App Control Center:** Provides a visual Memory Graph browser, Pending Inference review queue, Skill manager, Token Savings analytics, and the Live RAM/Disk Cleanup panel.
 72. **Zero-Lock-In Markdown Export &amp; 1-Step Wipe:** Exports the entire brain as clean, portable Markdown files and supports encrypted, restore-tested backups (`danav backup`) or complete one-step deletion.
 
 ### IX. Advanced Agentic Collaboration &amp; Autonomous Task Orchestration
@@ -352,11 +352,11 @@ Modern developers and power users operate across fragmented AI silos—Claude Co
 101. **Semantic Diff Compression for Long Sessions:** Instead of keeping raw turn-by-turn file edit history in the conversation window, collapses intermediate edits into a single mathematical state transition ($State_0 \rightarrow State_N$) to keep long debugging sessions sharp.
 102. **Local ONNX/GGUF Micro-Model Hot-Swapper:** Dynamically loads quantized 0.5B–3B models into RAM strictly for the System one decision gates and embedding passes, keeping inference under 20ms on consumer laptops without requiring a dedicated GPU.
 
-### XI. Danav Desktop App: Cross-App Orchestration &amp; BYO-Subscription Runtime
+### XI. Danav App: Cross-App Orchestration &amp; BYO-Subscription Runtime
 
 103. **Unified Subscription &amp; Quota Pool Manager:** Aggregates the user&#x27;s existing CLI sessions (Claude Code, Gemini CLI, Codex), API keys, and local models (Ollama/vLLM) into a single &quot;Compute Pool,&quot; automatically load-balancing tasks based on remaining rate limits and token quotas.
 104. **Event-Driven Reactive Triggers (&quot;When X, Wake Agent Y&quot;):** Turns Danav from a passive request-response brain into an event-driven daemon that wakes up autonomous agents on webhooks, Git pushes, incoming emails, Slack messages, cron schedules, or file system changes.
-105. **Universal App-State Graph (OS Accessibility + DOM Bridge):** Extends the Tree-sitter AST concept beyond code to the user&#x27;s OS—mapping open desktop windows, active browser tabs, and native OS accessibility trees into a compact text graph so Danav agents can drive non-API desktop apps with low token overhead.
+105. **Universal App-State Graph (OS Accessibility + DOM Bridge):** Extends the Tree-sitter AST concept beyond code to the user&#x27;s OS—mapping open application windows, active browser tabs, and native OS accessibility trees into a compact text graph so Danav agents can drive non-API applications with low token overhead.
 106. **Scoped OAuth &amp; Session Delegator for Third-Party Apps:** Allows users in the Danav UI to grant an agent temporary, capability-scoped access to external apps (e.g., *&quot;Agent can read Jira tickets and draft Notion pages, but cannot delete or send external emails&quot;*).
 107. **DAG Workflow Compiler (Natural Language to Deterministic Pipelines):** Lets users describe a multi-app workflow in plain English inside the Danav App once, and compiles it into a deterministic, repeatable Directed Acyclic Graph (DAG) gated by System one `Choice` and `Noul` checkpoints so daily runs cost almost zero LLM tokens.
 108. **Human-in-the-Loop Escalation Inbox (Async Approval Queue):** When a background agent hits a low-confidence System one gate ($p &lt; 0.80$) or a high-risk policy boundary while working across apps, it pauses state and pushes a 1-click &quot;Approve / Modify / Reject&quot; card to the Danav App UI and mobile notification channel.
@@ -373,7 +373,7 @@ To guarantee Feature #1 (Single-Binary Daemon), Feature #26 (Sub-50ms System one
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│                   CLI Clients / IDEs / Danav Desktop App                   │
+│                       CLI Clients / IDEs / Danav App                       │
 │       (Claude Code, Cursor, Gemini CLI, Codex, VS Code, Tauri UI)          │
 └───────┬──────────────────────────┬──────────────────────────┬──────────────┘
         │ OpenAI/Anthropic SSE     │ MCP (stdio / SSE)        │ Tauri IPC / REST
@@ -417,7 +417,7 @@ danav/
 │   ├── danav-security/            # Intersection policy engine, taint tracker, secret redactor, OS keyring vault
 │   └── danav-bench/               # Built-in 50-task evaluation harness &amp; counterfactual trace replay engine
 └── apps/
-    └── danav-desktop/             # Tauri v2 + React/Next.js + Tailwind CSS (serves :7420 &amp; native Desktop App)
+    └── danav-app/                 # Tauri v2 + React/Next.js + Tailwind CSS (serves :7420 &amp; native Danav App)
 ```
 
 ### 3.3 Core Rust Crate Dependencies
@@ -531,14 +531,14 @@ When a user sends a prompt in Claude Code, Cursor, or the Danav App, `danav-prox
 
 ### 4.1 Application Architecture (Tauri v2 + React + Rust Core)
 
-Rather than building two separate codebases for the local web dashboard (`localhost:7420`) and the standalone **Danav Desktop Application**, both are built from a single `apps/danav-desktop` frontend wrapped with **Tauri v2**:
+Rather than building two separate codebases for the local web dashboard (`localhost:7420`) and the standalone **Danav Application** (**Danav App**), both are built from a single `apps/danav-app` frontend wrapped with **Tauri v2**:
 
 * **Headless Server Mode (`danav ui`):** `danavd` serves the compiled static frontend bundle directly on `[http://127.0.0.1:7420](http://127.0.0.1:7420)` over WebSockets/REST.
-* **Native Desktop Mode (`Danav.app` / `Danav.exe`):** Tauri embeds `danav-daemon` directly into the native OS binary, communicating via zero-copy Tauri IPC commands and managing system tray hooks, global OS shortcuts, and accessibility permissions.
+* **Native App Mode (`Danav.app`, `.apk`, `.ipa`, `.exe`):** Tauri embeds `danav-daemon` directly into the native binary, communicating via zero-copy Tauri IPC commands and managing system hooks, global shortcuts, and accessibility permissions.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│                        DANAV DESKTOP APPLICATION                           │
+│                             DANAV APPLICATION                              │
 │ ┌─────────────────┐ ┌─────────────────┐ ┌────────────────┐ ┌─────────────┐ │
 │ │  Agent Studio   │ │ Memory Graph &amp;  │ │ BYO-Sub Pool &amp; │ │ Escalation  │ │
 │ │  &amp; DAG Builder  │ │  Trace Replay   │ │ Budget Router  │ │   Inbox     │ │
@@ -558,7 +558,7 @@ Rather than building two separate codebases for the local web dashboard (`localh
 
 ### 4.2 Unified BYO-Subscription &amp; Compute Pool Engine (#103)
 
-Users should never have to pay Danav a markup on tokens when they already pay for AI tools. Danav Desktop implements three compliant adapter lanes inside the **Unified Compute Pool**:
+Users should never have to pay Danav a markup on tokens when they already pay for AI tools. Danav App implements three compliant adapter lanes inside the **Unified Compute Pool**:
 
 1. **Official CLI Session Lane (Zero API Cost):** Spawns and pools persistent headless sessions of installed official CLIs (`claude`, `gemini`, `codex`) inside managed PTYs (`portable-pty`), routing agent subtasks through the user&#x27;s existing CLI plans while respecting rate limits.
 2. **Direct API Key Lane (BYOK):** Connects directly to Anthropic, OpenAI, Google Gemini, Groq, and OpenRouter keys stored in the OS Keychain (#63), applying automatic prefix caching (#9) and budget ceilings (#83).
@@ -574,7 +574,7 @@ When a user creates an agent in Danav (e.g., *&quot;Every morning at 9 AM, check
 
 ### 4.4 Universal App-State Graph: OS &amp; Browser Automation (#57, #105)
 
-To let Danav agents interact with any desktop application (Slack, Figma, Linear, ERP dashboards, Excel) without burning thousands of vision tokens on screenshots:
+To let Danav agents interact with any desktop or mobile application (Slack, Figma, Linear, Notion, Excel) without burning thousands of vision tokens on screenshots:
 
 * **macOS (`AXUIElement`) / Windows (`UIAutomation`) / Linux (`AT-SPI2`):** A native Rust OS bridge queries the active window&#x27;s accessibility tree and serializes interactive elements (buttons, text fields, tables, menus) into a compact, numbered Markdown/DOM snapshot (`&lt;button id=&quot;@e14&quot;&gt;Submit&lt;/button&gt;`).
 * **Playwright / CDP Bridge:** Attaches to an isolated browser profile (#58) and extracts the accessibility tree. Vision models are called only when a System one `Noul(&quot;contains_canvas_or_chart&quot;)` check returns $p \ge 0.80$.
@@ -619,7 +619,7 @@ spec:
 | **Turn-1 `context_pack` Latency** | `&lt; 15 ms` (P95) | Pre-indexed Tree-sitter SQLite tables + in-memory git diff watcher + quantized vectors. |
 | **System one Decision Pass (`Choice`/`Score`/`Noul`)** | `&lt; 45 ms` (P95 on CPU) | Quantized INT8 ONNX Runtime + single-pass batch evaluation (#28). |
 | **Proxy First-Token Overhead** | `&lt; 5 ms` over raw upstream API | Zero-copy `hyper` SSE streaming + asynchronous post-response memory extraction. |
-| **Idle Daemon RAM Footprint** | `&lt; 60 MB` (Brain CLI) / `&lt; 150 MB` (Desktop App) | Automatic LRU cache eviction and unloading of idle ONNX models via `danav clean` (#66, #67). |
+| **Idle Daemon RAM Footprint** | `&lt; 60 MB` (Brain CLI) / `&lt; 150 MB` (Danav App) | Automatic LRU cache eviction and unloading of idle ONNX models via `danav clean` (#66, #67). |
 | **Structural Hallucination Rate** | `0.0%` on internal routing &amp; tool selection | Hard token-level logit masking in `danav-system1` (#29). |
 
 ---
@@ -638,8 +638,8 @@ spec:
 * **Weeks 9–12 (Milestone 3 — Local Web Control Center &amp; Benchmarks):**
     * Launch `localhost:7420` UI (#71) featuring the Interactive Trace Replay Viewer (#69), Visual Memory Graph, and Live Resource Cleanup panel (#65–66).
     * Implement the 50-task `/benchmark-context` suite (#70) and Counterfactual Replay Simulator (#99).
-* **Weeks 13–16 (Milestone 4 — Danav Desktop App &amp; Agent OS):**
-    * Wrap the web UI and Rust daemon into the native **Tauri v2 Desktop App**.
+* **Weeks 13–16 (Milestone 4 — Danav App &amp; Agent OS):**
+    * Wrap the web UI and Rust daemon into the native **Tauri v2 Application (Desktop &amp; Mobile)**.
     * Build the Unified BYO-Subscription Pool Manager (#103), Event-Driven Triggers (#104), DAG Workflow Compiler (#107), OS Accessibility Bridge (#105), and `.danav-agent` packaging (#110).</code></pre>
             </div>
           </div>
@@ -648,7 +648,7 @@ spec:
         <h1 class="hero__title" id="hero-title">Superintelligence that belongs to you</h1>
         <div class="hero__intro">
           <p class="lede">Danav is built 100% in Rust and Tauri. Danav Brain gives every AI CLI, IDE and model one
-            relational memory graph, one AST code index and a sub-50 ms TypeSafe decision router. Danav Desktop pools
+            relational memory graph, one AST code index and a sub-50 ms TypeSafe decision router. Danav App pools
             the subscriptions, API keys and local models you already have into agents you control.</p>
           <div class="hero__actions"><a class="button button--primary" href="#problem">See the problem</a><a
               class="button button--secondary" href="#products">Meet the two products</a></div>
@@ -791,7 +791,7 @@ spec:
                   selection, safety gating, memory promotion) uses constrained zero-text primitives
                   (<code>Choice</code>, <code>Score</code>, <code>Noul</code>) with a 0% structural hallucination
                   guarantee.</span></li>
-              <li><span><strong>Bring Your Own Subscription (BYOS) Agent OS:</strong> The Danav Desktop App turns
+              <li><span><strong>Bring Your Own Subscription (BYOS) Agent OS:</strong> The Danav App turns
                   passive AI subscriptions and local models into proactive, cross-app workers governed by strict local
                   privacy and resource caps.</span></li>
             </ul>
@@ -802,7 +802,7 @@ spec:
               <li><span><strong>Persona A — The Polyglot AI Engineer (Danav Brain CLI):</strong> Uses multiple coding
                   agents daily; wants instant context sharing across tools, lower API bills, zero-latency AST slicing,
                   and 100% local data ownership.</span></li>
-              <li><span><strong>Persona B — The Autonomous Power User / Builder (Danav Desktop App):</strong> Wants to
+              <li><span><strong>Persona B — The Autonomous Power User / Builder (Danav App):</strong> Wants to
                   build custom background agents that connect GitHub, Notion, Gmail, Slack, Browser, and local files
                   using their existing AI plans without paying a SaaS middleman.</span></li>
               <li><span><strong>Persona C — Privacy-Conscious Engineering Teams:</strong> Needs peer-to-peer memory and
@@ -848,7 +848,7 @@ spec:
               </tr>
               <tr class="odd">
                 <td><strong>Phase 3: Danav App</strong></td>
-                <td>Native Tauri Desktop Application</td>
+                <td>Native Tauri Application (Desktop &amp; Mobile)</td>
                 <td>BYO-Subscription pool manager, visual Agent Builder, DAG workflow
                   compiler, OS/Browser automation bridge.</td>
                 <td><code>&lt; 150MB</code> idle RAM; 1-click agent packaging
@@ -865,7 +865,7 @@ spec:
         <header class="section__header" data-reveal>
           <p class="eyebrow">Two products</p>
           <h2 id="products-t">A brain that remembers and decides, and an app that does the work</h2>
-          <p class="lede">Danav Brain is the headless backend. Danav Desktop is the native application built on top of
+          <p class="lede">Danav Brain is the headless backend. Danav App is the native application built on top of
             it, from a single Tauri v2 frontend.</p>
         </header>
         <div class="scale-frame" data-scale-frame>
@@ -879,11 +879,11 @@ spec:
             </div>
             <div class="topology" id="topology" role="tabpanel" aria-labelledby="tab-desktop" data-mode="desktop">
               <div class="topology__site">
-                <p class="topology__site-label" id="site-a">Native desktop app</p>
+                <p class="topology__site-label" id="site-a">Native app</p>
                 <div class="node">
-                  <h3 id="a-name">Danav Desktop</h3>
+                  <h3 id="a-name">Danav App</h3>
                   <p class="node__role" id="a-role">Application</p>
-                  <p class="node__detail" id="a-detail">Tauri v2 app that embeds danav-daemon directly, with system tray
+                  <p class="node__detail" id="a-detail">Tauri v2 app that embeds danav-daemon directly, with system
                     hooks, global shortcuts and accessibility permissions.</p>
                   <div class="node__meter" data-load="low">
                     <p class="node__meter-label">Machine resources used: low (idle under 150 MB)</p>
@@ -924,8 +924,8 @@ spec:
                   </div>
                 </div>
               </div>
-              <p class="topology__caption" id="topology-caption">Native Desktop Mode: Tauri embeds danav-daemon into the
-                OS binary and talks to it over zero-copy IPC commands.</p>
+              <p class="topology__caption" id="topology-caption">Native App Mode: Tauri embeds danav-daemon into the
+                native binary and talks to it over zero-copy IPC commands.</p>
             </div>
           </div>
         </div>
@@ -949,16 +949,16 @@ spec:
             </ul>
           </div>
           <div class="product" data-reveal>
-            <h3>Danav Desktop</h3>
+            <h3>Danav App</h3>
             <p class="text-muted">The native cross-platform application built directly on Danav Brain. It pools your
               existing AI subscriptions, CLI sessions, API keys and local models into one compute layer and orchestrates
-              agents across codebases, desktop apps and cloud services.</p>
+              agents across codebases, native apps and cloud services.</p>
             <ul class="marker-list">
               <li><span>Unified Compute Pool: official CLI sessions, BYOK API keys and local Ollama, LM Studio or vLLM
                   lanes.</span></li>
               <li><span>Visual Agent Studio and DAG compiler: plain English to deterministic pipelines.</span></li>
               <li><span>Event-driven triggers: webhooks, Git pushes, email, Slack, cron and file changes.</span></li>
-              <li><span>OS accessibility and browser bridge that drives desktop apps with low token overhead.</span>
+              <li><span>OS accessibility and browser bridge that drives applications with low token overhead.</span>
               </li>
               <li><span>Escalation Inbox with scoped OAuth, taint tracking and one-click approvals.</span></li>
               <li><span>Portable <code>.danav-agent</code> blueprints to install and share agents.</span></li>
@@ -1088,7 +1088,7 @@ spec:
           <p class="eyebrow">The 110-feature specification</p>
           <h2 id="features-t">Eleven categories, nothing skipped</h2>
           <p class="lede">110 features across the core, memory, System One, code routing, tools, search, security,
-            observability, collaboration, plasticity and desktop layers.</p>
+            observability, collaboration, plasticity and application layers.</p>
         </header>
         <div class="feature-tools"><button class="button button--secondary button--compact" id="features-toggle"
             type="button">Expand all</button></div>
@@ -1583,7 +1583,7 @@ spec:
               <div class="definition-list__row">
                 <dt class="definition-list__term"><span class="feature__n">069</span>Interactive Trace Replay Viewer
                 </dt>
-                <dd class="definition-list__desc">Lets users open any past session in the local web/desktop dashboard
+                <dd class="definition-list__desc">Lets users open any past session in the local web or app dashboard
                   (<code>localhost:7420</code>) to inspect the exact context pack injected and why the brain routed or
                   answered as it did.</dd>
               </div>
@@ -1595,7 +1595,7 @@ spec:
                   prompt, router, or skill update.</dd>
               </div>
               <div class="definition-list__row">
-                <dt class="definition-list__term"><span class="feature__n">071</span>Local Web &amp; Desktop Control
+                <dt class="definition-list__term"><span class="feature__n">071</span>Local Web &amp; App Control
                   Center</dt>
                 <dd class="definition-list__desc">Provides a visual Memory Graph browser, Pending Inference review
                   queue, Skill manager, Token Savings analytics, and the Live RAM/Disk Cleanup panel.</dd>
@@ -1822,7 +1822,7 @@ spec:
             </dl>
           </details>
           <details class="feature-group" data-reveal-item>
-            <summary><span class="feature-group__num">XI</span><span class="feature-group__name">Danav Desktop App:
+            <summary><span class="feature-group__num">XI</span><span class="feature-group__name">Danav App:
                 Cross-App Orchestration &amp; BYO-Subscription Runtime</span><span class="feature-group__count">8</span>
             </summary>
             <dl class="definition-list">
@@ -1844,8 +1844,8 @@ spec:
                 <dt class="definition-list__term"><span class="feature__n">105</span>Universal App-State Graph (OS
                   Accessibility + DOM Bridge)</dt>
                 <dd class="definition-list__desc">Extends the Tree-sitter AST concept beyond code to the user’s
-                  OS—mapping open desktop windows, active browser tabs, and native OS accessibility trees into a compact
-                  text graph so Danav agents can drive non-API desktop apps with low token overhead.</dd>
+                  OS—mapping open application windows, active browser tabs, and native OS accessibility trees into a compact
+                  text graph so Danav agents can drive non-API applications with low token overhead.</dd>
               </div>
               <div class="definition-list__row">
                 <dt class="definition-list__term"><span class="feature__n">106</span>Scoped OAuth &amp; Session
@@ -1912,7 +1912,7 @@ spec:
                 <li class="badge badge--accent badge--text">Gemini CLI</li>
                 <li class="badge badge--accent badge--text">Codex</li>
                 <li class="badge badge--accent badge--text">VS Code</li>
-                <li class="badge badge--accent badge--text">Danav Desktop (Tauri UI)</li>
+                <li class="badge badge--accent badge--text">Danav App (Tauri UI)</li>
               </ul>
             </div>
             <div class="scale-frame flow__bus-frame" data-scale-frame data-max-scale="1" data-design-width="576">
@@ -2065,8 +2065,8 @@ spec:
               </li>
               <li class="tree__item tree__item--dir" data-reveal-item><span class="tree__name">apps/</span>
                 <ul class="tree__branch">
-                  <li class="tree__item" data-reveal-item><span class="tree__name">danav-desktop/</span><span
-                      class="tree__note">Tauri v2 + React/Next.js + Tailwind CSS (serves :7420 &amp; native Desktop
+                  <li class="tree__item" data-reveal-item><span class="tree__name">danav-app/</span><span
+                      class="tree__note">Tauri v2 + React/Next.js + Tailwind CSS (serves :7420 &amp; native Danav
                       App)</span></li>
                 </ul>
               </li>
@@ -2168,15 +2168,15 @@ CREATE TABLE memory_symbol_anchors (
         <header class="section__header" data-reveal>
           <p class="eyebrow">Danav Application technical requirements</p>
           <h2 id="app-t">Tauri v2, React and a Rust core</h2>
-          <p class="lede">One frontend serves both the localhost:7420 dashboard and the native desktop app.</p>
+          <p class="lede">One frontend serves both the localhost:7420 dashboard and the native app.</p>
         </header>
         <div class="prose">
           <h3 id="application-architecture-tauri-v2-react-rust-core">4.1
             Application Architecture (Tauri v2 + React + Rust Core)</h3>
           <p>Rather than building two separate codebases for the local web
             dashboard (<code>localhost:7420</code>) and the standalone <strong>Danav
-              Desktop Application</strong>, both are built from a single
-            <code>apps/danav-desktop</code> frontend wrapped with <strong>Tauri
+              Application</strong> (<strong>Danav App</strong>), both are built from a single
+            <code>apps/danav-app</code> frontend wrapped with <strong>Tauri
               v2</strong>:
           </p>
           <ul>
@@ -2185,17 +2185,17 @@ CREATE TABLE memory_symbol_anchors (
               on <code>http://127.0.0.1:7420</code> over
               WebSockets/REST.
             </li>
-            <li><strong>Native Desktop Mode (<code>Danav.app</code> /
-                <code>Danav.exe</code>):</strong> Tauri embeds <code>danav-daemon</code>
-              directly into the native OS binary, communicating via zero-copy Tauri
-              IPC commands and managing system tray hooks, global OS shortcuts, and
+            <li><strong>Native App Mode (<code>Danav.app</code>,
+                <code>.apk</code>, <code>.ipa</code>, <code>.exe</code>):</strong> Tauri embeds <code>danav-daemon</code>
+              directly into the native binary, communicating via zero-copy Tauri
+              IPC commands and managing system hooks, global shortcuts, and
               accessibility permissions.</li>
           </ul>
           <figure class="dg-fig" data-reveal>
             <div class="dg-scroll"><svg class="dg" viewBox="0 0 960 606" role="img" aria-labelledby="dg-t dg-d"
                 xmlns="http://www.w3.org/2000/svg">
-                <title id="dg-t">Danav Desktop application architecture</title>
-                <desc id="dg-d">Four desktop surfaces (Agent Studio and DAG Builder, Memory Graph and Trace Replay,
+                <title id="dg-t">Danav Application architecture</title>
+                <desc id="dg-d">Four application surfaces (Agent Studio and DAG Builder, Memory Graph and Trace Replay,
                   BYO-Sub Pool and Budget Router, Escalation Inbox) talk over Tauri IPC and WebSocket to the Danav Agent
                   Runtime and Orchestrator, which holds the Unified Compute Adapter, the Event Bus and Triggers, and the
                   OS Accessibility and Browser Bridge, on top of the embedded danav-daemon.</desc>
@@ -2207,7 +2207,7 @@ CREATE TABLE memory_symbol_anchors (
                 </defs>
                 <rect class="dg-panel" x="16" y="12" width="928" height="206" rx="0" />
                 <rect class="dg-sq" x="40" y="34" width="8" height="8" /><text class="dg-label" x="58" y="43">DANAV
-                  DESKTOP APPLICATION</text><text class="dg-labelr" x="920" y="43" text-anchor="end">TAURI V2 +
+                  APPLICATION</text><text class="dg-labelr" x="920" y="43" text-anchor="end">TAURI V2 +
                   REACT</text>
                 <g>
                   <rect class="dg-card" x="40" y="62" width="208" height="140" rx="0" />
@@ -2321,14 +2321,14 @@ CREATE TABLE memory_symbol_anchors (
                   y="581" text-anchor="middle">EMBEDDED DANAV BRAIN · danav-daemon · memory graph · AST index · System
                   One · policy engine</text>
               </svg></div>
-            <figcaption>Danav Desktop architecture (spec 4.1). Four surfaces call the Agent Runtime over Tauri IPC and
-              WebSocket; the runtime pools compute, wakes agents on events and drives desktop apps, on top of the
+            <figcaption>Danav Application architecture (spec 4.1). Four surfaces call the Agent Runtime over Tauri IPC and
+              WebSocket; the runtime pools compute, wakes agents on events and drives native apps, on top of the
               embedded Danav Brain.</figcaption>
           </figure>
           <h3 id="unified-byo-subscription-compute-pool-engine-103">4.2 Unified
             BYO-Subscription &amp; Compute Pool Engine (#103)</h3>
           <p>Users should never have to pay Danav a markup on tokens when they
-            already pay for AI tools. Danav Desktop implements three compliant
+            already pay for AI tools. Danav App implements three compliant
             adapter lanes inside the <strong>Unified Compute Pool</strong>:</p>
           <ol type="1">
             <li><strong>Official CLI Session Lane (Zero API Cost):</strong> Spawns
@@ -2376,8 +2376,8 @@ CREATE TABLE memory_symbol_anchors (
           </ol>
           <h3 id="universal-app-state-graph-os-browser-automation-57-105">4.4
             Universal App-State Graph: OS &amp; Browser Automation (#57, #105)</h3>
-          <p>To let Danav agents interact with any desktop application (Slack,
-            Figma, Linear, ERP dashboards, Excel) without burning thousands of
+          <p>To let Danav agents interact with any desktop or mobile application (Slack,
+            Figma, Linear, Notion, Excel) without burning thousands of
             vision tokens on screenshots:</p>
           <ul>
             <li><strong>macOS (<code>AXUIElement</code>) / Windows
@@ -2474,7 +2474,7 @@ spec:
               <tr class="odd">
                 <td><strong>Idle Daemon RAM Footprint</strong></td>
                 <td><code>&lt; 60 MB</code> (Brain CLI) / <code>&lt; 150 MB</code>
-                  (Desktop App)</td>
+                  (Danav App)</td>
                 <td>Automatic LRU cache eviction and unloading of idle ONNX models via
                   <code>danav clean</code> (#66, #67).
                 </td>
@@ -2496,7 +2496,7 @@ spec:
         <div class="split__lead" data-reveal>
           <p class="eyebrow">Engineering roadmap</p>
           <h2 id="roadmap-t">Sixteen weeks, four milestones</h2>
-          <p class="lede">From the surgical code and memory core to the desktop agent OS.</p>
+          <p class="lede">From the surgical code and memory core to the agent OS.</p>
         </div>
         <ol class="steps" data-reveal-group>
           <li class="step" data-reveal-item><span class="step__marker" aria-hidden="true">1</span>
@@ -2552,11 +2552,10 @@ spec:
           <li class="step" data-reveal-item><span class="step__marker" aria-hidden="true">4</span>
             <div class="step__body">
               <p class="step__tag">Weeks 13–16</p>
-              <h3>Milestone 4 — Danav Desktop App &amp; Agent OS</h3>
+              <h3>Milestone 4 — Danav App &amp; Agent OS</h3>
               <div class="step__text">
                 <ul class="marker-list">
-                  <li><span>Wrap the web UI and Rust daemon into the native <strong>Tauri v2 Desktop
-                        App</strong>.</span></li>
+                  <li><span>Wrap the web UI and Rust daemon into the native <strong>Tauri v2 Application (Desktop &amp; Mobile)</strong>.</span></li>
                   <li><span>Build the Unified BYO-Subscription Pool Manager (#103), Event-Driven Triggers (#104), DAG
                       Workflow Compiler (#107), OS Accessibility Bridge (#105), and <code>.danav-agent</code> packaging
                       (#110).</span></li>
@@ -2573,7 +2572,7 @@ spec:
         <h2 class="band__statement" data-reveal-item id="idea-title">Danav gives every model the same memory, decides in
           milliseconds what each task needs, and keeps your data and compute yours.</h2>
         <p class="band__text" data-reveal-item>The Brain remembers, slices code surgically and routes with zero-text
-          decisions. The Desktop turns the subscriptions you already pay for into governed, cross-app agents.</p><a
+          decisions. Danav App turns the subscriptions you already pay for into governed, cross-app agents.</p><a
           class="button button--inverse" data-reveal-item href="#top">Back to the routing demo</a>
       </div>
     </section>
