@@ -207,6 +207,46 @@
     guard(ctx);
   }
 
+  /* ---------- text auto-scaler: scales font-size down so text never wraps ---------- */
+
+  var autoScaleTargets = [].slice.call(stage.querySelectorAll(
+    '.request__text, .level__name, .level__note, .router__row dd, .stage__result-text, .stage__col-title, #stage-title'
+  ));
+
+  function scaleElementToFit(el) {
+    if (!el) { return; }
+    if (!el._baseFontSize) {
+      var computed = window.getComputedStyle(el);
+      el._baseFontSize = parseFloat(computed.fontSize) || 14;
+    }
+
+    // Reset font size to base to measure unscaled natural width
+    el.style.fontSize = el._baseFontSize + 'px';
+
+    var available = el.clientWidth;
+    var required = el.scrollWidth;
+
+    if (available > 0 && required > available) {
+      var ratio = available / required;
+      var scaledSize = Math.max(8.5, el._baseFontSize * ratio * 0.98);
+      el.style.fontSize = scaledSize.toFixed(2) + 'px';
+    } else {
+      el.style.fontSize = '';
+    }
+  }
+
+  function autoScaleAllTexts() {
+    autoScaleTargets.forEach(scaleElementToFit);
+    if (out) {
+      Object.keys(out).forEach(function (k) {
+        if (out[k]) { scaleElementToFit(out[k]); }
+      });
+    }
+    if (resultText) {
+      scaleElementToFit(resultText);
+    }
+  }
+
   /* ---------- state writers ---------- */
 
   function setRouter(state) {
@@ -216,6 +256,7 @@
   function setReadout(values) {
     Object.keys(values).forEach(function (key) {
       out[key].textContent = values[key];
+      scaleElementToFit(out[key]);
     });
   }
 
@@ -223,12 +264,14 @@
     var el = levelEls[index];
     el.setAttribute('data-state', state);
     el.querySelector('.level__status').textContent = label || STATUS[state];
+    scaleElementToFit(el.querySelector('.level__name'));
   }
 
   function setResult(state, chip, text) {
     resultEl.setAttribute('data-state', state);
     resultChip.textContent = chip;
     resultText.textContent = text;
+    scaleElementToFit(resultText);
   }
 
   function selectRequest(index) {
@@ -266,6 +309,7 @@
   }
 
   function buildGeometry() {
+    autoScaleAllTexts();
     var origin = body.getBoundingClientRect();
     /* The canvas is scaled as a whole: divide measured sizes by the scale to
        get the canvas's own coordinates. */
@@ -487,8 +531,24 @@
     });
   }
 
+  window.addEventListener('resize', function () {
+    autoScaleAllTexts();
+    buildGeometry();
+  });
+
+  if (window.ResizeObserver) {
+    var stageRo = new ResizeObserver(function () {
+      autoScaleAllTexts();
+      buildGeometry();
+    });
+    stageRo.observe(stage);
+    stageRo.observe(body);
+  }
+
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(function () {
+      autoScaleAllTexts();
+      buildGeometry();
       if (!running) { start(lastIndex, { instant: true }); }
     });
   }
@@ -496,6 +556,7 @@
   /* ---------- first frame ---------- */
 
   updateToggle();
+  autoScaleAllTexts();
   start(RESTING_INDEX, { instant: true });
   scheduleLoop(1800);
 })();
