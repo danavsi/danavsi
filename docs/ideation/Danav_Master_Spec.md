@@ -1,8 +1,8 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/images/banner.png">
-    <source media="(prefers-color-scheme: light)" srcset="assets/images/banner.png">
-    <img src="assets/images/banner.png" alt="Danav — One brain, every model" width="100%">
+    <source media="(prefers-color-scheme: dark)" srcset="../../page/assets/images/banner.png">
+    <source media="(prefers-color-scheme: light)" srcset="../../page/assets/images/banner.png">
+    <img src="../../page/assets/images/banner.png" alt="Danav — One brain, every model" width="100%">
   </picture>
 </p>
 
