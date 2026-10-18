@@ -795,3 +795,95 @@
   }
   update();
 })();
+
+/* view-switch.js: Human vs Agent tab switching */
+(function () {
+  'use strict';
+
+  var tabHuman = document.getElementById('tab-human');
+  var tabAgent = document.getElementById('tab-agent');
+  var copyBtn = document.getElementById('agent-copy-btn');
+  var copyText = document.getElementById('agent-copy-text');
+  var downloadBtn = document.getElementById('agent-download-btn');
+  var rawSpec = document.getElementById('agent-raw-spec');
+
+  if (!tabHuman || !tabAgent) {
+    return;
+  }
+
+  function setView(mode, updateHistory) {
+    var isAgent = mode === 'agent';
+    document.body.setAttribute('data-view', isAgent ? 'agent' : 'human');
+
+    tabHuman.setAttribute('aria-selected', isAgent ? 'false' : 'true');
+    tabHuman.classList.toggle('is-active', !isAgent);
+
+    tabAgent.setAttribute('aria-selected', isAgent ? 'true' : 'false');
+    tabAgent.classList.toggle('is-active', isAgent);
+
+    if (updateHistory) {
+      try {
+        if (isAgent) {
+          window.location.hash = 'agent';
+        } else if (window.location.hash === '#agent') {
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+      } catch (e) { /* ignore */ }
+    }
+
+    if (!isAgent) {
+      window.requestAnimationFrame(function () {
+        window.dispatchEvent(new Event('resize'));
+      });
+    }
+  }
+
+  tabHuman.addEventListener('click', function () {
+    setView('human', true);
+  });
+
+  tabAgent.addEventListener('click', function () {
+    setView('agent', true);
+  });
+
+  if (copyBtn && rawSpec) {
+    copyBtn.addEventListener('click', function () {
+      var text = rawSpec.textContent || '';
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          if (copyText) {
+            var orig = copyText.textContent;
+            copyText.textContent = 'Copied!';
+            copyBtn.classList.add('agent-view__btn--active');
+            setTimeout(function () {
+              copyText.textContent = orig;
+              copyBtn.classList.remove('agent-view__btn--active');
+            }, 2200);
+          }
+        });
+      }
+    });
+  }
+
+  if (downloadBtn && rawSpec) {
+    downloadBtn.addEventListener('click', function () {
+      var text = rawSpec.textContent || '';
+      var blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'danav-master-spec.md';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    });
+  }
+
+  // Initial state check
+  var params = new URLSearchParams(window.location.search);
+  if (window.location.hash === '#agent' || params.get('view') === 'agent') {
+    setView('agent', false);
+  }
+})();
+
