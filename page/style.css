@@ -945,6 +945,11 @@ body {
   min-width: 0;
 }
 
+.stage__col--router {
+  justify-content: center;
+  gap: var(--space-2);
+}
+
 .stage__col-title {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
@@ -1024,7 +1029,7 @@ body {
   position: relative;
   display: grid;
   gap: var(--space-3);
-  margin-block: auto;
+  margin-block: 0;
   padding: var(--space-4);
   overflow: hidden;
   border: var(--border-width) solid var(--color-text);
