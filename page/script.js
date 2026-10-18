@@ -13,11 +13,16 @@
 
   function fit(frame) {
     var canvas = frame.querySelector('.scale-canvas');
-    var designWidth = canvas.offsetWidth;
+    if (!canvas) { return; }
+    var designWidth = parseFloat(frame.getAttribute('data-design-width')) || canvas.offsetWidth;
     if (!designWidth) {
       return;
     }
+    var maxScale = frame.hasAttribute('data-max-scale') ? parseFloat(frame.getAttribute('data-max-scale')) : null;
     var scale = frame.clientWidth / designWidth;
+    if (maxScale !== null && scale > maxScale) {
+      scale = maxScale;
+    }
     frame.style.setProperty('--scale', scale.toFixed(4));
     frame.style.setProperty('--canvas-height', canvas.offsetHeight + 'px');
     frame.setAttribute('data-ready', '');
@@ -207,11 +212,22 @@
     guard(ctx);
   }
 
-  /* ---------- text auto-scaler: scales font-size down so text never wraps ---------- */
+  /* ---------- text auto-scaler: scales font-size down pixel-by-pixel without breaking observers ---------- */
 
   var autoScaleTargets = [].slice.call(stage.querySelectorAll(
     '.request__text, .level__name, .level__note, .router__row dd, .stage__result-text, .stage__col-title, #stage-title'
   ));
+
+  var measureCanvas = document.createElement('canvas');
+  var measureCtx = measureCanvas.getContext('2d');
+
+  function getNaturalTextWidth(el, baseSize) {
+    var computed = window.getComputedStyle(el);
+    var weight = computed.fontWeight || '400';
+    var family = computed.fontFamily || 'sans-serif';
+    measureCtx.font = weight + ' ' + baseSize + 'px ' + family;
+    return measureCtx.measureText((el.textContent || '').trim()).width;
+  }
 
   function scaleElementToFit(el) {
     if (!el) { return; }
@@ -220,17 +236,17 @@
       el._baseFontSize = parseFloat(computed.fontSize) || 14;
     }
 
-    // Reset font size to base to measure unscaled natural width
-    el.style.fontSize = el._baseFontSize + 'px';
-
     var available = el.clientWidth;
-    var required = el.scrollWidth;
+    if (available <= 0) { return; }
 
-    if (available > 0 && required > available) {
-      var ratio = available / required;
-      var scaledSize = Math.max(8.5, el._baseFontSize * ratio * 0.98);
+    var naturalWidth = getNaturalTextWidth(el, el._baseFontSize);
+
+    // Only scale down if text hits the pixel edge of available space (pixel-by-pixel fit)
+    if (naturalWidth > available) {
+      var ratio = available / naturalWidth;
+      var scaledSize = Math.max(9, el._baseFontSize * ratio);
       el.style.fontSize = scaledSize.toFixed(2) + 'px';
-    } else {
+    } else if (el.style.fontSize) {
       el.style.fontSize = '';
     }
   }
@@ -531,24 +547,28 @@
     });
   }
 
-  window.addEventListener('resize', function () {
-    autoScaleAllTexts();
-    buildGeometry();
-  });
-
-  if (window.ResizeObserver) {
-    var stageRo = new ResizeObserver(function () {
+  var scheduleGeomTimer = 0;
+  function scheduleAutoScaleAndGeometry() {
+    if (scheduleGeomTimer) { return; }
+    scheduleGeomTimer = window.requestAnimationFrame(function () {
+      scheduleGeomTimer = 0;
       autoScaleAllTexts();
       buildGeometry();
     });
+  }
+
+  window.addEventListener('resize', scheduleAutoScaleAndGeometry);
+
+  if (window.ResizeObserver) {
+    var stageRo = new ResizeObserver(function () {
+      scheduleAutoScaleAndGeometry();
+    });
     stageRo.observe(stage);
-    stageRo.observe(body);
   }
 
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(function () {
-      autoScaleAllTexts();
-      buildGeometry();
+      scheduleAutoScaleAndGeometry();
       if (!running) { start(lastIndex, { instant: true }); }
     });
   }

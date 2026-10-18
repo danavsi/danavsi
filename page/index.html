@@ -1915,54 +1915,56 @@ spec:
                 <li class="badge badge--accent badge--text">Danav Desktop (Tauri UI)</li>
               </ul>
             </div>
-            <div class="flow__bus" data-reveal-item aria-label="Protocol bus">
-              <div class="flow__bus-drop flow__bus-drop--in" aria-hidden="true">
-                <span class="flow__bus-line flow__bus-line--v"></span>
-                <svg class="flow__bus-chevron flow__bus-chevron--down" viewBox="0 0 11 7" width="11" height="7"
-                  aria-hidden="true" focusable="false">
-                  <path d="M1.5 1.5L5.5 5.5L9.5 1.5" fill="none" stroke="currentColor" stroke-width="1.8"
-                    stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </div>
-              <div class="flow__bus-track">
-                <span class="flow__bus-seg flow__bus-seg--start" aria-hidden="true">
-                  <span class="flow__bus-line flow__bus-line--h"></span>
-                  <svg class="flow__bus-chevron flow__bus-chevron--right" viewBox="0 0 7 11" width="7" height="11"
+            <div class="scale-frame flow__bus-frame" data-scale-frame data-max-scale="1" data-design-width="576">
+              <div class="flow__bus scale-canvas" data-reveal-item aria-label="Protocol bus">
+                <div class="flow__bus-drop flow__bus-drop--in" aria-hidden="true">
+                  <span class="flow__bus-line flow__bus-line--v"></span>
+                  <svg class="flow__bus-chevron flow__bus-chevron--down" viewBox="0 0 11 7" width="11" height="7"
                     aria-hidden="true" focusable="false">
-                    <path d="M1.5 1.5L5.5 5.5L1.5 9.5" fill="none" stroke="currentColor" stroke-width="1.8"
+                    <path d="M1.5 1.5L5.5 5.5L9.5 1.5" fill="none" stroke="currentColor" stroke-width="1.8"
                       stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
-                </span>
-                <span class="badge flow__protocol">OpenAI/Anthropic SSE</span>
-                <span class="flow__bus-seg" aria-hidden="true">
-                  <span class="flow__bus-line flow__bus-line--h"></span>
-                  <svg class="flow__bus-chevron flow__bus-chevron--right" viewBox="0 0 7 11" width="7" height="11"
+                </div>
+                <div class="flow__bus-track">
+                  <span class="flow__bus-seg flow__bus-seg--start" aria-hidden="true">
+                    <span class="flow__bus-line flow__bus-line--h"></span>
+                    <svg class="flow__bus-chevron flow__bus-chevron--right" viewBox="0 0 7 11" width="7" height="11"
+                      aria-hidden="true" focusable="false">
+                      <path d="M1.5 1.5L5.5 5.5L1.5 9.5" fill="none" stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </span>
+                  <span class="badge flow__protocol">OpenAI/Anthropic SSE</span>
+                  <span class="flow__bus-seg" aria-hidden="true">
+                    <span class="flow__bus-line flow__bus-line--h"></span>
+                    <svg class="flow__bus-chevron flow__bus-chevron--right" viewBox="0 0 7 11" width="7" height="11"
+                      aria-hidden="true" focusable="false">
+                      <path d="M1.5 1.5L5.5 5.5L1.5 9.5" fill="none" stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </span>
+                  <span class="badge flow__protocol">MCP (stdio / SSE)</span>
+                  <span class="flow__bus-seg" aria-hidden="true">
+                    <span class="flow__bus-line flow__bus-line--h"></span>
+                    <svg class="flow__bus-chevron flow__bus-chevron--right" viewBox="0 0 7 11" width="7" height="11"
+                      aria-hidden="true" focusable="false">
+                      <path d="M1.5 1.5L5.5 5.5L1.5 9.5" fill="none" stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </span>
+                  <span class="badge flow__protocol">Tauri IPC / REST</span>
+                  <span class="flow__bus-seg flow__bus-seg--end" aria-hidden="true">
+                    <span class="flow__bus-line flow__bus-line--h"></span>
+                  </span>
+                </div>
+                <div class="flow__bus-drop flow__bus-drop--out" aria-hidden="true">
+                  <span class="flow__bus-line flow__bus-line--v"></span>
+                  <svg class="flow__bus-chevron flow__bus-chevron--down" viewBox="0 0 11 7" width="11" height="7"
                     aria-hidden="true" focusable="false">
-                    <path d="M1.5 1.5L5.5 5.5L1.5 9.5" fill="none" stroke="currentColor" stroke-width="1.8"
+                    <path d="M1.5 1.5L5.5 5.5L9.5 1.5" fill="none" stroke="currentColor" stroke-width="1.8"
                       stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
-                </span>
-                <span class="badge flow__protocol">MCP (stdio / SSE)</span>
-                <span class="flow__bus-seg" aria-hidden="true">
-                  <span class="flow__bus-line flow__bus-line--h"></span>
-                  <svg class="flow__bus-chevron flow__bus-chevron--right" viewBox="0 0 7 11" width="7" height="11"
-                    aria-hidden="true" focusable="false">
-                    <path d="M1.5 1.5L5.5 5.5L1.5 9.5" fill="none" stroke="currentColor" stroke-width="1.8"
-                      stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                </span>
-                <span class="badge flow__protocol">Tauri IPC / REST</span>
-                <span class="flow__bus-seg flow__bus-seg--end" aria-hidden="true">
-                  <span class="flow__bus-line flow__bus-line--h"></span>
-                </span>
-              </div>
-              <div class="flow__bus-drop flow__bus-drop--out" aria-hidden="true">
-                <span class="flow__bus-line flow__bus-line--v"></span>
-                <svg class="flow__bus-chevron flow__bus-chevron--down" viewBox="0 0 11 7" width="11" height="7"
-                  aria-hidden="true" focusable="false">
-                  <path d="M1.5 1.5L5.5 5.5L9.5 1.5" fill="none" stroke="currentColor" stroke-width="1.8"
-                    stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
+                </div>
               </div>
             </div>
             <div class="flow__layer flow__layer--daemon" data-reveal-item>

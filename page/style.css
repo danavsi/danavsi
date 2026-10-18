@@ -53,7 +53,7 @@ body::before {
   --text-lg: 1.3125rem;
   --text-xl: clamp(1.5rem, 1rem + 1.8vw, 2.125rem);
   --text-2xl: clamp(1.875rem, 1rem + 3vw, 3.125rem);
-  --text-hero: clamp(2.25rem, 0.9rem + 5.6vw, 4.75rem);
+  --text-hero: clamp(1.5rem, 7.6vw, 4.75rem);
 
   --leading-tight: 1.05;
   --leading-snug: 1.3;
@@ -844,6 +844,9 @@ body {
 
 .hero__title {
   max-width: 16em;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
 }
 
 .hero__intro {
@@ -878,7 +881,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
+  gap: var(--space-3) var(--space-4);
   flex-wrap: wrap;
   width: 100%;
 }
@@ -893,8 +896,10 @@ body {
   gap: 2px;
   padding: 2px;
   border: var(--border-width) solid var(--color-line-strong);
-  border-radius: var(--radius-control);
+  border-radius: 0;
   background: var(--color-surface);
+  max-width: 100%;
+  flex-wrap: wrap;
 }
 
 .view-switch__tab {
@@ -903,15 +908,16 @@ body {
   gap: 0.375rem;
   padding: 0.25rem 0.625rem;
   border: var(--border-width) solid transparent;
-  border-radius: var(--radius-control);
+  border-radius: 0;
   background: transparent;
   color: var(--color-text-muted);
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   font-weight: var(--weight-medium);
   cursor: pointer;
+  white-space: nowrap;
   transition:
     background-color var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard);
@@ -2169,17 +2175,18 @@ table::-webkit-scrollbar {
 }
 
 .dg-scroll {
-  overflow-x: auto;
+  overflow: hidden;
   border: var(--border-width) solid var(--color-line);
-  border-radius: var(--radius-panel);
-  background: var(--color-surface-sunken)
+  border-radius: 0;
+  background: var(--color-surface-sunken);
 }
 
 .dg {
   display: block;
   width: 100%;
-  min-width: 44rem;
-  height: auto
+  max-width: 100%;
+  min-width: 0;
+  height: auto;
 }
 
 .dg-fig figcaption {
@@ -2259,7 +2266,7 @@ table::-webkit-scrollbar {
 .dg-chip {
   fill: var(--color-badge-accent-bg);
   stroke: none;
-  rx: 3px
+  rx: 0;
 }
 
 .dg-chiptxt {
@@ -2269,7 +2276,7 @@ table::-webkit-scrollbar {
 
 .dg-pill {
   fill: var(--color-accent);
-  rx: 3px
+  rx: 0;
 }
 
 .dg-pilltxt {
@@ -2648,13 +2655,25 @@ table::-webkit-scrollbar {
 }
 
 /* Protocol Pipeline Bus (Option B) */
+.flow .flow__bus-frame {
+  margin-block: var(--space-2);
+  width: 100%;
+  overflow: hidden;
+}
+
 .flow .flow__bus {
   --bus-offset: 2.5rem;
   position: relative;
   display: flex;
   flex-direction: column;
-  margin-block: var(--space-2);
+  margin-block: 0;
   width: 100%;
+}
+
+.flow .flow__bus.scale-canvas {
+  width: 100%;
+  min-width: 36rem;
+  transform-origin: top left;
 }
 
 .flow .flow__bus-drop {
@@ -2839,16 +2858,15 @@ table::-webkit-scrollbar {
     gap: var(--space-3);
   }
 
-  .flow .flow__bus {
-    --bus-offset: 0.75rem;
+  .flow .flow__bus-frame {
     margin-block: var(--space-2);
-    overflow-x: auto;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
+    overflow: hidden;
   }
 
-  .flow .flow__bus::-webkit-scrollbar {
-    display: none;
+  .flow .flow__bus {
+    --bus-offset: 0.75rem;
+    margin-block: 0;
+    overflow: visible;
   }
 
   .flow .flow__bus-drop {
