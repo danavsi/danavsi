@@ -57,7 +57,7 @@
   --container-max: 76rem;
   --measure: 62ch;
   --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
-  --nav-height: 3.5rem;
+  --nav-height: 2.5rem;
 
   /* Shape */
   --radius-none: 0;
@@ -514,7 +514,7 @@ body {
   align-items: center;
   gap: var(--space-4);
   min-height: var(--nav-height);
-  padding-block: var(--space-2);
+  padding-block: 0.25rem;
 }
 
 .site-nav__links {
@@ -527,7 +527,7 @@ body {
 }
 
 .site-nav__links a {
-  padding-block: var(--space-2);
+  padding-block: 0.25rem;
   border-bottom: var(--border-width) solid transparent;
   color: var(--color-text-muted);
   text-decoration: none;
@@ -599,9 +599,9 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--control-height-compact);
-  height: var(--control-height-compact);
-  min-height: var(--control-height-compact);
+  width: 2rem;
+  height: 2rem;
+  min-height: 2rem;
   padding: 0;
   border-radius: var(--radius-control);
   border: var(--border-width) solid var(--color-line-strong);
@@ -617,6 +617,18 @@ body {
 .site-nav__btn:hover {
   border-color: var(--color-text);
   background: var(--color-surface);
+}
+
+.site-nav .button--compact {
+  min-height: 1.85rem;
+  height: 1.85rem;
+  padding-inline: var(--space-3);
+  font-size: var(--text-xs);
+}
+
+.site-nav .wordmark__mark {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .site-nav__toggle {
@@ -653,12 +665,12 @@ body {
 
 @media (max-width: 47.99rem) {
   html {
-    scroll-padding-top: calc(3.5rem + var(--space-3) + env(safe-area-inset-top, 0px));
+    scroll-padding-top: calc(var(--nav-height) + var(--space-2) + env(safe-area-inset-top, 0px));
   }
 
   .site-nav__inner {
-    min-height: 3.25rem;
-    padding-block: var(--space-2);
+    min-height: var(--nav-height);
+    padding-block: 0.25rem;
     justify-content: space-between;
   }
 
