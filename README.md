@@ -1,8 +1,8 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="page/assets/images/banner.png">
-    <source media="(prefers-color-scheme: light)" srcset="page/assets/images/banner.png">
-    <img src="page/assets/images/banner.png" alt="Danav — One brain, every model" width="100%">
+    <source media="(prefers-color-scheme: dark)" srcset="page/assets/images/logo-horizontal-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="page/assets/images/logo-horizontal-light.svg">
+    <img src="page/assets/images/logo-horizontal-dark.svg" alt="Danav" width="300">
   </picture>
 </p>
 
@@ -501,3 +501,18 @@ spec:
 * **Weeks 13–16 (Milestone 4 — Danav Desktop App & Agent OS):**
     * Wrap the web UI and Rust daemon into the native **Tauri v2 Desktop App**.
     * Build the Unified BYO-Subscription Pool Manager (#103), Event-Driven Triggers (#104), DAG Workflow Compiler (#107), OS Accessibility Bridge (#105), and `.danav-agent` packaging (#110).
+
+---
+
+## Star History
+
+<p align="center">
+  <a href="https://star-history.com/#danavsi/danavsi&Date">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=danavsi/danavsi&type=Date&theme=dark" />
+      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=danavsi/danavsi&type=Date" />
+      <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=danavsi/danavsi&type=Date" />
+    </picture>
+  </a>
+</p>
+
