@@ -3,5 +3,4 @@ Allow: /
 
 # Sitemaps
 Sitemap: https://danav.si/sitemap.xml
-Sitemap: https://danav.si/page/sitemap.xml
 Sitemap: https://danavsi.github.io/danavsi/sitemap.xml
