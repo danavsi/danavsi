@@ -1,0 +1,46 @@
+# Danav
+
+> One brain, every model. Superintelligence that belongs to you.
+
+Danav is a local-first cognitive infrastructure and autonomous agent operating system built 100% in Rust (Core Engine) and Tauri v2 + React (Desktop & Web Control Center). It turns fragmented AI tools (Claude Code, Cursor, Gemini CLI, Codex, Ollama) into a unified, privacy-preserving intelligence system operating on user-owned hardware.
+
+## Architecture
+
+Danav operates as a unified two-part platform:
+
+1. **Danav Brain (`danavd` / `danav` CLI):**
+   - Headless, single-binary daemon written 100% in Rust.
+   - Serves as the cognitive hippocampus (relational memory graph + Tree-sitter AST code index).
+   - Serves as the prefrontal cortex (sub-50ms TypeSafe System one decision router + streaming OpenAI/Anthropic API proxy).
+   - Integrates with any AI tool via stdio/SSE MCP server and localhost proxy at `127.0.0.1:7420`.
+
+2. **Danav Desktop Application (`Danav Desktop`):**
+   - Native cross-platform application built on Tauri v2 and React.
+   - Bring Your Own Subscription (BYOS) pool manager for Claude, Codex, Gemini, and local Ollama models.
+   - Visual Agent Studio, DAG Workflow Compiler, and OS/Browser accessibility automation bridge.
+   - Offline-capable with zero telemetry and zero cloud lock-in.
+
+## Key Capabilities
+
+- **One Brain, Every Model:** Shared local relational memory graph (`UPDATES`, `EXTENDS`, `DERIVES`) across all IDEs, CLIs, and agents.
+- **Sub-15ms Surgical Context Pack:** Turn-1 prompts receive a deterministic 400–600 token `<danav_context_pack>` containing exact AST symbol line ranges and test states, cutting token consumption by up to 80%.
+- **Sub-50ms TypeSafe System one Engine:** Evaluates routing, safety gating, and tool selection using constrained zero-text primitives (`Choice`, `Score`, `Noul`) with a 0% structural hallucination guarantee.
+- **BYOS Agent OS:** Orchestrates background agents across GitHub, Notion, Slack, email, and desktop applications using existing subscriptions without SaaS markups.
+- **Local Security Sandbox:** Rootless execution, strict outbound secret redaction, and taint enforcement across DAG pipeline transitions.
+
+## Key Performance Metrics
+
+- Single-Binary Size: `< 35 MB` (Rust stripped release)
+- Turn-1 Context Pack Latency: `< 15 ms` (P95)
+- System one Decision Pass: `< 45 ms` (P95 on CPU via quantized ONNX)
+- Proxy First-Token Overhead: `< 5 ms` over upstream API
+- Idle RAM Footprint: `< 60 MB` (CLI Daemon) / `< 150 MB` (Desktop App)
+- Structural Hallucination Rate: `0.0%` on internal routing & tool selection
+
+## Documentation & References
+
+- [Official Website](https://danav.si): Product overview and interactive routing simulator.
+- [README.md](README.md): Full architectural overview, core value proposition, and quickstart guide.
+- [Danav Master Specification](docs/ideation/Danav_Master_Spec.md): The complete 110-feature specification across all 6 architectural subsystems.
+- [Landing Page & Routing Simulator](index.html): Interactive visualizer, System one routing demonstration, and UI specifications.
+- [GitHub Repository](https://github.com/danavsi/danavsi): Source code, issue tracker, and releases.
